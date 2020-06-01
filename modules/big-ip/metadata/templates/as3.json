@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/v3.18.0/schema/3.18.0/as3-schema.json",
+  "action": "deploy",
+  "class": "AS3",
+  "declaration": {
+    "class": "ADC",
+    "id": "onboard",
+    "label": "simple",
+    "remark": "simple AS3 placeholder",
+    "schemaVersion": "3.18.0"
+  },
+  "persist": true
+}

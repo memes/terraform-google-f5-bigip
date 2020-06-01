@@ -1,0 +1,98 @@
+#cloud-config
+---
+write_files:
+  - path: /config/cloud/gce/setupUtils.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${setup_utils_sh}
+  - path: /config/cloud/gce/multiNicMgmtSwap.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${multi_nic_mgt_swap_sh}
+  - path: /config/cloud/gce/initialNetworking.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${initial_networking_sh}
+  - path: /config/cloud/verifyHash
+    permissions: 0644
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${verify_hash_tcl}
+  - path: /config/cloud/gce/installCloudLibs.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${install_cloud_libs_sh}
+  - path: /config/cloud/gce/resetManagementRoute.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${reset_management_route_sh}
+  - path: /config/cloud/gce/initialSetup.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${initial_setup_sh}
+  - path: /config/cloud/gce/declarativeOnboarding.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${declarative_onboarding_sh}
+  - path: /config/cloud/gce/applicationServices3.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${application_services3_sh}
+  - path: /config/cloud/gce/customConfig.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${custom_config_sh}
+  - path: /etc/systemd/system/f5-gce-management-route.service
+    permissions: 0644
+    owner: root
+    content: |
+      [Unit]
+      Description=Reset management route on boot
+      After=httpd.service f5-swap-eth.service f5-startup.service
+
+      [Service]
+      Type=simple
+      ExecStart=/config/cloud/gce/resetManagementRoute.sh
+
+      [Install]
+      WantedBy=multi-user.target
+  - path: /etc/systemd/system/f5-gce-initial-setup.service
+    permissions: 0644
+    owner: root
+    content: |
+      [Unit]
+      Description=Setup BIG-IP on boot
+      After=httpd.service f5-swap-eth.service f5-startup.service
+
+      [Service]
+      Type=simple
+      ExecStart=/config/cloud/gce/initialSetup.sh
+
+      [Install]
+      WantedBy=multi-user.target
+
+# BIG-IP versions on GCP that support cloud-init are also using systemd; enable
+# and launch the unit that runs initialSetup.sh script on first boot.
+runcmd:
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, f5-gce-initial-setup.service]
+  - [systemctl, start, f5-gce-initial-setup.service]
