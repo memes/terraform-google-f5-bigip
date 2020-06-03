@@ -69,11 +69,27 @@ EOD
 }
 
 variable "modules" {
-  type        = list(string)
-  default     = ["ltm:nominal"]
+  type = map(string)
+  default = {
+    ltm = "nominal"
+  }
   description = <<EOD
-A list of BIG-IP module:provisioning-level pairs to enable, for example
-["ltm:nominal"] or ["ltm:nominal" , "asm:nominal"]. Default value is ["ltm:nominal"].
+A map of BIG-IP module = provisioning-level pairs to enable, where the module
+name is key, and the provisioing-level is the value. This value is used with the
+default Declaration Onboarding template; a better option for full control is to
+explicitly declare the modules to be provisioned as part of a custom JSON file.
+See `do_payload`.
+
+E.g. the default is
+modules = {
+  ltm = "nominal"
+}
+
+To provision ASM and LTM, the value might be:-
+modules = {
+  ltm = "nominal"
+  asm = "nominal"
+}
 EOD
 }
 

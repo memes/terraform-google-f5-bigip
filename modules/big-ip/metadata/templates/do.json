@@ -25,8 +25,8 @@
       "timezone": "${timezone}"
     },
     "provision": {
-      %{ for module in modules ~}
-      "${module[0]}": "${module[1]}",
+      %{ for k,v in modules ~}
+      "${k}": "${v}",
       %{ endfor ~}
       "class": "Provision"
     }

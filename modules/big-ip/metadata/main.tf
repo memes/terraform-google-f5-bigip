@@ -17,7 +17,7 @@ locals {
       allow_phone_home  = var.allow_phone_home,
       ntp_servers       = var.ntp_servers,
       timezone          = var.timezone,
-      modules           = [for module in var.modules : split(":", module)],
+      modules           = var.modules,
       analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:0.0.1,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
     }
   )
