@@ -49,9 +49,9 @@ response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -d @"${tmp}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/declare?async=true")" || \
     error "Error applying AS3 payload from ${tmp}"
-id="$(echo "${response}" | jq -r '.id')"
+id="$(echo "${response}" | jq -r '.id // ""')"
 [ -n "${id}" ] || \
-    error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message)')"
+    error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message')"
 rm -f "${tmp}" || info "Unable to delete ${tmp}"
 
 while true; do
