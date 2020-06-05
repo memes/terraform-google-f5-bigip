@@ -36,14 +36,13 @@ if [ "${NIC_COUNT:-0}" -gt 1 ]; then
         tmsh create sys management-route default gateway "${MGMT_GATEWAY}"
     fi
     if [ -n "${EXT_ADDRESS}" ] && [ -n "${EXT_GATEWAY}" ] && [ -n "${EXT_NETWORK}" ] && [ -n "${EXT_MASK}" ]; then
-        info "Deleting external interface"
         info "Configuring external interface"
         # shellcheck disable=SC1083
         tmsh create net vlan external interfaces add { 1.0 } mtu 1460
         tmsh create net self self_external address "${EXT_ADDRESS}/32" vlan external
         tmsh create net route ext_gw_interface network "${EXT_GATEWAY}/32" interface external
         tmsh create net route ext_rt network "${EXT_NETWORK}/${EXT_MASK}" gw "${EXT_GATEWAY}"
-        fi
+    fi
     # 3+ NIC configuration
     if [ -n "${INT0_ADDRESS}" ] && [ -n "${INT0_GATEWAY}" ] && [ -n "${INT0_NETWORK}" ] && [ -n "${INT0_MASK}" ]; then
         info "Configuring internal interface"

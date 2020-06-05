@@ -9,3 +9,5 @@ fileignoreconfig:
   checksum: d1000987a14e9d8d491202fcf87c4341e110e698a90b7255f79985ad972b776a
 - filename: modules/big-ip/metadata/files/applicationServices3.sh
   checksum: 18e351cd948a7676bf2cd13094ba75ac42251178d5755df44b95e21c0cea6949
+- filename: modules/big-ip/ha/templates/do.json
+  checksum: 4878f47c6626affe5577dbb8e7639543fbb69fc8d09d34b33869aca2c9943cb1

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.12.0/src/schema/1.12.0/base.schema.json",
+  "schemaVersion": "1.12.0",
+  "class": "Device",
+  "async": true,
+  "label": "auto-onboard for primary instance",
+  "Common":{
+    "class": "Tenant",
+    "system": {
+      "class": "System",
+      "autoPhonehome": ${jsonencode(allow_phone_home)}
+    },
+    "dns": {
+      "class": "DNS",
+      "nameServers": [
+        "169.254.169.254"
+      ],
+      "search": [
+        "google.internal"
+      ]
+    },
+    "ntp": {
+      "class": "NTP",
+      "servers": ${jsonencode(ntp_servers)},
+      "timezone": "${timezone}"
+    },
+    "provision": {
+      %{ for k,v in modules ~}
+      "${k}": "${v}",
+      %{ endfor ~}
+      "class": "Provision"
+    },
+    "configSync": {
+      "class": "ConfigSync",
+      "configsyncIp": ${jsonencode(sync_address)}
+    },
+    "failoverAddress": {
+      "class": "FailoverUnicast",
+      "address": ${jsonencode(failover_address)}
+    },
+    "failoverGroup": {
+      "class": "DeviceGroup",
+      "type": "sync-failover",
+      "members": ${jsonencode(failover_group_members)},
+      "owner": "/Common/failoverGroup/members/0",
+      "autoSync": ${jsonencode(auto_sync)},
+      "saveOnAutoSync": ${jsonencode(save_on_auto_sync)},
+      "networkFailover": ${jsonencode(network_failover)},
+      "fullLoadOnSync": ${jsonencode(fullload_on_sync)},
+      "asmSync": ${jsonencode(asm_sync)}
+    },
+    "trust": {
+      "class": "DeviceTrust",
+      "localUsername": "admin",
+      "localPassword": env.ADMIN_PASSWORD,
+      "remoteHost": ${jsonencode(format("/Common/failoverGroup/members/%d", trust_ordinal))},
+      "remoteUsername": "admin",
+      "remotePassword": env.ADMIN_PASSWORD
+    }
+  }
+}
