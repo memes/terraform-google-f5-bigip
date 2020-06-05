@@ -43,10 +43,10 @@ extract_payload "${tmp}" "${1}" || \
     error "Unable to extract encoded payload: $?"
 
 info "Applying AS3 payload"
-response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+response="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json;charset=UTF-8" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-        -d @"${tmp}" \
+        -d @- \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/declare?async=true")" || \
     error "Error applying AS3 payload from ${tmp}"
 id="$(echo "${response}" | jq -r '.id // ""')"

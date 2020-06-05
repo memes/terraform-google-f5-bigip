@@ -44,10 +44,10 @@ extract_payload "${tmp}" "${1}" || \
 info "Applying Declarative Onboarding payload"
 # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
 # https://github.com/F5Networks/f5-declarative-onboarding/issues/79
-id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+id="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-        -d @"${tmp}" \
+        -d @- \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.id')" || \
     error "Error applying Declarative Onboarding payload from ${tmp}"
 rm -f "${tmp}" || info "Unable to delete ${tmp}"
