@@ -8,14 +8,13 @@ terraform {
 
 module "instance" {
   #source              = "https://github.com/memes/f5-google-terraform-modules/modules/big-ip/instance?ref=v1.0.0"
-  source                         = "../../"
-  project_id                     = var.project_id
-  zone                           = var.zone
-  service_account                = var.service_account
-  external_subnetwork            = var.subnet
-  provision_management_public_ip = true
-  image                          = var.image
-  allow_phone_home               = false
-  allow_usage_analytics          = false
-  #admin_password_secret_manager_key = var.admin_password_key
+  source                            = "../../"
+  project_id                        = var.project_id
+  zone                              = var.zone
+  service_account                   = var.service_account
+  external_subnetwork               = var.subnet
+  image                             = var.image
+  allow_phone_home                  = false
+  allow_usage_analytics             = false
+  admin_password_secret_manager_key = var.admin_password_key
 }
