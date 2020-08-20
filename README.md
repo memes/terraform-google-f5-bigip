@@ -6,4 +6,4 @@ solutions on Google Cloud Platform.
 ## Modules
 
 1. [Standalone](modules/big-ip/instance/) BIG-IP instances
-2. [HA](modules/big-ip/ha/) HA clusters
+2. [HA](modules/big-ip/ha/) cluster
