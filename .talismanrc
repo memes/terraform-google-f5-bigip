@@ -1,6 +1,6 @@
 fileignoreconfig:
 - filename: modules/big-ip/metadata/files/verifyHash
-  checksum: ee09856a4e67630aa7baf90af2888d00782703b8f7478a9c4b725f7aab3a4c99
+  checksum: 350a1112c678f2c6c9434791c20961471d1c784d473e6d5b3e2b7d615e133935
 - filename: modules/big-ip/metadata/files/declarativeOnboarding.sh
   checksum: 5774496051223bc1a41ea9864b0bc982f0db357627c810738a9580266e8765c9
 - filename: modules/big-ip/metadata/files/initialSetup.sh

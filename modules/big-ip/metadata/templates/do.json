@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.12.0/src/schema/1.12.0/base.schema.json",
-  "schemaVersion": "1.12.0",
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.14.0/src/schema/1.14.0/base.schema.json",
+  "schemaVersion": "1.14.0",
   "class": "Device",
   "async": true,
   "label": "auto-onboard",

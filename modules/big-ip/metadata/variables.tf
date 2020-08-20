@@ -137,11 +137,11 @@ EOD
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.18.0/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.4.0/f5-cloud-libs-gce.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-appsvcs-extension/v3.18.0/f5-appsvcs-3.18.0-4.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.12.0/f5-declarative-onboarding-1.12.0-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.1.0/f5-cloud-failover-1.1.0-0.noarch.rpm",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
+    "https://cdn.f5.com/product/cloudsolutions/f5-appsvcs-extension/v3.20.0/f5-appsvcs-3.20.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.14.0/f5-declarative-onboarding-1.14.0-1.noarch.rpm",
+    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.4.0/f5-cloud-failover-1.4.0-0.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
