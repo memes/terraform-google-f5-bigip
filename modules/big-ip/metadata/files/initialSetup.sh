@@ -62,15 +62,12 @@ if [ ! -f /config/cloud/gce/initialNetworkingComplete ]; then
 fi
 
 # Change the admin password, if available in Secrets Manager. Only do this once
-# to avoid resetting a customer password reset.
+# to avoid resetting a customer password change.
 if [ ! -f /config/cloud/gce/adminPasswordChanged ]; then
     ADMIN_PASSWORD="$(get_secret admin_password_key)"
     if [ -n "${ADMIN_PASSWORD}" ]; then
         info "Changing admin password"
-        if tmsh modify auth password admin <<EOF; then
-${ADMIN_PASSWORD}
-${ADMIN_PASSWORD}
-EOF
+        if tmsh modify auth user admin password "${ADMIN_PASSWORD}"; then
             touch /config/cloud/gce/adminPasswordChanged
             info "Admin password has been changed"
         else
