@@ -8,6 +8,8 @@
 # https://support.f5.com/csp/article/K85730674
 
 echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: waiting for mcpd to be ready" >&2
+[ -e /dev/ttyS0 ] && \
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: waiting for mcpd to be ready" >/dev/ttyS0
 
 . /usr/lib/bigstart/bigip-ready-functions
 wait_bigip_ready
@@ -19,6 +21,8 @@ if [ "${NIC_COUNT:-0}" -gt 1 ] && [ -n "${MGMT_GATEWAY}" ]; then
     default_gw="$(tmsh list sys management-route default gateway | awk 'NR==2 { print $2 }')"
     while [ "${default_gw}" != "${MGMT_GATEWAY}" ]; do
         echo "$0: updating management default gateway to ${MGMT_GATEWAY}" >&2
+        [ -e /dev/ttyS0 ] && \
+            echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: updating management default gateway to ${MGMT_GATEWAY}" >/dev/ttyS0
         tmsh delete sys management-route default
         tmsh create sys management-route default gateway "${MGMT_GATEWAY}"
         tmsh save sys config
@@ -26,3 +30,5 @@ if [ "${NIC_COUNT:-0}" -gt 1 ] && [ -n "${MGMT_GATEWAY}" ]; then
     done
 fi
 echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: complete" >&2
+[ -e /dev/ttyS0 ] && \
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: complete" >/dev/ttyS0

@@ -2,15 +2,21 @@
 #
 # Reusable functions for the BIG-IP setup scripts
 
+# Write an error message to stderr and serial console, then exit
 error()
 {
     echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: Error: $*" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Error: $*" >/dev/ttyS0
     exit 1
 }
 
+# Write an informational message to stderr and serial console
 info()
 {
     echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: Info: $*" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Info: $*" >/dev/ttyS0
 }
 
 # Retrieves a value associated with the supplied key from the instance metadata

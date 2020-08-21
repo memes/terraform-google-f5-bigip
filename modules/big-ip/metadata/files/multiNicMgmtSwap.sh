@@ -21,10 +21,14 @@ if [ "${NIC_COUNT:-0}" -gt 1 ] && [ "$(tmsh list sys db provision.managementeth 
     [ -f /etc/ts/common/image.cfg ] && \
         sed -i "s/iface=eth0/iface=${1:-eth1}/g" /etc/ts/common/image.cfg
     echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: Rebooting for multi-nic management interface swap" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Rebooting for multi-nic management interface swap" >/dev/ttyS0
     reboot
     # Reboot may be delayed; signal to caller that processing should stop
     exit 1
 else
     echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: Nothing to do" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Nothing to do" >/dev/ttyS0
 fi
 exit 0

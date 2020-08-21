@@ -7,12 +7,16 @@
 error()
 {
     echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Error: $*" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Error: $*" >&2
     exit 1
 }
 
 info()
 {
     echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Info: $*" >&2
+    [ -e /dev/ttyS0 ] && \
+        echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Info: $*" >&2
 }
 
 mkdir -p /config/cloud/gce /var/log/cloud/google
