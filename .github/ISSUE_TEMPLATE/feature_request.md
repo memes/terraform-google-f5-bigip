@@ -1,20 +1,24 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an idea for these modules
 title: ''
-labels: ''
-assignees: ''
+labels: 'enhancement'
+assignees: 'memes'
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Hello and thank you for using our Terraform modules. Please complete this form
+to share your ideas. If you already have a proposed solution, open a pull request
+for review and link it to this issue where prompted.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Describe the feature
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+What are you proposing to add and what is the value added by this feature? Please
+provide as much detail as possible.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Are you willing to contribute?
+
+Feature requests are nice, but collaboration is better :thumbsup:
+We're very happy to take pull requests for solutions that have been built and
+tested by others. Please open a pull request, linked to this issue, and ask for
+a review.

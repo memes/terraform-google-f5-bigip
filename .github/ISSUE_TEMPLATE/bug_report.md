@@ -2,37 +2,42 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
-assignees: ''
+labels: 'bug'
+assignees: 'memes'
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+Hello and thank you for using our Terraform modules. Please complete this form
+and we'll try to address the issue.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Describe the bug
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+What is the problem you are seeing? Is it consistent or occasional? Please
+provide as much detail as possible.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Terraform modules used
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+* [ ] BIG-IP standalone
+* [ ] BIG-IP HA
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+## GCP environment
 
-**Additional context**
-Add any other context about the problem here.
+* [x] Standalone project (default)
+* [ ] Shared VPC Host project
+* [ ] Shared VPC Service project
+* [ ] Integration with serverless (Cloud Functions, Cloud Run, App Engine, etc.)
+
+Any other details we need to know?
+
+## Reproducing the issue
+
+How can we reproduce this behaviour? Which version of F5's product was used?
+
+
+## Additional context
+
+Add any other context about the problem here. Sanitised snippets of logs are
+welcome, but we prefer that you upload larger files to a third-party host
+(Pastebin, GCS bucket, etc.) and provide a link instead.
+
+*DO NOT UPLOAD OR LINK TO FILES WITH SENSITIVE INFORMATION, SERVICE ACCOUNT KEYS, ETC.*
