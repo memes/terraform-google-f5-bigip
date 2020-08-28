@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: F5 Community GCP Slack Channel
+    url: https://f5cloudsolutions.slack.com/messages/gcp
+    about: The maintainers of this repo are usually on this Slack channel
+  - name: F5 Cloud Docs
+    url: https://clouddocs.f5.com/
+    about: F5 Cloud Documentation page
