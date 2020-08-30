@@ -4,7 +4,7 @@ fileignoreconfig:
 - filename: modules/big-ip/metadata/files/declarativeOnboarding.sh
   checksum: 5774496051223bc1a41ea9864b0bc982f0db357627c810738a9580266e8765c9
 - filename: modules/big-ip/metadata/files/initialSetup.sh
-  checksum: a67939bd7e3b7331383d995bd8459b848128e5b666bea27c9c9ff7a3d8a535d1
+  checksum: 9b741f27a28b2935da29303a1a4f0ee4313334a7627b88e9223d3feedf0b7077
 - filename: modules/big-ip/metadata/files/installCloudLibs.sh
   checksum: d1000987a14e9d8d491202fcf87c4341e110e698a90b7255f79985ad972b776a
 - filename: modules/big-ip/metadata/files/applicationServices3.sh

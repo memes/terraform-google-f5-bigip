@@ -71,7 +71,7 @@ if [ ! -f /config/cloud/gce/adminPasswordChanged ]; then
             touch /config/cloud/gce/adminPasswordChanged
             info "Admin password has been changed"
         else
-            error "Error changing admin password exit code $?"
+            error "Error changing admin password: tmsh exit code $?"
         fi
     else
         info "Unable to get admin password from secrets manager; setup script will continue but some functionality may be broken"
