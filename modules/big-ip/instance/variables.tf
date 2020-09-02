@@ -488,10 +488,74 @@ variable "do_payloads" {
   description = <<EOD
 The Declarative Onboarding contents to apply to the instances. Required. This
 module has migrated to use of Declarative Onboarding for module activation,
-licensing, NTP, DNS, and other
-basic configurations. Sample payloads are in the examples folder.
+licensing, NTP, DNS, and other basic configurations. Sample payloads are in the
+examples folder.
 
 Note: if left empty, the module will use a simple JSON that sets NTP and DNS,
 and enables LTM.
+EOD
+}
+
+variable "ntp_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of NTP servers for BIG-IP instances to use if custom DO files
+are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "timezone" {
+  type        = string
+  default     = "UTC"
+  description = <<EOD
+The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances if custom
+DO files are not provided. The default is 'UTC'. See the TZ column here
+(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.
+For example, 'US/Eastern'.
+EOD
+}
+
+variable "modules" {
+  type = map(string)
+  default = {
+    ltm = "nominal"
+  }
+  description = <<EOD
+A map of BIG-IP module = provisioning-level pairs to enable, where the module
+name is key, and the provisioning-level is the value. This value is used with the
+default Declaration Onboarding template; a better option for full control is to
+explicitly declare the modules to be provisioned as part of a custom JSON file.
+See `do_payloads`.
+
+E.g. the default is
+modules = {
+  ltm = "nominal"
+}
+
+To provision ASM and LTM, the value might be:-
+modules = {
+  ltm = "nominal"
+  asm = "nominal"
+}
+EOD
+}
+
+variable "dns_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of DNS servers for BIG-IP instances to use if custom DO payloads
+are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "search_domains" {
+  type        = list(string)
+  default     = []
+  description = <<EOD
+An optonal list of DNS search domains for BIG-IP instances to use if custom DO
+payloads are not provided. If left empty (default), search domains will be added
+for "google.internal" and the zone/project specific domain assigned to instances.
 EOD
 }
