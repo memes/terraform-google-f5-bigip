@@ -8,16 +8,15 @@
     "class": "Tenant",
     "system": {
       "class": "System",
+%{if length(hostname) > 0 ~}
+      "hostname": "${hostname}",
+%{ endif ~}
       "autoPhonehome": ${jsonencode(allow_phone_home)}
     },
     "dns": {
       "class": "DNS",
-      "nameServers": [
-        "169.254.169.254"
-      ],
-      "search": [
-        "google.internal"
-      ]
+      "nameServers": ${jsonencode(dns_servers)},
+      "search": ${jsonencode(search_domains)}
     },
     "ntp": {
       "class": "NTP",
@@ -25,9 +24,9 @@
       "timezone": "${timezone}"
     },
     "provision": {
-      %{ for k,v in modules ~}
+%{ for k,v in modules ~}
       "${k}": "${v}",
-      %{ endfor ~}
+%{ endfor ~}
       "class": "Provision"
     }
   }

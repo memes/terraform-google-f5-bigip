@@ -227,3 +227,30 @@ setup the BIG-IP instance. If left blank (default), a minimal Declarative
 Onboarding will be generated and used.
 EOD
 }
+
+variable "hostname" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional hostname declaration to include in generated DO file. Default is an
+empty string, which will exclude hostname from the DO file.
+EOD
+}
+
+variable "dns_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of DNS servers for BIG-IP instances to use. The default is
+["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "search_domains" {
+  type        = list(string)
+  default     = ["google.internal"]
+  description = <<EOD
+An optonal list of DNS search domains for BIG-IP instances to use. The default
+is ["google.internal"].
+EOD
+}

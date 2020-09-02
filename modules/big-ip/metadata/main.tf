@@ -15,7 +15,10 @@ locals {
   do_payload = var.do_payload != "" ? var.do_payload : templatefile("${path.module}/templates/do.json",
     {
       allow_phone_home  = var.allow_phone_home,
+      hostname          = var.hostname,
       ntp_servers       = var.ntp_servers,
+      dns_servers       = var.dns_servers,
+      search_domains    = var.search_domains,
       timezone          = var.timezone,
       modules           = var.modules,
       analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:0.0.1,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
