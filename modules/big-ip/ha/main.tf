@@ -6,28 +6,31 @@ terraform {
   experiments = [variable_validation]
 }
 
+
 locals {
+  hostnames = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), var.zone, var.project_id)]
   # Use first internal network addresses for sync group (per published guidelines)
   # if there is at least one internal subnet defined. Fallback to external (nic0)
   sync_group_addresses = length(var.internal_subnetworks) > 0 ? [for i in range(0, var.num_instances) : element(element(var.internal_subnetwork_network_ips, i), 0)] : var.external_subnetwork_network_ips
-  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : base64gzip(templatefile("${path.module}/templates/do.json", {
-    allow_phone_home = var.allow_phone_home
-    ntp_servers      = ["169.254.169.254"]
-    timezone         = "UTC"
-    modules = {
-      "ltm" : "nominal"
-    }
+  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json", {
+    hostname               = element(local.hostnames, i)
+    allow_phone_home       = var.allow_phone_home
+    dns_servers            = var.dns_servers
+    search_domains         = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", var.zone, var.project_id)])
+    ntp_servers            = var.ntp_servers
+    timezone               = var.timezone
+    modules                = var.modules
     sync_address           = element(local.sync_group_addresses, i)
     failover_address       = element(local.sync_group_addresses, i)
-    failover_group_members = local.sync_group_addresses
+    failover_group_members = local.hostnames
     auto_sync              = true
     save_on_auto_sync      = false
     network_failover       = true
     fullload_on_sync       = false
     asm_sync               = false
     # All instances trust primary, except primary which has to trust first secondary
-    trust_ordinal = i == 0 ? 1 : 0
-  }))])
+    remote_host = element(local.sync_group_addresses, i == 0 ? 1 : 0)
+  })])
 }
 
 module "instance" {

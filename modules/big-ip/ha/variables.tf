@@ -475,3 +475,67 @@ and enables LTM module, and configures a sync-group with active-standby failover
 among the instances.
 EOD
 }
+
+variable "ntp_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of NTP servers for BIG-IP instances to use. The default is
+["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "timezone" {
+  type        = string
+  default     = "UTC"
+  description = <<EOD
+The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances. The
+default is 'UTC'. See the TZ column here
+(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.
+For example, 'US/Eastern'.
+EOD
+}
+
+variable "modules" {
+  type = map(string)
+  default = {
+    ltm = "nominal"
+  }
+  description = <<EOD
+A map of BIG-IP module = provisioning-level pairs to enable, where the module
+name is key, and the provisioing-level is the value. This value is used with the
+default Declaration Onboarding template; a better option for full control is to
+explicitly declare the modules to be provisioned as part of a custom JSON file.
+See `do_payload`.
+
+E.g. the default is
+modules = {
+  ltm = "nominal"
+}
+
+To provision ASM and LTM, the value might be:-
+modules = {
+  ltm = "nominal"
+  asm = "nominal"
+}
+EOD
+}
+
+variable "dns_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of DNS servers for BIG-IP instances to use, if explicit DO files
+are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "search_domains" {
+  type        = list(string)
+  default     = []
+  description = <<EOD
+An optonal list of DNS search domains for BIG-IP instances to use, if explicit
+DO files are not provided. If left empty (default), search domains will be added
+for "google.internal" and the zone/project specific domain assigned to instances.
+EOD
+}
