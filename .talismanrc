@@ -2,13 +2,13 @@ fileignoreconfig:
 - filename: modules/big-ip/metadata/files/verifyHash
   checksum: 350a1112c678f2c6c9434791c20961471d1c784d473e6d5b3e2b7d615e133935
 - filename: modules/big-ip/metadata/files/declarativeOnboarding.sh
-  checksum: 5774496051223bc1a41ea9864b0bc982f0db357627c810738a9580266e8765c9
+  checksum: 9e3238f13217ae5a4754adc06956d6b516173734e62c3f1aa034a79fcf0972cf
 - filename: modules/big-ip/metadata/files/initialSetup.sh
   checksum: 9b741f27a28b2935da29303a1a4f0ee4313334a7627b88e9223d3feedf0b7077
 - filename: modules/big-ip/metadata/files/installCloudLibs.sh
   checksum: d1000987a14e9d8d491202fcf87c4341e110e698a90b7255f79985ad972b776a
 - filename: modules/big-ip/metadata/files/applicationServices3.sh
-  checksum: 18e351cd948a7676bf2cd13094ba75ac42251178d5755df44b95e21c0cea6949
+  checksum: b3e1a69cf76a5730e6eb8ca1de6cf4fe1b4c1ffeaa894df2eb4db71429468ba8
 - filename: modules/big-ip/ha/templates/do.json
   checksum: 4878f47c6626affe5577dbb8e7639543fbb69fc8d09d34b33869aca2c9943cb1
 - filename: .github/workflows/pre-commit.yml

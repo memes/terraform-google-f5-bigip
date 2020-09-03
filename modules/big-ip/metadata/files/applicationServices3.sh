@@ -39,22 +39,28 @@ done
 [ ${retry} -ge 10 ] && \
     error "AS3 extension is not installed"
 
-# Extracting payload
-tmp="$(mktemp -p /config/cloud/gce)"
-extract_payload "${tmp}" "${1}" || \
+# Extracting payload to file to avoid any escaping or interpolation issues
+raw="$(mktemp -p /var/tmp)"
+extract_payload "${1}" > "${raw}" || \
     error "Unable to extract encoded payload: $?"
+# Execute the raw JSON as a jq file; allows environment substitutions to embed
+# Admin password, for example, at run-time. NOTE: for future use.
+payload="$(mktemp -p /var/tmp)"
+jq -nrf "${raw}" > "${payload}" || \
+    error "Unable to process raw file as JSON: $?"
+rm -f "${raw}" || info "Unable to delete ${raw}"
 
 info "Applying AS3 payload"
-response="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json;charset=UTF-8" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-        -d @- \
+        -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/declare?async=true")" || \
-    error "Error applying AS3 payload from ${tmp}"
+    error "Error applying AS3 payload from ${payload}"
 id="$(echo "${response}" | jq -r '.id // ""')"
 [ -n "${id}" ] || \
     error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message')"
-rm -f "${tmp}" || info "Unable to delete ${tmp}"
+rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \

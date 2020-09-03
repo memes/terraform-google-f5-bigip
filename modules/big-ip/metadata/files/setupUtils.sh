@@ -87,33 +87,28 @@ get_secret()
     return 0
 }
 
-# Extract the contents of the supplied value and write to given file
-# $1 = filepath that will bo overwritten with the payload
-# $2 = payload contents must be a URL or base64 encoded and gzipped string
+# Extract the contents of the supplied value and write to stdout
+# $1 = payload contents must be a URL or base64 encoded and gzipped string
 extract_payload()
 {
     [ -n "${1}" ] || \
-        error "file to receive payload must be given"
-    [ -w "${1}" ] || \
-        error "refusing to extract payload to non-existent file"
-    [ -n "${2}" ] || \
         error "payload content is required"
-    case "${2}" in
+    case "${1}" in
         https://storage.googleapis.com/*)
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
-            curl -sf -o "${1}" --retry 20 \
+            curl -sf --retry 20 \
                     -H "Authorization: Bearer ${auth_token}" \
-                    "${2}" || \
-                error "Download of GCS file from ${2} failed: $?"
+                    "${1}" || \
+                error "Download of GCS file from ${1} failed: $?"
             ;;
         ftp://*|http://*|https://*)
-            curl -skf -o "${1}" --retry 20 "${2}" || \
-                error "download of ${2} failed with exit code $?"
+            curl -skf --retry 20 "${1}" || \
+                error "download of ${1} failed with exit code $?"
             ;;
         *)
-            base64 -d <<EOF | zcat > "${1}" || error "unable to decode payload: $?"
-${2}
+            base64 -d <<EOF | zcat || error "unable to decode payload: $?"
+${1}
 EOF
             ;;
     esac
