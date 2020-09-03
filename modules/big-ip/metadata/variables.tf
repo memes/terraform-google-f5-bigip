@@ -207,33 +207,35 @@ NOTE: this value should contain the script contents, not a file path.
 EOD
 }
 
-variable "as3_payload" {
-  type        = string
-  default     = ""
+variable "as3_payloads" {
+  type        = list(string)
+  default     = []
   description = <<EOD
-An optional, but recommended, AS3 JSON that can be used to setup the BIG-IP
-instance. If left blank (default), a minimal AS3 declaration will be generated
-and used that creates a simple HTTP application that can be used for GCP health
-checks.
+An optional, but recommended, list of AS3 JSON declarations that can be used to
+setup the BIG-IP instances. If left empty (default), a no-op AS3 declaration
+will be generated for each instance.
+
+The l
 EOD
 }
 
-variable "do_payload" {
-  type        = string
-  default     = ""
+variable "do_payloads" {
+  type        = list(string)
+  default     = []
   description = <<EOD
-An optional, but recommended, Declarative Onboarding JSON that can be used to
+An optional, but recommended, list of Declarative Onboarding JSON that can be used to
 setup the BIG-IP instance. If left blank (default), a minimal Declarative
 Onboarding will be generated and used.
 EOD
 }
 
-variable "hostname" {
+variable "hostname_template" {
   type        = string
   default     = ""
   description = <<EOD
-An optional hostname declaration to include in generated DO file. Default is an
-empty string, which will exclude hostname from the DO file.
+An optional hostname declaration template used to set per-instance hostname in
+generated DO file. Default is an empty string, which will exclude hostname from
+the generated DO file.
 EOD
 }
 
@@ -252,5 +254,13 @@ variable "search_domains" {
   description = <<EOD
 An optonal list of DNS search domains for BIG-IP instances to use. The default
 is ["google.internal"].
+EOD
+}
+
+variable "num_instances" {
+  type        = number
+  default     = 1
+  description = <<EOD
+The number of BIG-IP metatdata sets to provision. Default value is 1.
 EOD
 }

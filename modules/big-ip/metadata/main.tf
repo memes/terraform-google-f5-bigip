@@ -9,21 +9,21 @@ terraform {
 # Apply any required changes to metadata
 locals {
   empty = {}
-  as3_payload = var.as3_payload != "" ? var.as3_payload : templatefile("${path.module}/templates/as3.json",
+  as3_payloads = coalescelist(var.as3_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/as3.json",
     {}
-  )
-  do_payload = var.do_payload != "" ? var.do_payload : templatefile("${path.module}/templates/do.json",
+  )])
+  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json",
     {
       allow_phone_home  = var.allow_phone_home,
-      hostname          = var.hostname,
+      hostname          = var.hostname_template != "" ? format(var.hostname_template, i) : ""
       ntp_servers       = var.ntp_servers,
       dns_servers       = var.dns_servers,
       search_domains    = var.search_domains,
       timezone          = var.timezone,
       modules           = var.modules,
-      analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:0.0.1,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
+      analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:1.2.0,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
     }
-  )
+  )])
   custom_script = "${path.module}/files/customConfig.sh"
   startup = templatefile(var.use_cloud_init ? "${path.module}/templates/cloud_config.yml" : "${path.module}/templates/startup_script.sh",
     {
@@ -48,22 +48,21 @@ locals {
   ssh_keys = {
     ssh-keys = var.ssh_keys
   }
-  metadata = merge(var.metadata,
+  metadata = [for i in range(0, var.num_instances) : merge(var.metadata,
     {
       enable-oslogin     = upper(var.enable_os_login)
       serial-port-enable = upper(var.enable_serial_console)
       shutdown-script = templatefile("${path.module}/templates/shutdown_script.sh",
-        {
-        }
+        {}
       )
       default_gateway       = var.default_gateway
       install_cloud_libs    = join(" ", var.install_cloud_libs)
       allow_usage_analytics = upper(var.allow_usage_analytics)
       admin_password_key    = var.admin_password_secret_manager_key
-      as3_payload           = base64gzip(local.as3_payload)
-      do_payload            = base64gzip(local.do_payload)
+      as3_payload           = base64gzip(element(local.as3_payloads, i))
+      do_payload            = base64gzip(element(local.do_payloads, i))
     },
     var.ssh_keys != "" ? local.ssh_keys : local.empty,
     var.use_cloud_init ? local.cloud_init : local.startup_script,
-  )
+  )]
 }
