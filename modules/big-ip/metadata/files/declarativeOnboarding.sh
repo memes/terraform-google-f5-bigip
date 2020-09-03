@@ -31,7 +31,7 @@ while [ ${retry} -lt 10 ]; do
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/info" && break
-    info "Check for DO installation failed, sleeping before retest: exit code $?"
+    info "Check for DO installation failed, sleeping before retest: curl exit code $?"
     sleep 5
     retry=$((retry+1))
 done
@@ -51,7 +51,7 @@ id="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -d @- \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.id')" || \
-    error "Error applying Declarative Onboarding payload from ${tmp}"
+    error "Error applying Declarative Onboarding payload from ${tmp}: curl exit code $?"
 rm -f "${tmp}" || info "Unable to delete ${tmp}"
 
 while true; do
@@ -59,7 +59,7 @@ while true; do
                 -H "Content-Type: application/json;charset=UTF-8" \
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}")" || \
-        error "Failed to get status for task ${id} with exit code: $?"
+        error "Failed to get status for task ${id}: curl exit code: $?"
     code="$(echo "${response}" | jq -r '.result.code // "unspecified"')"
     case "${code}" in
         200)
@@ -76,6 +76,6 @@ while true; do
                 info "Declarative Onboarding has code ${code}: ${response}"
                 ;;
     esac
-    info "Sleeping before reexamining Declarative Onboarding tasks"
+    info "Sleeping before rechecking Declarative Onboarding tasks"
     sleep 5
 done

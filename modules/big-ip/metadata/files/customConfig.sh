@@ -26,6 +26,7 @@ wait_bigip_ready
 # are a preferred solution to custom scripting.
 info "Disabling gui-setup"
 tmsh modify sys global-settings gui-setup disabled
+info "Saving system config"
 tmsh save /sys config
 
 info "Custom configuration is complete"

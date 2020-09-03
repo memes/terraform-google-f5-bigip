@@ -32,7 +32,7 @@ while [ ${retry} -lt 10 ]; do
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/info" && break
-    info "Check for AS3 installation failed, sleeping before retest: exit code $?"
+    info "Check for AS3 installation failed, sleeping before retest: curl exit code $?"
     sleep 5
     retry=$((retry+1))
 done
@@ -61,7 +61,7 @@ while true; do
                 -H "Content-Type: application/json;charset=UTF-8" \
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/task/${id}")" || \
-        error "Failed to get status for task ${id} with exit code: $?"
+        error "Failed to get status for task ${id}: curl exit code: $?"
     code="$(echo "${response}" | jq -r '.results[0].code // "unspecified"')"
     case "${code}" in
         0)
@@ -79,7 +79,7 @@ while true; do
                 info "AS3 has code ${code}: ${response}"
                 ;;
     esac
-    info "Sleeping before reexamining AS3 tasks"
+    info "Sleeping before rechecking AS3 tasks"
     sleep 5
 done
 exit 0

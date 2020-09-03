@@ -109,6 +109,7 @@ info "Removing DHCP provided ntp servers from management"
 tmsh modify sys management-dhcp sys-mgmt-dhcp-config request-options delete { ntp-servers }
 
 # Adding GCP metadata server as DNS resolver
+info "Adding GCP Metadata service as DNS resolver"
 # shellcheck disable=SC1083
 tmsh modify sys dns name-servers add { 169.254.169.254 }
 
