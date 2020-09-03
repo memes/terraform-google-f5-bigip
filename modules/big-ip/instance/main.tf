@@ -6,10 +6,10 @@ terraform {
   experiments = [variable_validation]
 }
 
-# Base metadata, common to all instances
-# XXX: Terraform 0.13 may support module counts - revist approach
+# Generate metadata for each instance
 module "metadata" {
   source                            = "./../metadata/"
+  num_instances                     = var.num_instances
   region                            = replace(var.zone, "/-[a-z]$/", "")
   license_type                      = var.license_type
   image                             = var.image
@@ -22,27 +22,19 @@ module "metadata" {
   default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   use_cloud_init                    = var.use_cloud_init
-  # This will be replaced per-instance
-  hostname       = "xxx"
-  search_domains = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", var.zone, var.project_id)])
-}
-
-locals {
-  # If a set of explicit DO files have not been provided, use the DO generated
-  # by metadata module but with search/replace to set hostname to instance name.
-  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : replace(module.metadata.metadata.do_payload, "\"xxx\"", format("%s.%s.c.%s.internal", format(var.instance_name_template, i), var.zone, var.project_id))])
+  hostname_template                 = format("%s.%s.c.%s.internal", var.instance_name_template, var.zone, var.project_id)
+  search_domains                    = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", var.zone, var.project_id)])
+  do_payloads                       = var.do_payloads
+  as3_payloads                      = var.as3_payloads
 }
 
 resource "google_compute_instance" "bigip" {
-  count   = var.num_instances
-  project = var.project_id
-  name    = format(var.instance_name_template, count.index)
-  zone    = var.zone
-  labels  = var.labels
-  metadata = merge(module.metadata.metadata,
-    length(var.as3_payloads) > count.index ? { as3_payload = element(var.as3_payloads, count.index) } : {},
-    length(local.do_payloads) > count.index ? { do_payload = element(local.do_payloads, count.index) } : {},
-  )
+  count    = var.num_instances
+  project  = var.project_id
+  name     = format(var.instance_name_template, count.index)
+  zone     = var.zone
+  labels   = var.labels
+  metadata = element(module.metadata.metadata, count.index)
 
   # Scheduling options
   min_cpu_platform = var.min_cpu_platform
