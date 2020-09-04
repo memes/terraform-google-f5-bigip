@@ -52,7 +52,7 @@ module "instance" {
   management_subnetwork             = var.management_subnet
   management_subnetwork_network_ips = [for r in google_compute_address.mgt : r.address]
   internal_subnets                  = [var.internal_subnet]
-  internal_subnetworks_network_ips  = [[for r in google_compute_address.int : r.address]]
+  internal_subnetworks_network_ips  = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
   allow_usage_analytics             = false
