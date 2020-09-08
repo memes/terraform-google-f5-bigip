@@ -45,13 +45,14 @@ for url in "$@"; do
         https://storage.googleapis.com/*)
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
+            out="/var/tmp/$(basename "${url}")"
             curl -sfL --retry 20 -o "${out}" \
                     -H "Authorization: Bearer ${auth_token}" \
                     "${url}" || \
                 error "Download of GCS file from ${url} failed: $?"
             ;;
         ftp://*|http://*|https://*)
-            out="/config/cloud/$(basename "${url}")"
+            out="/var/tmp/$(basename "${url}")"
             info "Downloading ${url} to ${out}"
             curl -sfL --retry 20 -o "${out}" "${url}" || \
                 error "Download of ${url} failed with exit code: $?"
