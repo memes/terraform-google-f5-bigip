@@ -39,7 +39,7 @@ resource "google_compute_address" "int" {
   region       = replace(var.zone, "/-[a-z]$/", "")
 }
 
-module "instance" {
+module "ha" {
   #source              = "https://github.com/memes/f5-google-terraform-modules/modules/big-ip/ha?ref=v1.0.0"
   source                            = "../../"
   project_id                        = var.project_id
@@ -51,12 +51,10 @@ module "instance" {
   external_subnetwork_network_ips   = [for r in google_compute_address.ext : r.address]
   management_subnetwork             = var.management_subnet
   management_subnetwork_network_ips = [for r in google_compute_address.mgt : r.address]
-  internal_subnets                  = [var.internal_subnet]
-  internal_subnetworks_network_ips  = [for r in google_compute_address.int : [r.address]]
+  internal_subnetworks              = [var.internal_subnet]
+  internal_subnetwork_network_ips   = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
-  # Use the management network gateway for default egress
-  default_gateway = "$MGMT_GATEWAY"
 }
