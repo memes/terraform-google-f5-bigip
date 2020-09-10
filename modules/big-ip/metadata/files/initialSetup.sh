@@ -74,7 +74,8 @@ if [ ! -f /config/cloud/gce/adminPasswordChanged ]; then
     ADMIN_PASSWORD="$(get_secret admin_password_key)"
     if [ -n "${ADMIN_PASSWORD}" ]; then
         info "Changing admin password"
-        if tmsh modify auth user admin password "${ADMIN_PASSWORD}"; then
+        # shellcheck disable=SC2086
+        if tmsh modify auth user admin password \'${ADMIN_PASSWORD}\'; then
             touch /config/cloud/gce/adminPasswordChanged
             info "Admin password has been changed"
         else
