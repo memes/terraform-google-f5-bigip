@@ -45,7 +45,7 @@ for url in "$@"; do
         https://storage.googleapis.com/*)
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
-            out="/var/tmp/$(basename "${url}")"
+            out="/var/tmp/$(basename "${url%%?alt=media}")"
             curl -sfL --retry 20 -o "${out}" \
                     -H "Authorization: Bearer ${auth_token}" \
                     "${url}" || \

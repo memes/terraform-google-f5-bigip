@@ -26,6 +26,7 @@ module "metadata" {
   search_domains                    = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", var.zone, var.project_id)])
   do_payloads                       = var.do_payloads
   as3_payloads                      = var.as3_payloads
+  install_cloud_libs                = var.install_cloud_libs
 }
 
 resource "google_compute_instance" "bigip" {

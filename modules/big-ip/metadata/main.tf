@@ -21,7 +21,7 @@ locals {
       search_domains    = var.search_domains,
       timezone          = var.timezone,
       modules           = var.modules,
-      analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:1.2.0,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
+      analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:1.1.0,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
     }
   )])
   custom_script = "${path.module}/files/customConfig.sh"

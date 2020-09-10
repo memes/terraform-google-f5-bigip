@@ -66,7 +66,7 @@ while true; do
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}")" || \
         error "Failed to get status for task ${id}: curl exit code: $?"
-    code="$(echo "${response}" | jq -r '.result.code // "unspecified"')"
+    code="$(echo "${response}" | jq -r 'if .result then .result.code else .code end')"
     case "${code}" in
         200)
                 info "Declarative Onboarding is complete"

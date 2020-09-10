@@ -139,16 +139,15 @@ variable "install_cloud_libs" {
   default = [
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-appsvcs-extension/v3.20.0/f5-appsvcs-3.20.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.14.0/f5-declarative-onboarding-1.14.0-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.4.0/f5-cloud-failover-1.4.0-0.noarch.rpm",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
-Onboarding, and Cloud Failover extensions.
+list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
+Onboarding extensions.
 EOD
 }
 

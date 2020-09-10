@@ -28,7 +28,14 @@ if [ ! -f /config/cloud/gce/network.config ]; then
                 .+ [["NIC_COUNT=\($count)"]] |
                 .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
                 .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
+    # XXX: workaround https://github.com/F5Networks/f5-declarative-onboarding/issues/147
+    # DO cannot fully replace the combination of self-ip/gateway/network routes
+    # needed for GCP, so allow boot-time configuration of allow-service per-nic
     echo "DEFAULT_GATEWAY=\"$(get_instance_attribute default_gateway)\"" >> /config/cloud/gce/network.config
+    for iface in EXT INT0 INT1 INT2 INT3 INT4 INT5; do
+        allow_service="$(get_instance_attribute ${iface}_ALLOW_SERVICE)"
+        [ -n "${allow_service}" ] && echo "${iface}_ALLOW_SERVICE=${allow_service}" >> /config/cloud/gce/network.config
+    done
     chmod 0644 /config/cloud/gce/network.config
 fi
 # The rest of the script will have issues if networking cannot be setup

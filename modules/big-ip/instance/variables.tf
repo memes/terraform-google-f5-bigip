@@ -559,3 +559,20 @@ payloads are not provided. If left empty (default), search domains will be added
 for "google.internal" and the zone/project specific domain assigned to instances.
 EOD
 }
+
+variable "install_cloud_libs" {
+  type = list(string)
+  default = [
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm"
+  ]
+  description = <<EOD
+An optional list of cloud library URLs that will be downloaded and installed on
+the BIG-IP VM during initial boot. The contents of each download will be compared
+to the verifyHash file, and failure will cause the boot scripts to fail. Default
+list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
+Onboarding extensions.
+EOD
+}
