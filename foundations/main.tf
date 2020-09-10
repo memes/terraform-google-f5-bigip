@@ -26,6 +26,13 @@ module "service_accounts" {
   generate_keys = false
 }
 
+locals {
+  # XXX: revisit
+  # Break dependency on service_accounts module; change if the project or prefix
+  # changes
+  bigip_sa_email = "emes-tf-module-bigip@f5-gcs-4138-sales-cloud-sales.iam.gserviceaccount.com"
+}
+
 # Create 8 networks for module testing
 
 # Alpha - allows internet egress if the instance(s) have public IPs
@@ -225,7 +232,7 @@ resource "google_compute_firewall" "bastion_beta" {
     module.bastion.service_account,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "all"
@@ -243,222 +250,234 @@ resource "google_compute_firewall" "ssh_bigip_alpha" {
     "0.0.0.0/0",
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      22
+      "22"
     ]
   }
 }
 
-# Allow CFE between BIG-IP on each network
-resource "google_compute_firewall" "cfe_alpha" {
+# Allow ConfigSync between BIG-IP on each data-plane network
+resource "google_compute_firewall" "sync_alpha" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-alpha"
+  name        = "emes-tf-module-allow-sync-alpha"
   network     = module.alpha.network_self_link
-  description = "CFE for alpha"
+  description = "ConfigSync for alpha"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_beta" {
+
+# Allow ConfigSync between BIG-IP on each management network
+resource "google_compute_firewall" "sync_beta" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-beta"
+  name        = "emes-tf-module-allow-sync-beta"
   network     = module.beta.network_self_link
-  description = "CFE for beta"
+  description = "ConfigSync for beta"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
-    ]
-  }
-  allow {
-    protocol = "udp"
-    ports = [
-      1026
+      "443"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_gamma" {
+
+resource "google_compute_firewall" "sync_gamma" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-gamma"
+  name        = "emes-tf-module-allow-sync-gamma"
   network     = module.gamma.network_self_link
-  description = "CFE for gamma"
+  description = "ConfigSync for gamma"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_delta" {
+resource "google_compute_firewall" "sync_delta" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-delta"
+  name        = "emes-tf-module-allow-sync-delta"
   network     = module.delta.network_self_link
-  description = "CFE for delta"
+  description = "ConfigSync for delta"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_epsilon" {
+resource "google_compute_firewall" "sync_epsilon" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-epsilon"
+  name        = "emes-tf-module-allow-sync-epsilon"
   network     = module.epsilon.network_self_link
-  description = "CFE for epsilon"
+  description = "ConfigSync for epsilon"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_zeta" {
+resource "google_compute_firewall" "sync_zeta" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-zeta"
+  name        = "emes-tf-module-allow-sync-zeta"
   network     = module.zeta.network_self_link
-  description = "CFE for zeta"
+  description = "ConfigSync for zeta"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_eta" {
+resource "google_compute_firewall" "sync_eta" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-eta"
+  name        = "emes-tf-module-allow-sync-eta"
   network     = module.eta.network_self_link
-  description = "CFE for eta"
+  description = "ConfigSync for eta"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
-resource "google_compute_firewall" "cfe_theta" {
+resource "google_compute_firewall" "sync_theta" {
   project     = "f5-gcs-4138-sales-cloud-sales"
-  name        = "emes-tf-module-allow-cfe-theta"
+  name        = "emes-tf-module-allow-sync-theta"
   network     = module.theta.network_self_link
-  description = "CFE for theta"
+  description = "ConfigSync for theta"
   direction   = "INGRESS"
   source_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   target_service_accounts = [
-    module.service_accounts.emails["bigip"],
+    local.bigip_sa_email,
   ]
   allow {
     protocol = "tcp"
     ports = [
-      4353
+      "443",
+      "4353",
+      "6123-6128"
     ]
   }
   allow {
     protocol = "udp"
     ports = [
-      1026
+      "1026"
     ]
   }
 }
 
 # Create a random BIG-IP password for admin
 resource "random_password" "admin_password" {
-  length  = 16
-  special = true
+  length           = 16
+  special          = true
+  override_special = "@#%&*()-_=+[]<>:?"
 }
 
 # Create a slot for BIG-IP admin password in Secret Manager
@@ -478,9 +497,7 @@ resource "google_secret_manager_secret_version" "admin_password" {
 
 # Allow the supplied accounts to read the BIG-IP password from Secret Manager
 resource "google_secret_manager_secret_iam_member" "admin_password" {
-  for_each = toset(formatlist("serviceAccount:%s", [
-    module.service_accounts.emails["bigip"],
-  ]))
+  for_each  = toset(formatlist("serviceAccount:%s", [local.bigip_sa_email]))
   project   = "f5-gcs-4138-sales-cloud-sales"
   secret_id = google_secret_manager_secret.admin_password.secret_id
   role      = "roles/secretmanager.secretAccessor"
