@@ -45,12 +45,4 @@ module "ha" {
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
-  # Use the management network gateway for default egress
-  #default_gateway = "$MGMT_GATEWAY"
-  install_cloud_libs = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
-    "https://storage.googleapis.com/download/storage/v1/b/automation-factory-f5-gcs-4138-sales-cloud-sales/o/rpms%2Ff5-declarative-onboarding%2Ff5-declarative-onboarding-1.15.0-3emes.noarch.rpm?alt=media"
-  ]
 }
