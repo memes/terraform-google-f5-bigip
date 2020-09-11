@@ -21,8 +21,12 @@ EOD
 }
 
 variable "instance_name_template" {
-  type        = string
-  default     = "bigip-%d"
+  type    = string
+  default = "bigip-%d"
+  validation {
+    condition     = can(regex("%[0-9]*(?:\\.[0-9]+)?d", var.instance_name_template))
+    error_message = "The instance_name_template variable must include a valid numeric placeholder '%d' field."
+  }
   description = <<EOD
 A format string that will be used when naming instance, that should include a
 format token for including ordinal number. E.g. 'bigip-%d', such that %d will
@@ -46,6 +50,7 @@ variable "metadata" {
 An optional map of metadata values that will be applied to the instances.
 EOD
 }
+
 variable "labels" {
   type        = map(string)
   default     = {}
@@ -86,7 +91,7 @@ EOD
 variable "service_account" {
   type = string
   validation {
-    condition     = can(regex("(\\.iam|developer)\\.gserviceaccount\\.com$", var.service_account))
+    condition     = can(regex("(?:\\.iam|developer)\\.gserviceaccount\\.com$", var.service_account))
     error_message = "The service_account variable must be a valid GCP service account email address."
   }
   description = <<EOD
@@ -145,7 +150,7 @@ EOD
 variable "image" {
   type = string
   validation {
-    condition     = can(regex("^(https://www.googleapis.com/compute/v1/)?projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/images/[a-z]([a-z0-9-]*[a-z0-9])?", var.image))
+    condition     = can(regex("^(?:https://www.googleapis.com/compute/v1/)?projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/images/[a-z]([a-z0-9-]*[a-z0-9])?", var.image))
     error_message = "The image variable must be a fully-qualified URI."
   }
   description = <<EOD
@@ -165,8 +170,12 @@ EOD
 }
 
 variable "disk_type" {
-  type        = string
-  default     = "pd-ssd"
+  type    = string
+  default = "pd-ssd"
+  validation {
+    condition     = contains(list("pd-ssd", "pd-standard"), var.disk_type)
+    error_message = "The disk_type variable must be 'pd-ssd' or 'pd-standard'."
+  }
   description = <<EOD
 The boot disk type to use with instances; can be 'pd-ssd' (default), or
 'pd-standard'.
@@ -221,16 +230,25 @@ EOD
 }
 
 variable "external_subnetwork_network_ips" {
-  type        = list(string)
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.external_subnetwork_network_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.external_subnetwork_network_ips)
+    error_message = "Each external_subnetwork_network_ips value must be a valid IPv4 address."
+  }
   description = <<EOD
-A required list of IP addresses to assign to BIG-IP instances on their external
+An optional list of IP addresses to assign to BIG-IP instances on their external
 interface.
 EOD
 }
 
 variable "external_subnetwork_vip_cidrs" {
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(distinct([for cidr in var.external_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    error_message = "Each external_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
+  }
   description = <<EOD
 An optional list of VIP CIDRs to assign to the *active* BIG-IP instances on its
 external interface. E.g. to assign two CIDR blocks as VIPs:-
@@ -251,7 +269,7 @@ variable "management_subnetwork" {
   }
   description = <<EOD
 An optional fully-qualified self-link of the subnet that will be used for
-management access (2 or 3 NIC deployment).
+management access (2+ NIC deployment).
 EOD
 }
 
@@ -280,8 +298,12 @@ EOD
 }
 
 variable "management_subnetwork_network_ips" {
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.management_subnetwork_network_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.management_subnetwork_network_ips)
+    error_message = "Each management_subnetwork_network_ips value must be a valid IPv4 address."
+  }
   description = <<EOD
 A list of IP addresses to assign to BIG-IP instances on their management
 interface. Required if there are 2+ NICs defined for instances.
@@ -289,8 +311,12 @@ EOD
 }
 
 variable "management_subnetwork_vip_cidrs" {
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(distinct([for cidr in flatten(var.management_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    error_message = "Each management_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
+  }
   description = <<EOD
 An optional list of CIDRs to assign to *active* BIG-IP instance as VIPs on its
 management interface. E.g. to assign two CIDR blocks as VIPs:-
@@ -344,8 +370,12 @@ EOD
 }
 
 variable "internal_subnetwork_network_ips" {
-  type        = list(list(string))
-  default     = []
+  type    = list(list(string))
+  default = []
+  validation {
+    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_network_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
+    error_message = "Each internal_subnetwork_network_ips value must be a valid IPv4 address."
+  }
   description = <<EOD
 Alist of lists of IP addresses to assign to BIG-IP instances on their internal
 interfaces. Required if the instances have 3+ networks defined.
@@ -369,8 +399,12 @@ EOD
 }
 
 variable "internal_subnetwork_vip_cidrs" {
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(distinct([for cidr in var.internal_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    error_message = "Each internal_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
+  }
   description = <<EOD
 An optional list of CIDRs to assign to *active* BIG-IP instance as VIPs on its
 internal interface. E.g. to assign two CIDR blocks as VIPs:-
@@ -421,7 +455,9 @@ the onboarding script will use the gateway for nic0.
 Default value is '$EXT_GATEWAY' which will match the run-time upstream gateway
 for nic0.
 
-NOTE: this string will be inserted into the boot script as-is; it can
+NOTE: this string will be inserted into the boot script as-is; it can be an IPv4
+address, or a shell variable that is known to exist during network configuration
+script execution.
 EOD
 }
 
@@ -439,7 +475,11 @@ EOD
 }
 
 variable "admin_password_secret_manager_key" {
-  type        = string
+  type = string
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_-]{1,255}$", var.admin_password_secret_manager_key))
+    error_message = "The admin_password_secret_manager_key must be valid."
+  }
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
 BIG-IP admin account's password will be changed to the value retreived from GCP
@@ -448,6 +488,19 @@ Secret Manager using this key.
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
 the secret value associated with this key, then the BIG-IP onboarding will fail
 to complete, and onboarding will require manual intervention.
+EOD
+}
+
+variable "custom_script" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional, custom shell script that will be executed during BIG-IP
+initialisation, after BIG-IP networking is auto-configured, admin password is set from Secret
+Manager (if possible), etc. Declarative Onboarding offers a better approach,
+where suitable (see `do_payload`).
+
+NOTE: this value should contain the script contents, not a file path.
 EOD
 }
 
@@ -541,19 +594,13 @@ EOD
 }
 
 variable "install_cloud_libs" {
-  type = list(string)
-  default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.5.0/f5-cloud-failover-1.5.0-0.noarch.rpm"
-  ]
+  type        = list(string)
+  default     = []
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
-Onboarding, and Cloud Failover extensions.
+list is empty, and BIG-IP will be provisioned using the default libraries in
+instance module.
 EOD
 }

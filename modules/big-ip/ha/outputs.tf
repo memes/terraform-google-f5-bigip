@@ -36,7 +36,6 @@ NICs, if present.
 EOD
 }
 
-
 output "instance_addresses" {
   value       = module.instance.instance_addresses
   description = <<EOD
