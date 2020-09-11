@@ -19,9 +19,9 @@ module "service_accounts" {
   prefix     = "emes-tf-module"
   names      = ["bigip"]
   project_roles = [
-    "${"f5-gcs-4138-sales-cloud-sales"}=>roles/logging.logWriter",
-    "${"f5-gcs-4138-sales-cloud-sales"}=>roles/monitoring.metricWriter",
-    "${"f5-gcs-4138-sales-cloud-sales"}=>roles/monitoring.viewer"
+    "f5-gcs-4138-sales-cloud-sales=>roles/logging.logWriter",
+    "f5-gcs-4138-sales-cloud-sales=>roles/monitoring.metricWriter",
+    "f5-gcs-4138-sales-cloud-sales=>roles/monitoring.viewer"
   ]
   generate_keys = false
 }
