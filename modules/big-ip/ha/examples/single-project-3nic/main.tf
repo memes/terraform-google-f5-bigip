@@ -44,7 +44,7 @@ module "ha" {
   source                            = "../../"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
-  zone                              = var.zone
+  zones                             = [var.zone]
   machine_type                      = "n1-standard-8"
   service_account                   = var.service_account
   external_subnetwork               = var.external_subnet

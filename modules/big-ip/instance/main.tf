@@ -10,7 +10,7 @@ terraform {
 module "metadata" {
   source                            = "./../metadata/"
   num_instances                     = var.num_instances
-  region                            = replace(var.zone, "/-[a-z]$/", "")
+  region                            = replace(element(var.zones, 0), "/-[a-z]$/", "")
   license_type                      = var.license_type
   image                             = var.image
   enable_os_login                   = var.enable_os_login
@@ -22,8 +22,8 @@ module "metadata" {
   default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   use_cloud_init                    = var.use_cloud_init
-  hostname_template                 = format("%s.%s.c.%s.internal", var.instance_name_template, var.zone, var.project_id)
-  search_domains                    = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", var.zone, var.project_id)])
+  hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
+  search_domains                    = coalescelist(var.search_domains, flatten(["google.internal", [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]]))
   do_payloads                       = var.do_payloads
   as3_payloads                      = var.as3_payloads
   install_cloud_libs                = var.install_cloud_libs
@@ -33,7 +33,7 @@ resource "google_compute_instance" "bigip" {
   count    = var.num_instances
   project  = var.project_id
   name     = format(var.instance_name_template, count.index)
-  zone     = var.zone
+  zone     = element(var.zones, count.index)
   labels   = var.labels
   metadata = element(module.metadata.metadata, count.index)
 

@@ -68,7 +68,7 @@ No provider.
 | tags | An optional list of *network tags* to add to the instance template. | `list(string)` | `[]` | no |
 | timezone | The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances. The<br>default is 'UTC'. See the TZ column here<br>(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.<br>For example, 'US/Eastern'. | `string` | `"UTC"` | no |
 | use\_cloud\_init | If this value is set to true, cloud-init will be used as the initial<br>configuration approach; false (default) will fall-back to a standard shell<br>script for boot-time configuration.<br><br>Note: the BIG-IP version must support Cloud Init on GCP for this to function<br>correctly. E.g. v15.1+. | `bool` | `false` | no |
-| zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
+| zones | The compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
 
 ## Outputs
 

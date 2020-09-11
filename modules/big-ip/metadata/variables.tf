@@ -228,13 +228,13 @@ Onboarding will be generated and used.
 EOD
 }
 
-variable "hostname_template" {
-  type        = string
-  default     = ""
+variable "hostnames" {
+  type        = list(string)
+  default     = []
   description = <<EOD
-An optional hostname declaration template used to set per-instance hostname in
-generated DO file. Default is an empty string, which will exclude hostname from
-the generated DO file.
+An optional list of hostname declarations to set per-instance hostname in
+generated DO file. Default is an empty stlistring, which will exclude hostname
+from the generated DO file.
 EOD
 }
 

@@ -15,7 +15,7 @@ locals {
   do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json",
     {
       allow_phone_home  = var.allow_phone_home,
-      hostname          = var.hostname_template != "" ? format(var.hostname_template, i) : ""
+      hostname          = length(var.hostnames) > i ? element(var.hostnames, i) : "",
       ntp_servers       = var.ntp_servers,
       dns_servers       = var.dns_servers,
       search_domains    = var.search_domains,
