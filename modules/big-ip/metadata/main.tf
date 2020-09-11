@@ -24,7 +24,7 @@ locals {
       analytics_metrics = format("cloudName:google,templateName:emes,templateVersion:1.1.0,region:%s,bigipVersion:%s,licenseType:%s", var.region, var.image, var.license_type)
     }
   )])
-  custom_script = "${path.module}/files/customConfig.sh"
+  custom_script = coalesce(var.custom_script, file("${path.module}/files/customConfig.sh"))
   startup = templatefile(var.use_cloud_init ? "${path.module}/templates/cloud_config.yml" : "${path.module}/templates/startup_script.sh",
     {
       setup_utils_sh            = base64gzip(file("${path.module}/files/setupUtils.sh")),
@@ -36,7 +36,7 @@ locals {
       initial_setup_sh          = base64gzip(file("${path.module}/files/initialSetup.sh")),
       application_services3_sh  = base64gzip(file("${path.module}/files/applicationServices3.sh")),
       declarative_onboarding_sh = base64gzip(file("${path.module}/files/declarativeOnboarding.sh")),
-      custom_config_sh          = base64gzip(file(local.custom_script)),
+      custom_config_sh          = base64gzip(local.custom_script),
     }
   )
   cloud_init = {

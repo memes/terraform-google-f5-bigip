@@ -21,6 +21,7 @@ module "metadata" {
   metadata                          = var.metadata
   default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  custom_script                     = var.custom_script
   use_cloud_init                    = var.use_cloud_init
   hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
   search_domains                    = coalescelist(var.search_domains, flatten(["google.internal", [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]]))

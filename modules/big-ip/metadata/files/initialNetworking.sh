@@ -117,6 +117,9 @@ tmsh modify sys dns name-servers add { 169.254.169.254 }
 info "Enabling SELinux on failover scripts"
 tmsh modify sys db failover.selinuxallowscripts value enable
 
+info "Disabling gui-setup"
+tmsh modify sys global-settings gui-setup disabled
+
 info "Saving config"
 tmsh save /sys config
 

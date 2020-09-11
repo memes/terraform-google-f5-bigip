@@ -6,7 +6,6 @@ terraform {
   experiments = [variable_validation]
 }
 
-
 locals {
   hostnames = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
   # Use first internal network addresses for sync group (per published guidelines)
@@ -83,6 +82,7 @@ module "instance" {
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  custom_script                     = var.custom_script
   as3_payloads                      = var.as3_payloads
   do_payloads                       = local.do_payloads
   install_cloud_libs                = var.install_cloud_libs
