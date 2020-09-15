@@ -8,8 +8,8 @@
     "class": "Tenant",
     "system": {
       "class": "System",
-%{if length(hostname) > 0 ~}
-      "hostname": "${hostname}",
+%{ if length(hostname) > 0 ~}
+      "hostname": "${format("%.64s", hostname)}",
 %{ endif ~}
       "autoPhonehome": ${jsonencode(allow_phone_home)}
     },
