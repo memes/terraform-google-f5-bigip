@@ -1,0 +1,15 @@
+{
+    "class": "Cloud_Failover",
+    "environment": "gcp",
+    "externalStorage": {
+        "scopingTags": {
+            ${jsonencode(cfe_label_key)}: ${jsonencode(cfe_label_value)}
+        }
+    },
+    "failoverAddresses": {
+        "scopingTags": {
+            ${jsonencode(cfe_label_key)}: ${jsonencode(cfe_label_value)}
+        }
+    }
+
+}
