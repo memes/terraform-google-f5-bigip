@@ -6,10 +6,11 @@ terraform {
   experiments = [variable_validation]
 }
 
-# Base metadata, common to all instances
+# Generate metadata for each instance
 module "metadata" {
   source                            = "./../metadata/"
-  region                            = replace(var.zone, "/-[a-z]$/", "")
+  num_instances                     = var.num_instances
+  region                            = replace(element(var.zones, 0), "/-[a-z]$/", "")
   license_type                      = var.license_type
   image                             = var.image
   enable_os_login                   = var.enable_os_login
@@ -20,21 +21,22 @@ module "metadata" {
   metadata                          = var.metadata
   default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  custom_script                     = var.custom_script
   use_cloud_init                    = var.use_cloud_init
-  as3_payload                       = ""
-  do_payload                        = ""
+  hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
+  search_domains                    = coalescelist(var.search_domains, flatten(["google.internal", [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]]))
+  do_payloads                       = var.do_payloads
+  as3_payloads                      = var.as3_payloads
+  install_cloud_libs                = var.install_cloud_libs
 }
 
 resource "google_compute_instance" "bigip" {
-  count   = var.num_instances
-  project = var.project_id
-  name    = format(var.instance_name_template, count.index)
-  zone    = var.zone
-  labels  = var.labels
-  metadata = merge(module.metadata.metadata,
-    length(var.as3_payloads) > count.index ? { as3_payload = element(var.as3_payloads, count.index) } : {},
-    length(var.do_payloads) > count.index ? { do_payload = element(var.do_payloads, count.index) } : {},
-  )
+  count    = var.num_instances
+  project  = var.project_id
+  name     = format(var.instance_name_template, count.index)
+  zone     = element(var.zones, count.index)
+  labels   = var.labels
+  metadata = element(module.metadata.metadata, count.index)
 
   # Scheduling options
   min_cpu_platform = var.min_cpu_platform

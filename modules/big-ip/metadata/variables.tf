@@ -139,16 +139,15 @@ variable "install_cloud_libs" {
   default = [
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-appsvcs-extension/v3.20.0/f5-appsvcs-3.20.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.14.0/f5-declarative-onboarding-1.14.0-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.4.0/f5-cloud-failover-1.4.0-0.noarch.rpm",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
-Onboarding, and Cloud Failover extensions.
+list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
+Onboarding extensions.
 EOD
 }
 
@@ -207,23 +206,60 @@ NOTE: this value should contain the script contents, not a file path.
 EOD
 }
 
-variable "as3_payload" {
-  type        = string
-  default     = ""
+variable "as3_payloads" {
+  type        = list(string)
+  default     = []
   description = <<EOD
-An optional, but recommended, AS3 JSON that can be used to setup the BIG-IP
-instance. If left blank (default), a minimal AS3 declaration will be generated
-and used that creates a simple HTTP application that can be used for GCP health
-checks.
+An optional, but recommended, list of AS3 JSON declarations that can be used to
+setup the BIG-IP instances. If left empty (default), a no-op AS3 declaration
+will be generated for each instance.
+
+The l
 EOD
 }
 
-variable "do_payload" {
-  type        = string
-  default     = ""
+variable "do_payloads" {
+  type        = list(string)
+  default     = []
   description = <<EOD
-An optional, but recommended, Declarative Onboarding JSON that can be used to
+An optional, but recommended, list of Declarative Onboarding JSON that can be used to
 setup the BIG-IP instance. If left blank (default), a minimal Declarative
 Onboarding will be generated and used.
+EOD
+}
+
+variable "hostnames" {
+  type        = list(string)
+  default     = []
+  description = <<EOD
+An optional list of hostname declarations to set per-instance hostname in
+generated DO file. Default is an empty stlistring, which will exclude hostname
+from the generated DO file.
+EOD
+}
+
+variable "dns_servers" {
+  type        = list(string)
+  default     = ["169.254.169.254"]
+  description = <<EOD
+An optonal list of DNS servers for BIG-IP instances to use. The default is
+["169.254.169.254"] to use GCE metadata server.
+EOD
+}
+
+variable "search_domains" {
+  type        = list(string)
+  default     = ["google.internal"]
+  description = <<EOD
+An optonal list of DNS search domains for BIG-IP instances to use. The default
+is ["google.internal"].
+EOD
+}
+
+variable "num_instances" {
+  type        = number
+  default     = 1
+  description = <<EOD
+The number of BIG-IP metatdata sets to provision. Default value is 1.
 EOD
 }

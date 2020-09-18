@@ -7,37 +7,43 @@ terraform {
 }
 
 locals {
+  hostnames = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
   # Use first internal network addresses for sync group (per published guidelines)
   # if there is at least one internal subnet defined. Fallback to external (nic0)
   sync_group_addresses = length(var.internal_subnetworks) > 0 ? [for i in range(0, var.num_instances) : element(element(var.internal_subnetwork_network_ips, i), 0)] : var.external_subnetwork_network_ips
-  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : base64gzip(templatefile("${path.module}/templates/do.json", {
+  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json", {
+    hostname         = element(local.hostnames, i)
     allow_phone_home = var.allow_phone_home
-    ntp_servers      = ["169.254.169.254"]
-    timezone         = "UTC"
-    modules = {
-      "ltm" : "nominal"
-    }
+    dns_servers      = var.dns_servers
+    search_domains   = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", element(var.zones, i), var.project_id)])
+    ntp_servers      = var.ntp_servers
+    timezone         = var.timezone
+    modules          = var.modules
+    # Self-ip and VLAN name must match the self-ip declared in initialNetworking.sh
     sync_address           = element(local.sync_group_addresses, i)
-    failover_address       = element(local.sync_group_addresses, i)
     failover_group_members = local.sync_group_addresses
     auto_sync              = true
     save_on_auto_sync      = false
     network_failover       = true
     fullload_on_sync       = false
     asm_sync               = false
-    # All instances trust primary, except primary which has to trust first secondary
-    trust_ordinal = i == 0 ? 1 : 0
-  }))])
+  })])
+  allow_service_default_ext = length(var.internal_subnetworks) > 0 ? {} : {
+    EXT_ALLOW_SERVICE = "default"
+  }
+  allow_service_default_int = length(var.internal_subnetworks) > 0 ? {
+    INT0_ALLOW_SERVICE = "default"
+  } : {}
 }
 
 module "instance" {
   source                          = "./../instance/"
   project_id                      = var.project_id
-  zone                            = var.zone
+  zones                           = var.zones
   num_instances                   = var.num_instances
   instance_name_template          = var.instance_name_template
   description                     = var.description
-  metadata                        = var.metadata
+  metadata                        = merge(var.metadata, local.allow_service_default_ext, local.allow_service_default_int)
   labels                          = var.labels
   tags                            = var.tags
   min_cpu_platform                = var.min_cpu_platform
@@ -76,6 +82,8 @@ module "instance" {
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  custom_script                     = var.custom_script
   as3_payloads                      = var.as3_payloads
   do_payloads                       = local.do_payloads
+  install_cloud_libs                = var.install_cloud_libs
 }

@@ -18,7 +18,7 @@ variables), promoting consistency and reuse.
    * [x] Specify default gateway for
    * [x] [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/) support
    * [x] [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/) support
-2. [ ] [HA](modules/big-ip/ha/) BIG-IP instances
+2. [x] [HA](modules/big-ip/ha/) BIG-IP instances
    * [ ] [CFE](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/) Cloud Failover Extension support
 3. [ ] Autoscaling
 4. [ ] WAF

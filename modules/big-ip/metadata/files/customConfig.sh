@@ -24,8 +24,5 @@ wait_bigip_ready
 
 # Custom steps should be added here, but use of Declarative Onboarding and AS3
 # are a preferred solution to custom scripting.
-info "Disabling gui-setup"
-tmsh modify sys global-settings gui-setup disabled
-tmsh save /sys config
 
 info "Custom configuration is complete"

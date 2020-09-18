@@ -31,7 +31,7 @@ while [ ${retry} -lt 10 ]; do
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/info" && break
-    info "Check for DO installation failed, sleeping before retest: exit code $?"
+    info "Check for DO installation failed, sleeping before retest: curl exit code $?"
     sleep 5
     retry=$((retry+1))
 done
@@ -39,28 +39,34 @@ done
     error "Declarative Onboarding extension is not installed"
 
 # Extracting payload to file to avoid any escaping or interpolation issues
-tmp="$(mktemp -p /config/cloud/gce)"
-extract_payload "${tmp}" "${1}" || \
+raw="$(mktemp -p /var/tmp)"
+extract_payload "${1}" > "${raw}" || \
     error "Unable to extract encoded payload: $?"
+# Execute the raw JSON as a jq file; allows environment substitutions to embed
+# Admin password, for example, at run-time.
+payload="$(mktemp -p /var/tmp)"
+ADMIN_PASSWORD="${ADMIN_PASSWORD}" jq -nrf "${raw}" > "${payload}" || \
+    error "Unable to process raw file as JSON: $?"
+rm -f "${raw}" || info "Unable to delete ${raw}"
 
 info "Applying Declarative Onboarding payload"
 # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
 # https://github.com/F5Networks/f5-declarative-onboarding/issues/79
-id="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-        -d @- \
+        -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.id')" || \
-    error "Error applying Declarative Onboarding payload from ${tmp}"
-rm -f "${tmp}" || info "Unable to delete ${tmp}"
+    error "Error applying Declarative Onboarding payload from ${payload}: curl exit code $?"
+rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
                 -H "Content-Type: application/json;charset=UTF-8" \
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}")" || \
-        error "Failed to get status for task ${id} with exit code: $?"
-    code="$(echo "${response}" | jq -r '.result.code // "unspecified"')"
+        error "Failed to get status for task ${id}: curl exit code: $?"
+    code="$(echo "${response}" | jq -r 'if .result then .result.code else .code end')"
     case "${code}" in
         200)
                 info "Declarative Onboarding is complete"
@@ -76,6 +82,6 @@ while true; do
                 info "Declarative Onboarding has code ${code}: ${response}"
                 ;;
     esac
-    info "Sleeping before reexamining Declarative Onboarding tasks"
+    info "Sleeping before rechecking Declarative Onboarding tasks"
     sleep 5
 done

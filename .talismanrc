@@ -2,14 +2,26 @@ fileignoreconfig:
 - filename: modules/big-ip/metadata/files/verifyHash
   checksum: 350a1112c678f2c6c9434791c20961471d1c784d473e6d5b3e2b7d615e133935
 - filename: modules/big-ip/metadata/files/declarativeOnboarding.sh
-  checksum: 5774496051223bc1a41ea9864b0bc982f0db357627c810738a9580266e8765c9
+  checksum: 9e3238f13217ae5a4754adc06956d6b516173734e62c3f1aa034a79fcf0972cf
 - filename: modules/big-ip/metadata/files/initialSetup.sh
-  checksum: a67939bd7e3b7331383d995bd8459b848128e5b666bea27c9c9ff7a3d8a535d1
+  checksum: 9b741f27a28b2935da29303a1a4f0ee4313334a7627b88e9223d3feedf0b7077
 - filename: modules/big-ip/metadata/files/installCloudLibs.sh
   checksum: d1000987a14e9d8d491202fcf87c4341e110e698a90b7255f79985ad972b776a
 - filename: modules/big-ip/metadata/files/applicationServices3.sh
-  checksum: 18e351cd948a7676bf2cd13094ba75ac42251178d5755df44b95e21c0cea6949
+  checksum: b3e1a69cf76a5730e6eb8ca1de6cf4fe1b4c1ffeaa894df2eb4db71429468ba8
 - filename: modules/big-ip/ha/templates/do.json
   checksum: 4878f47c6626affe5577dbb8e7639543fbb69fc8d09d34b33869aca2c9943cb1
 - filename: .github/workflows/pre-commit.yml
   checksum: 71fea73f97b2882cc899f729b9e9c2b79cd5a199aecdb9a28794e64d4fda859e
+- filename: modules/big-ip/instance/README.md
+  checksum: 7cc374e7edb7f98530d6f9818820a1549ae20d8c6a9d33bd84e5d16ebc5fb0a0
+- filename: modules/big-ip/ha/README.md
+  checksum: 7395be8cbccffa49105fed677227f125ca0631d9bdc17f9f93084ae6eb5b9a37
+- filename: modules/big-ip/cfe/README.md
+  checksum: ef06939edac22a49742f6d126f0ce4592ec03cb548224d2ad78bd8a6aaba4b0c
+- filename: modules/big-ip/cfe/main.tf
+  checksum: a3ec435e68eb52f7f43b5694bc6a1d238c86e11d5aab6c92c61459a4daa2199d
+- filename: modules/big-ip/cfe/templates/cfe.json
+  checksum: cc3d6ca42066a846a7585bebdc0490c41e1cb996367018ca7461b82725548053
+- filename: modules/big-ip/cfe/files/cloudFailoverExtension.sh
+  checksum: 0db34f831d6bb25db19ed2b206c3499766cc4d713e7fe8c611970c556a024251

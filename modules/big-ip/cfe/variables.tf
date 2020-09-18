@@ -14,9 +14,9 @@ EOD
 
 variable "num_instances" {
   type        = number
-  default     = 1
+  default     = 2
   description = <<EOD
-The number of standalone BIG-IP instances to provision. Default value is 1.
+The number of BIG-IP instances to provision in CFE HA cluster. Default value is 2.
 EOD
 }
 
@@ -238,31 +238,24 @@ variable "external_subnetwork_network_ips" {
   }
   description = <<EOD
 An optional list of IP addresses to assign to BIG-IP instances on their external
-interface. The list may be empty, or contain empty strings, to selectively
-applies addresses to instances.
+interface.
 EOD
 }
 
 variable "external_subnetwork_vip_cidrs" {
-  type    = list(list(string))
+  type    = list(string)
   default = []
   validation {
-    condition     = length(distinct([for cidr in flatten(var.external_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    condition     = length(distinct([for cidr in var.external_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
     error_message = "Each external_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
   }
   description = <<EOD
-An optional list of VIP CIDR lists to assign to BIG-IP instances on their
-external interface. E.g. to assign two CIDR blocks as VIPs on the first instance,
-and a single IP address as a VIP on the second instance:-
+An optional list of VIP CIDRs to assign to the *active* BIG-IP instances on its
+external interface. E.g. to assign two CIDR blocks as VIPs:-
 
 external_subnetwork_vip_cidrs = [
-  [
-    "10.1.0.0/16",
-    "10.2.0.0/24",
-  ],
-  [
-    "192.168.0.1/32",
-  ]
+  "10.1.0.0/16",
+  "10.2.0.0/24",
 ]
 EOD
 }
@@ -312,32 +305,25 @@ variable "management_subnetwork_network_ips" {
     error_message = "Each management_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of IP addresses to assign to BIG-IP instances on their
-management interface. The list may be empty, or contain empty strings, to
-selectively applies addresses to instances.
+A list of IP addresses to assign to BIG-IP instances on their management
+interface. Required if there are 2+ NICs defined for instances.
 EOD
 }
 
 variable "management_subnetwork_vip_cidrs" {
-  type    = list(list(string))
+  type    = list(string)
   default = []
   validation {
-    condition     = length(distinct([for cidr in flatten(var.management_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    condition     = length(distinct([for cidr in var.management_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
     error_message = "Each management_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
   }
   description = <<EOD
-An optional list of CIDR lists to assign to BIG-IP instances as VIPs on their
-management interface. E.g. to assign two CIDR blocks as VIPs on the first
-instance, and a single IP address as an alias on the second instance:-
+An optional list of CIDRs to assign to *active* BIG-IP instance as VIPs on its
+management interface. E.g. to assign two CIDR blocks as VIPs:-
 
-external_subnetwork_vip_cidrs = [
-  [
-    "10.1.0.0/16",
-    "10.2.0.0/24",
-  ],
-  [
-    "192.168.0.1/32",
-  ]
+management_subnetwork_vip_cidrs = [
+  "10.1.0.0/16",
+  "10.2.0.0/24",
 ]
 EOD
 }
@@ -387,14 +373,15 @@ variable "internal_subnetwork_network_ips" {
   type    = list(list(string))
   default = []
   validation {
-    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_network_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
+    condition     = length(distinct([for ip in compact(flatten(var.internal_subnetwork_network_ips)) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
     error_message = "Each internal_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of lists of IP addresses to assign to BIG-IP instances on their
-internal interface. The list may be empty, or contain empty strings, to
-selectively applies addresses to instances. E.g. to assign addresses to two
-internal networks:-
+Alist of lists of IP addresses to assign to BIG-IP instances on their internal
+interfaces. Required if the instances have 3+ networks defined.
+
+E.g. to assign addresses to two internal networks:-
+
 internal_subnetwork_network_ips = [
   # Will be assigned to first instance
   [
@@ -403,7 +390,8 @@ internal_subnetwork_network_ips = [
   ],
   # Will be assigned to second instance
   [
-    ...
+    "10.0.0.5",
+    "10.0.1.5",
   ],
   ...
 ]
@@ -411,27 +399,19 @@ EOD
 }
 
 variable "internal_subnetwork_vip_cidrs" {
-  type    = list(list(string))
+  type    = list(string)
   default = []
   validation {
-    condition     = length(distinct([for cidr in flatten(var.internal_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
+    condition     = length(distinct([for cidr in var.internal_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
     error_message = "Each internal_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
   }
   description = <<EOD
-An optional list of CIDR lists to assign to BIG-IP instances as VIPs on their
-internal interface. E.g. to assign two CIDR blocks as VIPs on the first
-instance, and a single IP address as a VIP on the second instance:-
+An optional list of CIDRs to assign to *active* BIG-IP instance as VIPs on its
+internal interface. E.g. to assign two CIDR blocks as VIPs:-
 
 internal_subnetwork_vip_cidrs = [
-  # Will be assigned to first instance
-  [
-    "10.1.0.0/16", # first internal nic
-    "10.2.0.0/24", # second internal nic
-  ],
-  # Will be assigned to second instance
-  [
-    "192.168.0.1/32", # first internal nic
-  ]
+  "10.1.0.0/16",
+  "10.2.0.0/24",
 ]
 EOD
 }
@@ -511,19 +491,6 @@ to complete, and onboarding will require manual intervention.
 EOD
 }
 
-variable "custom_script" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional, custom shell script that will be executed during BIG-IP
-initialisation, after BIG-IP networking is auto-configured, admin password is set from Secret
-Manager (if possible), etc. Declarative Onboarding offers a better approach,
-where suitable (see `do_payload`).
-
-NOTE: this value should contain the script contents, not a file path.
-EOD
-}
-
 variable "as3_payloads" {
   type        = list(string)
   default     = []
@@ -538,13 +505,14 @@ variable "do_payloads" {
   type        = list(string)
   default     = []
   description = <<EOD
-The Declarative Onboarding contents to apply to the instances. Required. This
+The Declarative Onboarding contents to apply to the instances. This
 module has migrated to use of Declarative Onboarding for module activation,
-licensing, NTP, DNS, and other basic configurations. Sample payloads are in the
-examples folder.
+licensing, NTP, DNS, and other
+basic configurations. Sample payloads are in the examples folder.
 
 Note: if left empty, the module will use a simple JSON that sets NTP and DNS,
-and enables LTM.
+and enables LTM module, and configures a sync-group with active-standby failover
+among the instances.
 EOD
 }
 
@@ -552,8 +520,8 @@ variable "ntp_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of NTP servers for BIG-IP instances to use if custom DO files
-are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
+An optonal list of NTP servers for BIG-IP instances to use. The default is
+["169.254.169.254"] to use GCE metadata server.
 EOD
 }
 
@@ -561,8 +529,8 @@ variable "timezone" {
   type        = string
   default     = "UTC"
   description = <<EOD
-The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances if custom
-DO files are not provided. The default is 'UTC'. See the TZ column here
+The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances. The
+default is 'UTC'. See the TZ column here
 (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.
 For example, 'US/Eastern'.
 EOD
@@ -575,10 +543,10 @@ variable "modules" {
   }
   description = <<EOD
 A map of BIG-IP module = provisioning-level pairs to enable, where the module
-name is key, and the provisioning-level is the value. This value is used with the
+name is key, and the provisioing-level is the value. This value is used with the
 default Declaration Onboarding template; a better option for full control is to
 explicitly declare the modules to be provisioned as part of a custom JSON file.
-See `do_payloads`.
+See `do_payload`.
 
 E.g. the default is
 modules = {
@@ -597,7 +565,7 @@ variable "dns_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of DNS servers for BIG-IP instances to use if custom DO payloads
+An optonal list of DNS servers for BIG-IP instances to use, if explicit DO files
 are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
 EOD
 }
@@ -606,8 +574,8 @@ variable "search_domains" {
   type        = list(string)
   default     = []
   description = <<EOD
-An optonal list of DNS search domains for BIG-IP instances to use if custom DO
-payloads are not provided. If left empty (default), search domains will be added
+An optonal list of DNS search domains for BIG-IP instances to use, if explicit
+DO files are not provided. If left empty (default), search domains will be added
 for "google.internal" and the zone/project specific domain assigned to instances.
 EOD
 }
@@ -618,13 +586,44 @@ variable "install_cloud_libs" {
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
     "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
     "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm"
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.5.0/f5-cloud-failover-1.5.0-0.noarch.rpm"
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
-Onboarding extensions.
+list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
+Onboarding, and Cloud Failover extensions.
+EOD
+}
+
+variable "cfe_label_key" {
+  type        = string
+  default     = "f5_cloud_failover_label"
+  description = <<EOD
+The CFE label key to assign to resources that are going to be managed by CFE.
+Default value is 'f5_cloud_failover_label'.
+EOD
+}
+
+variable "cfe_label_value" {
+  type        = string
+  description = <<EOD
+The CFE label value to assign to resources that are going to be managed by this
+BIG-IP deployment. This value must uniquely identify a resource set and is a
+required configuration value.
+EOD
+}
+
+variable "cfe_payload" {
+  type        = string
+  default     = ""
+  description = <<EOD
+The CFE payload contents to apply to the instances; default is an empty string.
+
+Note: if left empty, the module will use a simple JSON that sets the CFE scoping
+label pair on storage, and failover addresses, but nothing more. You will need to
+override and provide the correct CFE payload for your environment.
 EOD
 }

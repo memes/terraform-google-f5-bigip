@@ -32,36 +32,42 @@ while [ ${retry} -lt 10 ]; do
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/info" && break
-    info "Check for AS3 installation failed, sleeping before retest: exit code $?"
+    info "Check for AS3 installation failed, sleeping before retest: curl exit code $?"
     sleep 5
     retry=$((retry+1))
 done
 [ ${retry} -ge 10 ] && \
     error "AS3 extension is not installed"
 
-# Extracting payload
-tmp="$(mktemp -p /config/cloud/gce)"
-extract_payload "${tmp}" "${1}" || \
+# Extracting payload to file to avoid any escaping or interpolation issues
+raw="$(mktemp -p /var/tmp)"
+extract_payload "${1}" > "${raw}" || \
     error "Unable to extract encoded payload: $?"
+# Execute the raw JSON as a jq file; allows environment substitutions to embed
+# Admin password, for example, at run-time. NOTE: for future use.
+payload="$(mktemp -p /var/tmp)"
+jq -nrf "${raw}" > "${payload}" || \
+    error "Unable to process raw file as JSON: $?"
+rm -f "${raw}" || info "Unable to delete ${raw}"
 
 info "Applying AS3 payload"
-response="$(jq -nrf "${tmp}" | curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json;charset=UTF-8" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-        -d @- \
+        -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/declare?async=true")" || \
-    error "Error applying AS3 payload from ${tmp}"
+    error "Error applying AS3 payload from ${payload}"
 id="$(echo "${response}" | jq -r '.id // ""')"
 [ -n "${id}" ] || \
     error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message')"
-rm -f "${tmp}" || info "Unable to delete ${tmp}"
+rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
                 -H "Content-Type: application/json;charset=UTF-8" \
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/task/${id}")" || \
-        error "Failed to get status for task ${id} with exit code: $?"
+        error "Failed to get status for task ${id}: curl exit code: $?"
     code="$(echo "${response}" | jq -r '.results[0].code // "unspecified"')"
     case "${code}" in
         0)
@@ -79,7 +85,7 @@ while true; do
                 info "AS3 has code ${code}: ${response}"
                 ;;
     esac
-    info "Sleeping before reexamining AS3 tasks"
+    info "Sleeping before rechecking AS3 tasks"
     sleep 5
 done
 exit 0

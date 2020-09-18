@@ -1,6 +1,6 @@
-output "instance_self_link" {
+output "instance_self_links" {
   description = <<EOD
-Self-link of the BIG-IP instance.
+Self-link of the BIG-IP instances.
 EOD
-  value       = element(module.instance.self_links, 0)
+  value       = module.ha.self_links
 }
