@@ -46,6 +46,7 @@ for url in "$@"; do
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
             out="/var/tmp/$(basename "${url%%?alt=media}")"
+            info "Downloading ${url} to ${out}"
             curl -sfL --retry 20 -o "${out}" \
                     -H "Authorization: Bearer ${auth_token}" \
                     "${url}" || \
