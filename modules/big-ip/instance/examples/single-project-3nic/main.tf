@@ -10,7 +10,7 @@ terraform {
 }
 
 module "instance" {
-  #source              = "https://github.com/memes/f5-google-terraform-modules/modules/big-ip/instance?ref=v1.0.0"
+  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/instance?ref=v1.0.0"
   source                = "../../"
   project_id            = var.project_id
   zones                 = [var.zone]

@@ -29,3 +29,7 @@ fileignoreconfig:
   checksum: 97024310b64f9e6f08a303ccde837a3815fc5f21099a04be10bdc6036f170d05
 - filename: modules/big-ip/metadata/README.md
   checksum: 2d33509e132ab8b4754c811892d9d1a6349334ccd87f3cafc9497027f1ec9e70
+- filename: modules/big-ip/cfe/examples/single-project-2nic/main.tf
+  checksum: 290742ecf62a5959de43ff2d1d10b3281a6de1d2631d46fbfda809dac91ad635
+- filename: modules/big-ip/cfe/examples/single-project-3nic/main.tf
+  checksum: bb0c52a41e7f5a002d3676f9f90404cf549a02490a7f69b9cac64bc9cff89cd1
