@@ -52,7 +52,7 @@ variable "ntp_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of NTP servers for BIG-IP instances to use. The default is
+An optional list of NTP servers for BIG-IP instances to use. The default is
 ["169.254.169.254"] to use GCE metadata server.
 EOD
 }
@@ -75,7 +75,7 @@ variable "modules" {
   }
   description = <<EOD
 A map of BIG-IP module = provisioning-level pairs to enable, where the module
-name is key, and the provisioing-level is the value. This value is used with the
+name is key, and the provisioning-level is the value. This value is used with the
 default Declaration Onboarding template; a better option for full control is to
 explicitly declare the modules to be provisioned as part of a custom JSON file.
 See `do_payload`.
@@ -184,7 +184,7 @@ variable "admin_password_secret_manager_key" {
   type        = string
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
-BIG-IP admin account's password will be changed to the value retreived from GCP
+BIG-IP admin account's password will be changed to the value retrieved from GCP
 Secret Manager using this key.
 
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
@@ -233,7 +233,7 @@ variable "hostnames" {
   default     = []
   description = <<EOD
 An optional list of hostname declarations to set per-instance hostname in
-generated DO file. Default is an empty stlistring, which will exclude hostname
+generated DO file. Default is an empty list, which will exclude hostname
 from the generated DO file.
 EOD
 }
@@ -242,7 +242,7 @@ variable "dns_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of DNS servers for BIG-IP instances to use. The default is
+An optional list of DNS servers for BIG-IP instances to use. The default is
 ["169.254.169.254"] to use GCE metadata server.
 EOD
 }
@@ -251,7 +251,7 @@ variable "search_domains" {
   type        = list(string)
   default     = ["google.internal"]
   description = <<EOD
-An optonal list of DNS search domains for BIG-IP instances to use. The default
+An optional list of DNS search domains for BIG-IP instances to use. The default
 is ["google.internal"].
 EOD
 }
@@ -260,6 +260,6 @@ variable "num_instances" {
   type        = number
   default     = 1
   description = <<EOD
-The number of BIG-IP metatdata sets to provision. Default value is 1.
+The number of BIG-IP metadata sets to provision. Default value is 1.
 EOD
 }

@@ -16,7 +16,7 @@ EOD
 output "external_vips" {
   value       = flatten([for vm in google_compute_instance.bigip : [for alias in vm.network_interface[0].alias_ip_range : alias.ip_cidr_range]])
   description = <<EOD
-A list of IP CIDRs asssigned to instances on the external NIC, which usually
+A list of IP CIDRs assigned to instances on the external NIC, which usually
 corresponds to the VIPs defined on each instance.
 EOD
 }

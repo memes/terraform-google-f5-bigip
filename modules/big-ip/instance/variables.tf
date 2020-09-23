@@ -73,7 +73,7 @@ variable "min_cpu_platform" {
   description = <<EOD
 An optional constraint used when scheduling the BIG-IP VMs; this value prevents
 the VMs from being scheduled on hardware that doesn't meet the minimum CPU
-microarchitecture. Default value is 'Intel Skylake'.
+micro-architecture. Default value is 'Intel Skylake'.
 EOD
 }
 
@@ -82,7 +82,7 @@ variable "machine_type" {
   default     = "n1-standard-4"
   description = <<EOD
 The machine type to use for BIG-IP VMs; this may be a standard GCE machine type,
-or a customised VM ('custom-VPCUS-MEM_IN_MB'). Default value is 'n1-standard-4'.
+or a customised VM ('custom-VCPUS-MEM_IN_MB'). Default value is 'n1-standard-4'.
 *Note:* machine_type is highly-correlated with network bandwidth and performance;
 an N2 or N2D machine type will give better performance but has limited availability.
 EOD
@@ -113,7 +113,7 @@ variable "preemptible" {
   default     = false
   description = <<EOD
 If set to true, the BIG-IP instances will be deployed on preemptible VMs, which
-could be terminated at any time, and have a maximum lifetimne of 24 hours. Default
+could be terminated at any time, and have a maximum lifetime of 24 hours. Default
 value is false.
 EOD
 }
@@ -211,7 +211,7 @@ variable "provision_external_public_ip" {
   description = <<EOD
 If this flag is set to true (default), a publicly routable IP address WILL be
 assigned to the external interface of instances. If set to false, the BIG-IP
-instances will NOT have a public IP address assigned to the extenral interface.
+instances will NOT have a public IP address assigned to the external interface.
 EOD
 }
 
@@ -355,7 +355,7 @@ variable "internal_subnetworks" {
   }
   description = <<EOD
 An optional list of fully-qualified subnet self-links that will be assigned as
-internal traffoc on NICs eth[2-8].
+internal traffic on NICs eth[2-8].
 EOD
 }
 
@@ -502,7 +502,7 @@ variable "admin_password_secret_manager_key" {
   }
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
-BIG-IP admin account's password will be changed to the value retreived from GCP
+BIG-IP admin account's password will be changed to the value retrieved from GCP
 Secret Manager using this key.
 
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
@@ -552,7 +552,7 @@ variable "ntp_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of NTP servers for BIG-IP instances to use if custom DO files
+An optional list of NTP servers for BIG-IP instances to use if custom DO files
 are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
 EOD
 }
@@ -597,7 +597,7 @@ variable "dns_servers" {
   type        = list(string)
   default     = ["169.254.169.254"]
   description = <<EOD
-An optonal list of DNS servers for BIG-IP instances to use if custom DO payloads
+An optional list of DNS servers for BIG-IP instances to use if custom DO payloads
 are not provided. The default is ["169.254.169.254"] to use GCE metadata server.
 EOD
 }
@@ -606,7 +606,7 @@ variable "search_domains" {
   type        = list(string)
   default     = []
   description = <<EOD
-An optonal list of DNS search domains for BIG-IP instances to use if custom DO
+An optional list of DNS search domains for BIG-IP instances to use if custom DO
 payloads are not provided. If left empty (default), search domains will be added
 for "google.internal" and the zone/project specific domain assigned to instances.
 EOD

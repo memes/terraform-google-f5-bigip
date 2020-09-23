@@ -16,7 +16,7 @@ EOD
 output "external_vips" {
   value       = module.ha.external_vips
   description = <<EOD
-A list of IP CIDRs asssigned to the active instance on its external NIC.
+A list of IP CIDRs assigned to the active instance on its external NIC.
 EOD
 }
 
