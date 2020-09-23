@@ -1,4 +1,4 @@
-# HA ConfigSync firewall sub-module
+# CFE ConfigSync firewall sub-module
 
 This Terraform module is a helper to create a pair of firewall rules that allow
 BIG-IP to BIG-IP instance ConfigSync traffic on data-plane and control-plane
@@ -16,9 +16,7 @@ networks.
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| google | >= 3.19 |
+No provider.
 
 ## Inputs
 

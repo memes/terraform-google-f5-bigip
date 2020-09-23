@@ -14,7 +14,7 @@ EOD
 variable "target_id" {
   type        = string
   description = <<EOD
-Sets the target for role creation; must be either an orgnization ID (target_type = 'org'),
+Sets the target for role creation; must be either an organization ID (target_type = 'org'),
 or project ID (target_type = 'project').
 EOD
 }
@@ -28,7 +28,7 @@ variable "id" {
   }
   description = <<EOD
 An identifier to use for the new role; default is 'bigip_cfe'. This id must
-be unique at the orgnization or project level depending on value of target_type
+be unique at the organization or project level depending on value of target_type
 respectively. E.g. multiple projects can all have a 'bigip_cfe' role defined,
 but an organization level role must be uniquely named.
 EOD
@@ -42,7 +42,7 @@ variable "title" {
     error_message = "The title variable must be empty, or up to 100 characters long."
   }
   description = <<EOD
-The human-readible title to assign to the custom CFE role. Default is 'Custom BIG-IP CFE role'.
+The human-readable title to assign to the custom CFE role. Default is 'Custom BIG-IP CFE role'.
 EOD
 }
 
