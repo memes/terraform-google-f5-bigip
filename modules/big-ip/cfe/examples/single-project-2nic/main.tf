@@ -9,11 +9,29 @@ terraform {
   required_version = "~> 0.12"
 }
 
+# Create a custom CFE role for BIG-IP service account
+module "cfe_role" {
+  #source      = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/cfe/role?ref=v1.1.0"
+  source      = "../../role/"
+  target_type = "project"
+  target_id   = var.project_id
+  members     = [format("serviceAccount:%s", var.service_account)]
+}
+
 # Reserve IPs on external subnet for BIG-IP nic0s
 resource "google_compute_address" "ext" {
   count        = var.num_instances
   project      = var.project_id
   name         = format("bigip-ext-%d", count.index)
+  subnetwork   = var.external_subnet
+  address_type = "INTERNAL"
+  region       = replace(var.zone, "/-[a-z]$/", "")
+}
+
+# Reserve VIP on external subnet for BIG-IP
+resource "google_compute_address" "vip" {
+  project      = var.project_id
+  name         = "bigip-ext-vip"
   subnetwork   = var.external_subnet
   address_type = "INTERNAL"
   region       = replace(var.zone, "/-[a-z]$/", "")
@@ -29,18 +47,35 @@ resource "google_compute_address" "mgt" {
   region       = replace(var.zone, "/-[a-z]$/", "")
 }
 
-# Reserve IPs on internal subnet for BIG-IP nic1s
-resource "google_compute_address" "int" {
-  count        = var.num_instances
-  project      = var.project_id
-  name         = format("bigip-int-%d", count.index)
-  subnetwork   = var.internal_subnet
-  address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+# Random name for CFE bucket
+resource "random_id" "bucket" {
+  byte_length = 8
 }
 
-module "ha" {
-  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/ha?ref=v1.0.0"
+# Create CFE bucket - use a random value as part of the name so that new bucket
+# can be created with same prefix without waiting.
+module "cfe_bucket" {
+  source     = "terraform-google-modules/cloud-storage/google"
+  version    = "1.6.0"
+  project_id = var.project_id
+  prefix     = "bigip-cfe-example"
+  names      = [random_id.bucket.hex]
+  force_destroy = {
+    "${random_id.bucket.hex}" = true
+  }
+  location          = "US"
+  set_admin_roles   = false
+  set_creator_roles = false
+  set_viewer_roles  = true
+  viewers           = [format("serviceAccount:%s", var.service_account)]
+  # Label the bucket with the CFE pair, as supplied to CFE module
+  labels = {
+    f5_cloud_failover_label = "cfe-example"
+  }
+}
+
+module "cfe" {
+  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/cfe?ref=v1.1.0"
   source                            = "../../"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
@@ -49,12 +84,13 @@ module "ha" {
   service_account                   = var.service_account
   external_subnetwork               = var.external_subnet
   external_subnetwork_network_ips   = [for r in google_compute_address.ext : r.address]
+  external_subnetwork_vip_cidrs     = [google_compute_address.vip.address]
   management_subnetwork             = var.management_subnet
   management_subnetwork_network_ips = [for r in google_compute_address.mgt : r.address]
-  internal_subnetworks              = [var.internal_subnet]
-  internal_subnetwork_network_ips   = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
+  cfe_label_key                     = "f5_cloud_failover_label"
+  cfe_label_value                   = "cfe-example"
 }
