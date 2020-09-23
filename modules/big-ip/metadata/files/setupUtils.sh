@@ -36,12 +36,12 @@ get_instance_attribute()
             fi
             break
         fi
-        info "Curl failed with exit code ${retval}; sleeping before retry"
+        info "get_instance_attribute: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
         sleep 10
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
-        info "Failed to get a result for ${1} from metadata server"
+        info "get_instance_attribute: Failed to get a result for ${1} from metadata server"
     return ${retval}
 }
 
@@ -56,7 +56,7 @@ get_auth_token()
             echo "${auth_token}"
             break
         fi
-        info "Curl failed with exit code $?; sleeping before retry"
+        info "get_auth_token: Curl failed with exit code $?; sleeping before retry"
         sleep 10
         attempt=$((attempt+1))
     done
@@ -78,7 +78,7 @@ get_secret()
     if [ -n "${secret_key}" ]; then
         auth_token="$(get_auth_token)" || error "Unable to get auth token: $?"
         project_id="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/project/project-id')" || \
-            error "Unable to get project id from metadata: $?"
+            error "get_secret: Unable to get project id from metadata: Curl exit code $?"
         curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${secret_key}/versions/latest:access" 2>/dev/null | \
             jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
     else
@@ -96,18 +96,18 @@ extract_payload()
     case "${1}" in
         https://storage.googleapis.com/*)
             auth_token="$(get_auth_token)" || \
-                error "Unable to get auth token: $?"
+                error "extract_payload: Unable to get auth token: $?"
             curl -sf --retry 20 \
                     -H "Authorization: Bearer ${auth_token}" \
                     "${1}" || \
-                error "Download of GCS file from ${1} failed: $?"
+                error "extract_payload: Download of GCS file from ${1} failed: $?"
             ;;
         ftp://*|http://*|https://*)
             curl -skf --retry 20 "${1}" || \
-                error "download of ${1} failed with exit code $?"
+                error "extract_payload: Download of ${1} failed with exit code $?"
             ;;
         *)
-            base64 -d <<EOF | zcat || error "unable to decode payload: $?"
+            base64 -d <<EOF | zcat || error "extract_payload: Unable to decode payload: $?"
 ${1}
 EOF
             ;;
