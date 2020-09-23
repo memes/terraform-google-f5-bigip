@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "google" {
-  version = "~> 3.19"
+  version = "~> 3.39"
 }
 
 # Create the service account(s) to be used in the project
