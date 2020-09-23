@@ -1,7 +1,7 @@
 terraform {
   required_version = "~> 0.12"
   required_providers {
-    google = ">= 3.19"
+    google = ">= 3.40"
   }
   experiments = [variable_validation]
 }
@@ -10,7 +10,7 @@ terraform {
 # this role, in addition to standard logging and monitoring roles.
 module "cfe_role" {
   source       = "terraform-google-modules/iam/google//modules/custom_role_iam"
-  version      = "6.3.0"
+  version      = "6.3.1"
   target_level = var.target_type
   target_id    = var.target_id
   role_id      = var.id

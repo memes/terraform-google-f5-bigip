@@ -13,13 +13,13 @@ Google managed group.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12 |
-| google | >= 3.19 |
+| google | >= 3.40 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | >= 3.19 |
+| google | >= 3.40 |
 
 ## Inputs
 
