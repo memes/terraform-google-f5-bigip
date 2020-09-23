@@ -14,7 +14,7 @@ provider "google" {
 # Create the service account(s) to be used in the project
 module "service_accounts" {
   source     = "terraform-google-modules/service-accounts/google"
-  version    = "2.0.2"
+  version    = "3.0.1"
   project_id = "f5-gcs-4138-sales-cloud-sales"
   prefix     = "emes-tf-module"
   names      = ["bigip"]
@@ -26,19 +26,12 @@ module "service_accounts" {
   generate_keys = false
 }
 
-locals {
-  # XXX: revisit
-  # Break dependency on service_accounts module; change if the project or prefix
-  # changes
-  bigip_sa_email = "emes-tf-module-bigip@f5-gcs-4138-sales-cloud-sales.iam.gserviceaccount.com"
-}
-
 # Create 8 networks for module testing
 
 # Alpha - allows internet egress if the instance(s) have public IPs
 module "alpha" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-alpha"
   subnets = [
@@ -55,7 +48,7 @@ module "alpha" {
 # Beta - no default routes, a NAT gateway will be provisioned to support egress
 module "beta" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-beta"
   subnets = [
@@ -72,7 +65,7 @@ module "beta" {
 # Gamma - no default routes
 module "gamma" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-gamma"
   subnets = [
@@ -89,7 +82,7 @@ module "gamma" {
 # Delta - no default routes
 module "delta" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-delta"
   subnets = [
@@ -106,7 +99,7 @@ module "delta" {
 # Epsilon - no default routes
 module "epsilon" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-epsilon"
   subnets = [
@@ -123,7 +116,7 @@ module "epsilon" {
 # Zeta - no default routes
 module "zeta" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-zeta"
   subnets = [
@@ -140,7 +133,7 @@ module "zeta" {
 # Eta - no default routes
 module "eta" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-eta"
   subnets = [
@@ -157,7 +150,7 @@ module "eta" {
 # Theta - no default routes
 module "theta" {
   source       = "terraform-google-modules/network/google"
-  version      = "2.3.0"
+  version      = "2.5.0"
   project_id   = "f5-gcs-4138-sales-cloud-sales"
   network_name = "emes-tf-module-theta"
   subnets = [
@@ -194,7 +187,7 @@ module "beta-nat" {
 # Create an IAP-backed bastion
 module "bastion" {
   source                     = "terraform-google-modules/bastion-host/google"
-  version                    = "2.4.0"
+  version                    = "2.8.0"
   service_account_name       = "emes-tf-module-bastion"
   name                       = "emes-tf-module-bastion"
   name_prefix                = "emes-tf-module-bastion"
@@ -232,7 +225,7 @@ resource "google_compute_firewall" "bastion_beta" {
     module.bastion.service_account,
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "all"
@@ -250,7 +243,7 @@ resource "google_compute_firewall" "ssh_bigip_alpha" {
     "0.0.0.0/0",
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -268,10 +261,10 @@ resource "google_compute_firewall" "sync_alpha" {
   description = "ConfigSync for alpha"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -297,10 +290,10 @@ resource "google_compute_firewall" "sync_beta" {
   description = "ConfigSync for beta"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -317,10 +310,10 @@ resource "google_compute_firewall" "sync_gamma" {
   description = "ConfigSync for gamma"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -344,10 +337,10 @@ resource "google_compute_firewall" "sync_delta" {
   description = "ConfigSync for delta"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -371,10 +364,10 @@ resource "google_compute_firewall" "sync_epsilon" {
   description = "ConfigSync for epsilon"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -398,10 +391,10 @@ resource "google_compute_firewall" "sync_zeta" {
   description = "ConfigSync for zeta"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -425,10 +418,10 @@ resource "google_compute_firewall" "sync_eta" {
   description = "ConfigSync for eta"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -452,10 +445,10 @@ resource "google_compute_firewall" "sync_theta" {
   description = "ConfigSync for theta"
   direction   = "INGRESS"
   source_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   target_service_accounts = [
-    local.bigip_sa_email,
+    module.service_accounts.emails["bigip"],
   ]
   allow {
     protocol = "tcp"
@@ -497,9 +490,11 @@ resource "google_secret_manager_secret_version" "admin_password" {
 
 # Allow the supplied accounts to read the BIG-IP password from Secret Manager
 resource "google_secret_manager_secret_iam_member" "admin_password" {
-  for_each  = toset(formatlist("serviceAccount:%s", [local.bigip_sa_email]))
   project   = "f5-gcs-4138-sales-cloud-sales"
   secret_id = google_secret_manager_secret.admin_password.secret_id
   role      = "roles/secretmanager.secretAccessor"
-  member    = each.value
+  # XXX: revisit
+  # Break dependency on service_accounts module; change if the project or prefix
+  # changes
+  member = "serviceAccount:emes-tf-module-bigip@f5-gcs-4138-sales-cloud-sales.iam.gserviceaccount.com"
 }
