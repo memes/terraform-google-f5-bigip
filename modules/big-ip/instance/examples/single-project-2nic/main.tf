@@ -10,8 +10,7 @@ terraform {
 }
 
 module "instance" {
-  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/instance?ref=v1.0.0"
-  source                            = "../../"
+  source                            = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/instance?ref=enhancement/release_1.1.1"
   project_id                        = var.project_id
   zones                             = [var.zone]
   service_account                   = var.service_account
@@ -21,6 +20,4 @@ module "instance" {
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
-  # Use the management network gateway for default egress
-  default_gateway = "$MGMT_GATEWAY"
 }

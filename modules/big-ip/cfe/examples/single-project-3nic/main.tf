@@ -11,8 +11,7 @@ terraform {
 
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
-  #source      = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/cfe/role?ref=v1.1.0"
-  source      = "../../role/"
+  source      = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/cfe/role?ref=enhancement/release_1.1.1"
   target_type = "project"
   target_id   = var.project_id
   members     = [format("serviceAccount:%s", var.service_account)]
@@ -66,7 +65,7 @@ resource "random_id" "bucket" {
 # can be created with same prefix without waiting.
 module "cfe_bucket" {
   source     = "terraform-google-modules/cloud-storage/google"
-  version    = "1.6.0"
+  version    = "1.7.1"
   project_id = var.project_id
   prefix     = "bigip-cfe-example"
   names      = [random_id.bucket.hex]
@@ -85,8 +84,7 @@ module "cfe_bucket" {
 }
 
 module "cfe" {
-  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/cfe?ref=v1.1.0"
-  source                            = "../../"
+  source                            = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/cfe?ref=enhancement/release_1.1.1"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]

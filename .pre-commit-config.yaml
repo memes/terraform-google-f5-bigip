@@ -9,7 +9,7 @@ repos:
         types: [file, yaml]
         entry: yamllint
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.39.0
+    rev: v1.40.0
     hooks:
       - id: terraform_fmt
       - id: terraform_docs

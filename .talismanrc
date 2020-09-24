@@ -33,3 +33,5 @@ fileignoreconfig:
   checksum: 290742ecf62a5959de43ff2d1d10b3281a6de1d2631d46fbfda809dac91ad635
 - filename: modules/big-ip/cfe/examples/single-project-3nic/main.tf
   checksum: bb0c52a41e7f5a002d3676f9f90404cf549a02490a7f69b9cac64bc9cff89cd1
+- filename: modules/big-ip/metadata/files/setupUtils.sh
+  checksum: 3c7721112ba5323884eb070615744577457f16b399370ae9594ac8eda5a1a2f3

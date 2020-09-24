@@ -14,7 +14,7 @@ to manage run-time update of GCP routing on failover event.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12 |
-| google | >= 3.19 |
+| google | >= 3.40 |
 
 ## Providers
 
