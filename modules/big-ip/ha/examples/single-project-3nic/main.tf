@@ -40,8 +40,7 @@ resource "google_compute_address" "int" {
 }
 
 module "ha" {
-  #source              = "git::https://github.com/memes/f5-google-terraform-modules/modules/big-ip/ha?ref=v1.0.0"
-  source                            = "../../"
+  source                            = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/ha?ref=enhancement/release_1.1.1"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
