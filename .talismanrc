@@ -39,3 +39,5 @@ fileignoreconfig:
   checksum: b2a0605e2679b4df1b0d527c81541d49cf6cf09e04dacffd4207a2a8bbf17e0d
 - filename: modules/big-ip/instance/examples/domain-single-project-1nic/README.md
   checksum: ded12bfd35ee8f0c1ecdd0e7ce8ed54c1b686a2085760caa73d2857bccbed845
+- filename: modules/big-ip/ha/examples/domain-single-project-2nic/main.tf
+  checksum: 36dc4055c4dd7882ef5c4cba070b7a0e2c6e367ef7af9428416e58a8c305401f

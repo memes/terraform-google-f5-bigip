@@ -41,6 +41,7 @@ module "ha" {
   management_subnetwork             = var.management_subnet
   management_subnetwork_network_ips = [for r in google_compute_address.mgt : r.address]
   image                             = var.image
+  domain_name                       = var.domain_name
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
