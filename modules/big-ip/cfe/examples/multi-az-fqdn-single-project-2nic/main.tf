@@ -9,6 +9,11 @@ terraform {
   required_version = "~> 0.12"
 }
 
+# Use the region of the first zone for all regional resources
+locals {
+  region = replace(element(var.zones, 0), "/-[a-z]$/", "")
+}
+
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
   source      = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/cfe/role?ref=1.1.1"
@@ -24,7 +29,7 @@ resource "google_compute_address" "ext" {
   name         = format("bigip-ext-%d", count.index)
   subnetwork   = var.external_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Reserve VIP on external subnet for BIG-IP
@@ -33,7 +38,7 @@ resource "google_compute_address" "vip" {
   name         = "bigip-ext-vip"
   subnetwork   = var.external_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Reserve IPs on management subnet for BIG-IP nic1s
@@ -43,7 +48,7 @@ resource "google_compute_address" "mgt" {
   name         = format("bigip-mgt-%d", count.index)
   subnetwork   = var.management_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Random name for CFE bucket
@@ -77,7 +82,7 @@ module "cfe" {
   source                            = "../../"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
-  zones                             = [var.zone]
+  zones                             = var.zones
   machine_type                      = "n1-standard-8"
   service_account                   = var.service_account
   external_subnetwork               = var.external_subnet
@@ -91,4 +96,5 @@ module "cfe" {
   admin_password_secret_manager_key = var.admin_password_key
   cfe_label_key                     = "f5_cloud_failover_label"
   cfe_label_value                   = "cfe-example"
+  domain_name                       = var.domain_name
 }

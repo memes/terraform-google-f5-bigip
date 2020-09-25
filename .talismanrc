@@ -41,3 +41,5 @@ fileignoreconfig:
   checksum: ded12bfd35ee8f0c1ecdd0e7ce8ed54c1b686a2085760caa73d2857bccbed845
 - filename: modules/big-ip/ha/examples/domain-single-project-2nic/main.tf
   checksum: 36dc4055c4dd7882ef5c4cba070b7a0e2c6e367ef7af9428416e58a8c305401f
+- filename: modules/big-ip/cfe/examples/multi-az-fqdn-single-project-2nic/main.tf
+  checksum: 8af5a99aecad327775022acbca4535b9684b8c4715aebd7e77c5768f139c10c1
