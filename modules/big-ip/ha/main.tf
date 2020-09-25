@@ -42,6 +42,7 @@ module "instance" {
   zones                           = var.zones
   num_instances                   = var.num_instances
   instance_name_template          = var.instance_name_template
+  domain_name                     = var.domain_name
   description                     = var.description
   metadata                        = merge(var.metadata, local.allow_service_default_ext, local.allow_service_default_int)
   labels                          = var.labels
