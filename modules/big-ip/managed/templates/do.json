@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.15.0/src/schema/1.15.0/base.schema.json",
+  "schemaVersion": "1.15.0",
+  "class": "Device",
+  "async": true,
+  "label": "auto-onboard",
+  "Common":{
+    "class": "Tenant",
+    "system": {
+      "class": "System",
+%{ if length(hostname) > 0 ~}
+      "hostname": "${format("%.64s", hostname)}",
+%{ endif ~}
+      "autoPhonehome": ${jsonencode(allow_phone_home)}
+    },
+    "dns": {
+      "class": "DNS",
+      "nameServers": ${jsonencode(dns_servers)},
+      "search": ${jsonencode(search_domains)}
+    },
+    "ntp": {
+      "class": "NTP",
+      "servers": ${jsonencode(ntp_servers)},
+      "timezone": "${timezone}"
+    },
+    "provision": {
+%{ for k,v in modules ~}
+      "${k}": "${v}",
+%{ endfor ~}
+      "class": "Provision"
+    }
+  }
+}

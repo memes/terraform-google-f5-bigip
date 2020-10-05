@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/v3.22.1/schema/3.22.1/as3-schema.json",
+  "action": "deploy",
+  "class": "AS3",
+  "declaration": {
+    "class": "ADC",
+    "id": "onboard",
+    "label": "simple",
+    "remark": "AS3 placeholder with health check",
+    "schemaVersion": "3.22.0",
+    "healthz": {
+      "class": "Tenant",
+      "healthz": {
+        "class": "Application",
+        "template": "http",
+        "serviceMain": {
+          "class": "Service_HTTP",
+          "remark": "GCP health check responder",
+          "virtualPort": ${jsonencode(health_check_port)},
+          "virtualAddresses": ${jsonencode(health_check_vips)},
+          "iRules": ["hc_respond_200"]
+        },
+        "hc_respond_200": {
+          "class": "iRule",
+          "iRule": "when HTTP_REQUEST { HTTP::respond 200 content OK Content-Type text/plain }"
+        }
+      }
+    }
+  },
+  "persist": true
+}
