@@ -1,8 +1,17 @@
 # HA ConfigSync firewall sub-module
 
 This Terraform module is a helper to create a pair of firewall rules that allow
-BIG-IP to BIG-IP instance ConfigSync traffic on data-plane and control-plane
+ConfigSync traffic between BIG-IP instances on data-plane and control-plane
 networks.
+
+<!-- spell-checker: ignore dataplane -->
+> NOTE: the module requires a management network self-link, and a
+> *dataplane network* self-link. In a 2 NIC configuration, the dataplane network
+> will be the one attached to NIC0 (typically described as the **external**
+> network). In a 3 (or more) NIC deployment, BIG-IP will be configured to perform
+> actions on *NIC2* (typically described as the first **internal** network). It
+> is important to pass the correct value for `dataplane_network` in a 3+ NIC
+> configuration or synchronisation between BIG-IP instances will be broken.
 
 <!-- spell-checker:ignore markdownlint bigip -->
 <!-- markdownlint-disable MD033 MD034 -->
