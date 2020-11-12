@@ -1,7 +1,7 @@
 # CFE-Role sub-module
 
 This Terraform module is a helper to create a custom IAM role that has the
-permissions required for correct Cloud Failover Extension to function correctly.
+minimal permissions required for Cloud Failover Extension to function correctly.
 
 <!-- spell-checker:ignore markdownlint bigip -->
 <!-- markdownlint-disable MD033 MD034 -->
