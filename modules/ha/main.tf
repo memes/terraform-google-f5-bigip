@@ -37,7 +37,7 @@ locals {
 }
 
 module "instance" {
-  source                          = "./../"
+  source                          = "./../../"
   project_id                      = var.project_id
   zones                           = var.zones
   num_instances                   = var.num_instances
