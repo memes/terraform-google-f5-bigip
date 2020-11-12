@@ -10,7 +10,7 @@ terraform {
 }
 
 module "instance" {
-  source                            = "git::https://github.com/memes/f5-google-terraform-modules//modules/big-ip/instance?ref=1.1.1"
+  source                            = "git::https://github.com/memes/f5-google-terraform-modules?ref=enhancement/publish_bigip_module"
   project_id                        = var.project_id
   zones                             = [var.zone]
   service_account                   = var.service_account
