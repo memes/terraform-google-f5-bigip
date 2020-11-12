@@ -65,7 +65,7 @@ resource "random_id" "bucket" {
 # can be created with same prefix without waiting.
 module "cfe_bucket" {
   source     = "terraform-google-modules/cloud-storage/google"
-  version    = "1.7.1"
+  version    = "1.7.2"
   project_id = var.project_id
   prefix     = "bigip-cfe-example"
   names      = [random_id.bucket.hex]
