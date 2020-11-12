@@ -11,7 +11,7 @@ terraform {
 
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
-  source      = "memes/f5-bigip/google//modules/cfe/role"
+  source      = "memes/f5-bigip/google//modules/cfe-role"
   version     = "1.2.0"
   target_type = "project"
   target_id   = var.project_id
