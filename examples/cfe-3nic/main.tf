@@ -20,7 +20,7 @@ module "cfe_role" {
 
 # Create a firewall rule to allow BIG-IP ConfigSync and failover
 module "cfe_fw" {
-  source                = "memes/f5-bigip/google//modules/cfe/firewall"
+  source                = "memes/f5-bigip/google//modules/configsync-fw"
   version               = "1.2.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account

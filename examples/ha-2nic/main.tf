@@ -11,7 +11,7 @@ terraform {
 
 # Create a firewall rule to allow BIG-IP ConfigSync
 module "ha_fw" {
-  source                = "memes/f5-bigip/google//modules/ha/firewall"
+  source                = "memes/f5-bigip/google//modules/configsync-fw"
   version               = "1.2.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account
