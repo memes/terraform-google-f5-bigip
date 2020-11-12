@@ -8,7 +8,7 @@ terraform {
 
 # Generate metadata for each instance
 module "metadata" {
-  source                            = "./../metadata/"
+  source                            = "./modules/metadata/"
   num_instances                     = var.num_instances
   region                            = replace(element(var.zones, 0), "/-[a-z]$/", "")
   license_type                      = var.license_type
