@@ -12,13 +12,13 @@ networks.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12 |
-| google | >= 3.40 |
+| google | >= 3.47 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | >= 3.40 |
+| google | >= 3.47 |
 
 ## Inputs
 

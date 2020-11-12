@@ -12,7 +12,7 @@ networks.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12 |
-| google | >= 3.40 |
+| google | >= 3.47 |
 
 ## Providers
 
