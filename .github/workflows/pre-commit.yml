@@ -1,7 +1,8 @@
 # These github actions will update Terraform section(s) of README(s), and
 # perform linting using pre-commit.
----
+# spell-checker: ignore yamllint chmod hashlib
 # yamllint disable rule:line-length
+---
 name: pre-commit
 
 # yamllint disable-line rule:truthy
