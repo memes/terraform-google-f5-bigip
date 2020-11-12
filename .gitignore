@@ -5,7 +5,7 @@
 # Ignore Terraform plugin/module cache and local state files
 .terraform
 *.tfstate
-*.tfstate.backup
+*.tfstate.*
 
 # Don't include any local automatic variable assignment files
 terraform.tfvars
