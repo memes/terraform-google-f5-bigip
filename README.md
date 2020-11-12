@@ -3,8 +3,9 @@
 <!-- spell-checker:ignore markdownlint -->
 <!-- markdownlint-disable MD033 -->
 This repo contains unofficial and unsupported<sup>1</sup> Terraform modules to
-deploy F5 solutions on Google Cloud Platform, using a modular approach that can
-be composed into a solution that is consistent for each variant of a product.
+deploy F5 BIG-IP Virtual Edition on Google Cloud Platform, using a modular
+approach that can be composed into a solution that is consistent for each variant
+of a product.
 <!-- markdownlint-enable MD033 -->
 
 > NOTE: The modules **do not** include setup and configuration of supporting
@@ -19,19 +20,44 @@ Cloud in an opinionated manner. By themselves they do not implement a full stack
 or solution, and additional setup will be needed for firewall rules, service
 account creation and role assignments.
 
-## Options
+### Rationale
 
-These BIG-IP modules build on each other to have a similar API
-(implemented as Terraform input variables), promoting consistency and reuse. For
-more information about these open the README files in each module.
+The intent is allow for integration of BIG-IP with GCP infrastructure that is
+managed using Google's
+[Cloud Foundation Toolkit](https://cloud.google.com/foundation-toolkit)
+Terraform modules or an equivalent. These are not fully-baked solutions, but can
+be integrated to build a reusable deployment pipeline.
+
+For example, the modules do not include ingress firewall rule resources as core
+module components. This is because some organizations may mandate use of service
+account based rules, where others prefer tag based, or a combination of both where
+interfaces are attached to peered VPCs. The exception to this is the firewall
+module to support ConfigSync for HA and CFE clusters; since the BIG-IPs will be
+deployed to the same VPC networks, it is reasonably safe to assume a service
+account based rule will be universally applicable.
+
+## BIG-IP module options
+
+The BIG-IP module will create standalone BIG-IP VMs that include default
+[AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)
+and [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/)
+declarations (unless overridden). The sub-modules build on this to extend
+functionality while retaining an the same API (implemented as Terraform input
+variables) where possible. This promotes consistency and reuse when your project
+calls for a CFE or Autoscaling approach. For
+more information about these open the README files in each sub-module.
 
 1. [x] Standalone BIG-IP instances
    * [x] Support 1-8 network interfaces
    * [x] Opinionated startup scripts
    * [x] Override default gateway when needed; e.g. for bootstrapping in a restricted
          VPC where data-plane does not have egress.
-   * [x] [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/) support
-   * [x] [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/) support
+   * [x] [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)
+     *Applications Services 3* extension
+   * [x] [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/)
+     *Declarative Onboarding* extension
+   * [ ] [TS](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/)
+     *Telemetry Streaming* extension
 2. [x] [HA](modules/ha/) BIG-IP clustered instances
    * [x] [CFE](modules/cfe/) [Cloud Failover Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/) support
 3. [ ] Autoscaling and managed groups
@@ -72,22 +98,6 @@ success. The simple metadata startup-script will execute on every boot.
 
 For more information on how run-time configuration is applied to each BIG-IP
 instance, see the [configuration details](modules/metadata#configuration) section in [metadata module](modules/metadata).
-
-## Rationale
-
-The intent is allow for integration of BIG-IP with GCP infrastructure that is
-managed using Google's
-[Cloud Foundation Toolkit](https://cloud.google.com/foundation-toolkit)
-Terraform modules or an equivalent. These are not fully-baked solutions, but can
-be integrated to build a reusable deployment pipeline.
-
-For example, the modules do not include ingress firewall rule resources as core
-module components. This is because some organizations may mandate use of service
-account based rules, where others prefer tag based, or a combination of both where
-interfaces are attached to peered VPCs. The exception to this is the firewall
-module to support ConfigSync for HA and CFE clusters; since the BIG-IPs will be
-deployed to the same VPC networks, it is reasonably safe to assume a service
-account based rule will be universally applicable.
 
 <!-- markdownlint-disable MD033 MD034 -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
