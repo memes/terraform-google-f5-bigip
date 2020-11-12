@@ -1,10 +1,37 @@
-# BIG-IP instance module
+# BIG-IP cluster with Cloud Failover extension
 
 This module encapsulates the creation of BIG-IP HA cluster with [Cloud Failover
 Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/)
 to manage run-time update of GCP routing on failover event.
 
 *Note:* This module is unsupported and not an official F5 product.
+
+## 3-NIC example
+
+```hcl
+module "cfe" {
+  source                            = "memes/f5-bigip/google//modules/cfe"
+  version                           = "1.2.1"
+  project_id                        = "my-project-id"
+  num_instances                     = 2
+  zones                             = ["us-central1-a", "us-central1-b"]
+  machine_type                      = "n1-standard-8"
+  service_account                   = "bigip-sa@my-project-id.iam.gserviceaccount.com"
+  external_subnetwork               = "projects/my-project-id/regions/us-central1/subnetworks/external-central1"
+  external_subnetwork_network_ips   = ["10.0.0.10", "10.0.0.11"]
+  external_subnetwork_vip_cidrs     = ["10.0.0.4/30"]
+  management_subnetwork             = "projects/my-project-id/regions/us-central1/subnetworks/management-central1"
+  management_subnetwork_network_ips = ["10.0.1.10", "10.0.1.11"]
+  internal_subnetworks              = ["projects/my-project-id/regions/us-central1/subnetworks/internal-central1"]
+  internal_subnetwork_network_ips   = ["10.0.2.10", "10.0.2.11"]
+  image                             = "projects/f5-7626-networks-public/global/images/f5-bigip-15-0-1-3-0-0-4-payg-good-5gbps-200318182229"
+  allow_phone_home                  = false
+  allow_usage_analytics             = false
+  admin_password_secret_manager_key = "bigip-admin-key"
+  cfe_label_key                     = "f5_cloud_failover_label"
+  cfe_label_value                   = "cfe-example"
+}
+```
 
 <!-- spell-checker:ignore markdownlint bigip oslogin subnetwork subnetworks NICs byol payg Skylake preemptible VCPUS routable zoneinfo -->
 <!-- markdownlint-disable MD033 MD034-->

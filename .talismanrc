@@ -5,3 +5,5 @@ fileignoreconfig:
   checksum: feb6e1072a5db8caca993a507146ac049ff9c09adc0513be3573f34896103373
 - filename: README.md
   checksum: 84b612d9f4adc47176a85f5bda18a4a121a7e73e8bda196abba8a71c0c328714
+- filename: modules/cfe/README.md
+  checksum: fb38de4b586459f2adbd718d14e8e55844c48edb9ed9281244e936663b87fb42
