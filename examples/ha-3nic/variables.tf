@@ -20,11 +20,27 @@ interface.
 EOD
 }
 
+variable "management_network" {
+  type        = string
+  description = <<EOD
+The fully-qualified network self-link for the *management* network to which HA
+firewall rules will be deployed.
+EOD
+}
+
 variable "management_subnet" {
   type        = string
   description = <<EOD
 The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*
 interface.
+EOD
+}
+
+variable "internal_network" {
+  type        = string
+  description = <<EOD
+The fully-qualified network self-link for the *internal* network to which HA
+firewall rules will be deployed.
 EOD
 }
 

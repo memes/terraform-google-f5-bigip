@@ -9,6 +9,15 @@ terraform {
   required_version = "~> 0.12"
 }
 
+# Create a firewall rule to allow BIG-IP ConfigSync
+module "ha_fw" {
+  source                = "git::https://github.com/memes/f5-google-terraform-modules//modules/ha/firewall?ref=enhancement/publish_bigip_module"
+  project_id            = var.project_id
+  bigip_service_account = var.service_account
+  dataplane_network     = var.external_network
+  management_network    = var.management_network
+}
+
 # Reserve IPs on external subnet for BIG-IP nic0s
 resource "google_compute_address" "ext" {
   count        = var.num_instances

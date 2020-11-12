@@ -12,11 +12,27 @@ The compute zone which will host the BIG-IP VMs.
 EOD
 }
 
+variable "external_network" {
+  type        = string
+  description = <<EOD
+The fully-qualified network self-link for the *external* network to which HA
+firewall rules will be deployed.
+EOD
+}
+
 variable "external_subnet" {
   type        = string
   description = <<EOD
 The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*
 interface.
+EOD
+}
+
+variable "management_network" {
+  type        = string
+  description = <<EOD
+The fully-qualified network self-link for the *management* network to which HA
+firewall rules will be deployed.
 EOD
 }
 
