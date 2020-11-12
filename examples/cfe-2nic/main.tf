@@ -11,7 +11,8 @@ terraform {
 
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
-  source      = "git::https://github.com/memes/f5-google-terraform-modules//modules/cfe/role?ref=enhancement/publish_bigip_module"
+  source      = "memes/f5-bigip/google//modules/cfe/role"
+  version     = "1.2.0"
   target_type = "project"
   target_id   = var.project_id
   members     = [format("serviceAccount:%s", var.service_account)]
@@ -19,7 +20,8 @@ module "cfe_role" {
 
 # Create a firewall rule to allow BIG-IP ConfigSync and failover
 module "cfe_fw" {
-  source                = "git::https://github.com/memes/f5-google-terraform-modules//modules/cfe/firewall?ref=enhancement/publish_bigip_module"
+  source                = "memes/f5-bigip/google//modules/cfe/firewall"
+  version               = "1.2.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.external_network
@@ -83,7 +85,8 @@ module "cfe_bucket" {
 }
 
 module "cfe" {
-  source                            = "git::https://github.com/memes/f5-google-terraform-modules//modules/cfe?ref=enhancement/publish_bigip_module"
+  source                            = "memes/f5-bigip/google//modules/cfe"
+  version                           = "1.2.0"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
