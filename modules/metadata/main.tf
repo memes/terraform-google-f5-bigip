@@ -3,7 +3,6 @@ terraform {
   required_providers {
     google = ">= 3.47"
   }
-  experiments = [variable_validation]
 }
 
 # Apply any required changes to metadata
