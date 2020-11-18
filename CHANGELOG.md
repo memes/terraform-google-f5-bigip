@@ -8,12 +8,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2020-11-18
+
+### Added
+
+### Changed
+
+- Fixed references to modules in examples
+
+### Removed
+
 ## [1.2.1] - 2020-11-18
 
 ### Added
 
 ### Changed
 
+<!-- spell-checker: ignore READMEs -->
 - Updated and improved READMEs for modules and examples
 - Refactored sub-modules to be at same level below main module to better match
   Terraform registry expectations
@@ -87,6 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+[1.2.2]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/memes/f5-google-terraform-modules/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.0.2...v1.1.0

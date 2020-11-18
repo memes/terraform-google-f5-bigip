@@ -19,7 +19,7 @@ This will create a pair of BIG-IP instances with ConfigSync enabled.
 ```hcl
 module "ha" {
   source                            = "memes/f5-bigip/google//modules/ha"
-  version                           = "1.2.1"
+  version                           = "1.2.2"
   project_id                        = "my-project-id"
   num_instances                     = 2
   zones                             = ["us-central1-a", "us-central1-b"]
