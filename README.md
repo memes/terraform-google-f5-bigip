@@ -113,7 +113,7 @@ For guidelines and steps to diagnose deployment and run-time issues see
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.29 |
+| terraform | ~> 0.12.29, < 0.13 |
 | google | >= 3.48 |
 
 ## Providers
