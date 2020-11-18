@@ -2,12 +2,24 @@
 
 This module encapsulates the creation of BIG-IP HA cluster with [Cloud Failover
 Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/)
-to manage run-time update of GCP routing on failover event.
+to manage run-time update of GCP resources (routes, alias IPs, etc.) on failover
+events.
 
-*Note:* This module is unsupported and not an official F5 product.
+> **NOTE:** This module is unsupported and not an official F5 product. If you
+> require assistance please join our
+> [Slack GCP channel](https://f5cloudsolutions.slack.com/messages/gcp) and ask!
 
-## 3-NIC example
+## Example
 
+This will create a pair of BIG-IP instances with CFE configured to manage GCP
+resources that have the label `f5_cloud_failover_label` populated with value
+`cfe-example`. Explicit IP addresses are provided in lieu of valid DNS.
+
+> **NOTE:** As with other BIG-IP modules in this repo, the Admin user password
+> must be stored in Secret Manager with read-only access granted to the service
+> account.
+
+<!-- spell-checker: disable -->
 ```hcl
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
@@ -32,6 +44,7 @@ module "cfe" {
   cfe_label_value                   = "cfe-example"
 }
 ```
+<!-- spell-checker: enable -->
 
 <!-- spell-checker:ignore markdownlint bigip oslogin subnetwork subnetworks NICs byol payg Skylake preemptible VCPUS routable zoneinfo -->
 <!-- markdownlint-disable MD033 MD034-->
