@@ -4,9 +4,7 @@ about: Create a report to help us improve
 title: ''
 labels: 'bug'
 assignees: 'memes'
-
 ---
-
 Hello and thank you for using our Terraform modules. Please complete this form
 and we'll try to address the issue.
 
@@ -19,6 +17,7 @@ provide as much detail as possible.
 
 * [ ] BIG-IP standalone
 * [ ] BIG-IP HA
+* [ ] BIG-IP CFE
 
 ## GCP environment
 
@@ -33,11 +32,18 @@ Any other details we need to know?
 
 How can we reproduce this behaviour? Which version of F5's product was used?
 
-
 ## Additional context
 
+<!-- spell-checker: ignore pastebin -->
 Add any other context about the problem here. Sanitised snippets of logs are
 welcome, but we prefer that you upload larger files to a third-party host
 (Pastebin, GCS bucket, etc.) and provide a link instead.
+
+> **NOTE:** Include the output of the following commands:
+
+```shell
+terraform -version
+terraform providers
+```
 
 *DO NOT UPLOAD OR LINK TO FILES WITH SENSITIVE INFORMATION, SERVICE ACCOUNT KEYS, ETC.*
