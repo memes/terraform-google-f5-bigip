@@ -1,5 +1,10 @@
 # Cloud Failover Extension sub-module with 3-NIC deployment
 
+> You are viewing a **2.x release** of the modules, which supports
+> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
+> 1.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This example demonstrates how to use the
 [CFE sub-module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest/submodules/cfe)
 to deploy a pair of BIG-IP instances in a 3-NIC configuration, with
