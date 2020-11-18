@@ -1,8 +1,43 @@
-# BIG-IP instance module
+# BIG-IP HA cluster module
 
-This module encapsulates the creation of BIG-IP HA cluster.
+This module encapsulates the creation of BIG-IP HA cluster with ConfigSync
+enabled.
 
-*Note:* This module is unsupported and not an official F5 product.
+> **NOTE:** This module is unsupported and not an official F5 product. If you
+> require assistance please join our
+> [Slack GCP channel](https://f5cloudsolutions.slack.com/messages/gcp) and ask!
+
+## Example
+
+This will create a pair of BIG-IP instances with ConfigSync enabled.
+
+> **NOTE:** As with other BIG-IP modules in this repo, the Admin user password
+> must be stored in Secret Manager with read-only access granted to the service
+> account.
+
+<!-- spell-checker: disable -->
+```hcl
+module "ha" {
+  source                            = "memes/f5-bigip/google//modules/ha"
+  version                           = "1.2.1"
+  project_id                        = "my-project-id"
+  num_instances                     = 2
+  zones                             = ["us-central1-a", "us-central1-b"]
+  machine_type                      = "n1-standard-8"
+  service_account                   = "bigip-sa@my-project-id.iam.gserviceaccount.com"
+  external_subnetwork               = "projects/my-project-id/regions/us-central1/subnetworks/external-central1"
+  external_subnetwork_network_ips   = ["10.0.0.10", "10.0.0.11"]
+  management_subnetwork             = "projects/my-project-id/regions/us-central1/subnetworks/management-central1"
+  management_subnetwork_network_ips = ["10.0.1.10", "10.0.1.11"]
+  internal_subnetworks              = ["projects/my-project-id/regions/us-central1/subnetworks/internal-central1"]
+  internal_subnetwork_network_ips   = ["10.0.2.10", "10.0.2.11"]
+  image                             = "projects/f5-7626-networks-public/global/images/f5-bigip-15-0-1-3-0-0-4-payg-good-5gbps-200318182229"
+  allow_phone_home                  = false
+  allow_usage_analytics             = false
+  admin_password_secret_manager_key = "bigip-admin-key"
+}
+```
+<!-- spell-checker: enable -->
 
 <!-- spell-checker:ignore markdownlint bigip oslogin subnetwork subnetworks NICs byol payg Skylake preemptible VCPUS routable zoneinfo -->
 <!-- markdownlint-disable MD033 MD034 -->

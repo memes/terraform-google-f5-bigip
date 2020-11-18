@@ -4,7 +4,6 @@ about: Suggest an idea for these modules
 title: ''
 labels: 'enhancement'
 assignees: 'memes'
-
 ---
 
 Hello and thank you for using our Terraform modules. Please complete this form
@@ -16,8 +15,11 @@ for review and link it to this issue where prompted.
 What are you proposing to add and what is the value added by this feature? Please
 provide as much detail as possible.
 
+<!-- spell-checker: ignore markdownlint -->
+<!-- markdownlint-disable MD026 -->
 ## Are you willing to contribute?
 
+<!-- spell-checker: ignore thumbsup -->
 Feature requests are nice, but collaboration is better :thumbsup:
 We're very happy to take pull requests for solutions that have been built and
 tested by others. Please open a pull request, linked to this issue, and ask for

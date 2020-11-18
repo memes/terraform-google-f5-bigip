@@ -1,9 +1,11 @@
 # Troubleshooting BIG-IP setup
 
-<!-- spell-checker: ignore markdownlint NICs -->
-
 ## Boot steps
 
+Regardless of which initialisation method is in use, the boot steps to onboard
+and prepare the BIG-IP for use are the same.
+
+<!-- spell-checker: ignore nics -->
 1. Swap control-plane and data-plane NICs and reboot
 
    This is only for VMs with 2 or more VPCs attached; 1 NIC instances will not
@@ -34,33 +36,47 @@
 8. Reset management gateway configuration
 
    Only for 2 or more NIC instances; `cloud-init` option will install a dedicated
-   systemd service unit to just perform this step on subsequent boots, whereas
-   the default metadata startup-script will execute on every boot.
+   systemd service unit to perform just this step on subsequent boots, whereas
+   the default metadata startup-script will execute on every boot. See
+   [KB85830674](https://support.f5.com/csp/article/K85730674) for details on the
+   underlying issue.
 
 ## Debugging the boot process
 
+During boot, the initialisation scripts will produce logging output for review.
+With the default startup option (metadata startup shell script), output is sent
+to `/var/log/cloud/google/startup-script.log` through shell redirection.
+
+<!-- spell-checker: ignore journald -->
+If the BIG-IP is initialised through `cloud-init`, systemd service units are
+installed to orchestrate onboarding and all output is logged via journald.
+
+> **NOTE:** See [CONFIGURATION](/CONFIGURATION.md) for full details of the
+> run-time initialisation choices.
+
+<!-- spell-checker: ignore markdownlint -->
 <!-- markdownlint-disable MD033 -->
 |Boot option|Logging mechanism|
 |-----------|-----------------|
-|metadata startup-script|`/var/log/cloud/google/startup-script.log`|
+|metadata startup-script (default)|`/var/log/cloud/google/startup-script.log`|
 |`cloud-init`|Unit journal file<br/>`journalctl -u f5-gce-initial-setup.service`<br/>`journalctl -u f5-gce-management-route.service`|
 <!-- markdownlint-enable MD033 -->
 
 In addition to the log files above, the boot scripts will write progress to the
 serial console as well. This way you can determine where a script failed even if
 you cannot login to the instance via SSH or serial console. Serial console output
-can be seen in the web GUI:-
+can be seen in the web GUI:
 
 ![gui-serial-console](images/serial-console.png)
 
-Or via `gcloud` command line (replace PROJECT, ZONE, VM_NAME appropriately):-
+Or via `gcloud` command line (replace PROJECT, ZONE, VM_NAME appropriately):
 
 <!-- spell-checker: disable -->
 ```shell
 gcloud compute instances get-serial-port-output --project PROJECT --zone ZONE VM_NAME 2>/dev/null | grep '/config/cloud/gce'
 ```
 
-```shell
+```text
 2020-09-10T11:12:25.005-0700: /config/cloud/gce/initialSetup.sh: Info: Initialisation starting
 2020-09-10T11:12:25.019-0700: /config/cloud/gce/initialSetup.sh: Info: Generating /config/cloud/gce/network.config
 2020-09-10T11:12:25.165-0700: /config/cloud/gce/initialSetup.sh: Info: Waiting for mcpd to be ready
@@ -160,6 +176,9 @@ be re-executed.
 ```shell
 admin@(isolated-vpcs-bigip-1)(cfg-sync In Sync)(Active)(/Common)(tmos)# bash
 [admin@isolated-vpcs-bigip-1:Active:In Sync] ~ # sudo sh /config/cloud/gce/initialSetup.sh
+```
+
+```text
 /config/cloud/gce/initialSetup.sh: Info: Initialisation starting
 /config/cloud/gce/initialSetup.sh: Info: Generating /config/cloud/gce/network.config
 /config/cloud/gce/initialSetup.sh: Info: Waiting for mcpd to be ready
@@ -167,5 +186,3 @@ admin@(isolated-vpcs-bigip-1)(cfg-sync In Sync)(Active)(/Common)(tmos)# bash
 /config/cloud/gce/initialSetup.sh: Info: Initialisation complete
 ```
 <!-- spell-checker: enable -->
-
-### Re-executing a specific script
