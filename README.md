@@ -8,14 +8,19 @@ approach that can be composed into a solution that is consistent for each varian
 of a product.
 <!-- markdownlint-enable MD033 -->
 
-> **NOTE:** The modules do not include setup and configuration of supporting
-> resources, such as ingress firewall rules or service accounts. Where required,
-> the examples will include the bare-minimum setup to demonstrate usage.
+> *TIP:* If you require assistance please join our
+> [Slack GCP channel](https://f5cloudsolutions.slack.com/messages/gcp) and ask!
 
 These modules support deploying supported BIG-IP versions instances to Google
 Cloud in an opinionated manner. By themselves they do not implement a full stack
 or solution, and additional setup will be needed for firewall rules, service
 account creation and role assignments.
+
+> **NOTE:** The modules do not include setup and configuration of supporting
+> resources, such as ingress firewall rules or service accounts. Where required,
+> the examples will include the bare-minimum setup to demonstrate usage.
+
+Examples are provided for standalone, HA and CFE deployments.
 
 ## Rationale
 
