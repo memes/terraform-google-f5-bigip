@@ -28,7 +28,7 @@ resources that have the label `f5_cloud_failover_label` populated with value
 ```hcl
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
-  version                           = "2.0.0"
+  version = "2.0.1"
   project_id                        = "my-project-id"
   num_instances                     = 2
   zones                             = ["us-central1-a", "us-central1-b"]
