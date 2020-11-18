@@ -53,7 +53,7 @@ module "cfe" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.12.29 |
 | google | >= 3.47 |
 
 ## Providers

@@ -53,7 +53,7 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.12.29 |
 
 ## Providers
 
