@@ -1,4 +1,4 @@
-# spell-checker: ignore fileignoreconfig
+# spell-checker: ignore fileignoreconfig tfvars
 ---
 fileignoreconfig:
 - filename: main.tf
