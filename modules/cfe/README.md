@@ -54,7 +54,7 @@ module "cfe" {
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.29 |
-| google | >= 3.47 |
+| google | >= 3.48 |
 
 ## Providers
 

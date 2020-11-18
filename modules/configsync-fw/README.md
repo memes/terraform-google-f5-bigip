@@ -61,13 +61,13 @@ module "configsync_fw" {
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.29 |
-| google | >= 3.47 |
+| google | >= 3.48 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | >= 3.47 |
+| google | >= 3.48 |
 
 ## Inputs
 
