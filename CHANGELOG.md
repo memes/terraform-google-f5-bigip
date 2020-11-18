@@ -16,7 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Terraform 0.12/0.13 notice to main README
 
-## Removed## [2.0.0] and [1.3.0] - 2020-11-18
+## Removed
+
+## [2.0.0] and [1.3.0] - 2020-11-18
 
 > First of the parallel Terraform 0.13 and Terraform 0.12 specific releases.
 
