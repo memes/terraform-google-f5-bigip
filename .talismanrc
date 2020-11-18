@@ -7,3 +7,31 @@ fileignoreconfig:
   checksum: 84b612d9f4adc47176a85f5bda18a4a121a7e73e8bda196abba8a71c0c328714
 - filename: modules/cfe/README.md
   checksum: fb38de4b586459f2adbd718d14e8e55844c48edb9ed9281244e936663b87fb42
+- filename: examples/standalone-1nic/terraform.tfvars.example
+  checksum: d187aa6016a979ada6d5419134f8fa10c9ec8730cda1f410a24c4515624d1fa6
+- filename: examples/ha-2nic/terraform.tfvars.example
+  checksum: cd37a2b8f76f8b66fb155c6e4ffafa30066a1948fa4ddd16e9d3c46c08d90059
+- filename: examples/standalone-2nic/terraform.tfvars.example
+  checksum: 23e7e1ce5a6b07857342dfd10d33240ff0aba3a89dbfaa47675ce16a3cc188a1
+- filename: examples/cfe-2nic/terraform.tfvars.example
+  checksum: 0472729f3702c944422f13eb4d4f1cc7824d11f24fc8a4602edec6b3a3d351d3
+- filename: examples/standalone-3nic/terraform.tfvars.example
+  checksum: d2682184d1c7d15286e5b5615b2b11e4f7ffb8f2faf844762923221fde44f878
+- filename: examples/cfe-3nic/terraform.tfvars.example
+  checksum: c52a5fa1c39ffef755d15389357fd96b2450cb65c859b179fb72644a27eff637
+- filename: examples/standalone-1nic/README.md
+  checksum: f4e99596ee8bf7214129315fe7d327b55f544377372c334a20625a5cd42b34bf
+- filename: examples/ha-3nic/terraform.tfvars.example
+  checksum: 2261d06045d33cd1f395d2b3ab7d4c426d36a07077d9eb7863488dccb6dec8ea
+- filename: examples/standalone-3nic/README.md
+  checksum: 77f83212b1f34821290720c222bb6a2e55126cb2666422d5b1c6131096bd8cef
+- filename: examples/ha-2nic/README.md
+  checksum: 3b97901672fc37b63b7515c79ee8b523e33d61c544449adf4d786b906f3544c3
+- filename: examples/standalone-2nic/README.md
+  checksum: 1e0dc0994c34168c8a4ea95ef61ff8a696af9856afae5598d5cf8a2f2ee9209e
+- filename: examples/cfe-3nic/README.md
+  checksum: 48420897b562d359b0cc8fab24d3e6c8a38399c952ce461e9184e544e535961d
+- filename: examples/cfe-2nic/README.md
+  checksum: 8056324aee214a2ce52f28d9e7d124e4a56c67f0da940db22b5255f51e7776ff
+- filename: examples/ha-3nic/README.md
+  checksum: 53efa440352c83c139199ea2cf528bdddbf663022e01fd3c3fe8b3e2b1cc6045
