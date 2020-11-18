@@ -6,7 +6,7 @@ repos:
     hooks:
       - id: yamllint
         files: \.(yml|yaml|talismanrc)$
-        # cloud-init file *must* begin with #cloud-config so do not enable
+        # cloud-init file *must* begin with #cloud-config so do not include in
         # strict check
         exclude: cloud_config\.yml$
         types: [file, yaml]

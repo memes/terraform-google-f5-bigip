@@ -1,11 +1,18 @@
 # BIG-IP metadata module
 
-This module encapsulates the creation of a BIG-IP image template for consumption
-by other Terraform modules.
+This module encapsulates the creation of a set of metadata entries common to
+BIG-IP Terraform modules as used in this repo. Embedding the required files and
+configuration options allows the various modules to override entries and customise
+for specific needs.
 
-*Note:* This module is unsupported and not an official F5 product.
+This module does not create any GCP or other resources; it's sole output is a map
+of key:value entries that include run-time initialisation through `cloud-init`
+or a shell startup-script (the default for compatibility reasons) that will be
+consumed by higher-order BIG-IP deployment modules.
 
-## Configuration
+> **NOTE:** This module is unsupported and not an official F5 product. If you
+> require assistance please join our
+> [Slack GCP channel](https://f5cloudsolutions.slack.com/messages/gcp) and ask!
 
 <!-- spell-checker:ignore markdownlint hostnames byol payg zoneinfo -->
 <!-- markdownlint-disable MD033 MD034 -->
@@ -15,7 +22,6 @@ by other Terraform modules.
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12 |
-| google | >= 3.47 |
 
 ## Providers
 

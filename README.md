@@ -8,25 +8,28 @@ approach that can be composed into a solution that is consistent for each varian
 of a product.
 <!-- markdownlint-enable MD033 -->
 
-> NOTE: The modules **do not** include setup and configuration of supporting
-> resources, such as ingress firewall rules or service accounts. Where required,
-> the examples will include the bare-minimum setup to show demonstrate usage.
-> Some modules will include links to other public GitHub repositories that
-> demonstrate specific use-cases.
+> *TIP:* If you require assistance please join our
+> [Slack GCP channel](https://f5cloudsolutions.slack.com/messages/gcp) and ask!
 
-<!-- spell-checker:ignore NICs, secretmanager -->
 These modules support deploying supported BIG-IP versions instances to Google
 Cloud in an opinionated manner. By themselves they do not implement a full stack
 or solution, and additional setup will be needed for firewall rules, service
 account creation and role assignments.
 
-### Rationale
+> **NOTE:** The modules do not include setup and configuration of supporting
+> resources, such as ingress firewall rules or service accounts. Where required,
+> the examples will include the bare-minimum setup to demonstrate usage.
+
+Examples are provided for standalone, HA and CFE deployments.
+
+## Rationale
 
 The intent is allow for integration of BIG-IP with GCP infrastructure that is
 managed using Google's
 [Cloud Foundation Toolkit](https://cloud.google.com/foundation-toolkit)
-Terraform modules or an equivalent. These are not fully-baked solutions, but can
-be integrated to build a reusable deployment pipeline.
+Terraform modules or an equivalent. The modules here are not fully-baked
+solutions, but can be integrated with foundational elements to build a reusable
+deployment pipeline.
 
 For example, the modules do not include ingress firewall rule resources as core
 module components. This is because some organizations may mandate use of service
@@ -41,26 +44,25 @@ account based rule will be universally applicable.
 The BIG-IP module will create standalone BIG-IP VMs that include default
 [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)
 and [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/)
-declarations (unless overridden). The sub-modules build on this to extend
+declarations (unless overridden). The sub-modules extend the standalone
 functionality while retaining an the same API (implemented as Terraform input
 variables) where possible. This promotes consistency and reuse when your project
-calls for a CFE or Autoscaling approach. For
-more information about these open the README files in each sub-module.
+calls for a CFE or Autoscaling approach. For more information about these see
+the README files in each sub-module.
 
-1. [x] Standalone BIG-IP instances
-   * [x] Support 1-8 network interfaces
-   * [x] Opinionated startup scripts
-   * [x] Override default gateway when needed; e.g. for bootstrapping in a restricted
-         VPC where data-plane does not have egress.
-   * [x] [AS3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/)
-     *Applications Services 3* extension
-   * [x] [DO](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/)
-     *Declarative Onboarding* extension
-   * [ ] [TS](https://clouddocs.f5.com/products/extensions/f5-telemetry-streaming/latest/)
-     *Telemetry Streaming* extension
-2. [x] [HA](modules/ha/) BIG-IP clustered instances
-   * [x] [CFE](modules/cfe/) [Cloud Failover Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/) support
-3. [ ] Autoscaling and managed groups
+<!-- spell-checker: ignore configsync  -->
+* Standalone BIG-IP instances
+  * Support 1-8 network interfaces
+  * Opinionated startup scripts
+  * Override default gateway when needed; e.g. for bootstrapping in a restricted
+     VPC where data-plane does not have egress
+  * [Applications Services 3](https://clouddocs.f5.com/products/extensions/f5-appsvcs-extension/latest/) extension support
+  * [Declarative Onboarding](https://clouddocs.f5.com/products/extensions/f5-declarative-onboarding/latest/) extension support
+* High-availability BIG-IP clusters
+  * **configsync-fw** helper sub-module to create required firewall rules for ConfigSync on control and data-plane networks
+  * [Cloud Failover Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/) support
+  * **cfe-role** helper sub-module to create a custom role which satisfies the
+    minimum privileges required for CFE to interact with GCP APIs
 
 ## Dependencies
 
@@ -70,7 +72,7 @@ The BIG-IP modules all have a common set of requirements.
 
    A future version of these modules will target Terraform 0.13 once the majority
    of module consumers request it. You can do this by adding a reaction to
-   tracking issue #4.
+   tracking issue [#4](https://github.com/memes/terraform-google-f5-bigip/issues/4).
 
 2. Google Cloud [Secret Manager](https://cloud.google.com/secret-manager)
 
@@ -80,6 +82,7 @@ The BIG-IP modules all have a common set of requirements.
 3. APIs to enable
 
    * Compute Engine `compute.googleapis.com`
+   <!-- spell-checker: ignore secretmanager  -->
    * Secret Manager `secretmanager.googleapis.com`
    * Storage (required for CFE) `storage-api.googleapis.com`
 
@@ -97,8 +100,12 @@ prevent early execution, and automatically disables the service unit after
 success. The simple metadata startup-script will execute on every boot.
 
 For more information on how run-time configuration is applied to each BIG-IP
-instance, see the [configuration details](modules/metadata#configuration) section in [metadata module](modules/metadata).
+instance through the use of Terraform variables see
+[CONFIGURATION](https://github.com/memes/terraform-google-f5-bigip/blob/main/CONFIGURATION.md).
+For guidelines and steps to diagnose deployment and run-time issues see
+[TROUBLESHOOTING](https://github.com/memes/terraform-google-f5-bigip/blob/main/TROUBLESHOOTING.md).
 
+<!-- spell-checker: ignore bigip oslogin nics byol payg vcpus preemptible routable zoneinfo -->
 <!-- markdownlint-disable MD033 MD034 -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

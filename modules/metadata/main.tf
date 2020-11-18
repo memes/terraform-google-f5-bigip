@@ -1,8 +1,5 @@
 terraform {
   required_version = "~> 0.12"
-  required_providers {
-    google = ">= 3.47"
-  }
 }
 
 # Apply any required changes to metadata
