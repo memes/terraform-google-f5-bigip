@@ -1,5 +1,10 @@
 # BIG-IP cluster with Cloud Failover extension
 
+> You are viewing a **2.x release** of the modules, which supports
+> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
+> 1.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This module encapsulates the creation of BIG-IP HA cluster with [Cloud Failover
 Extension](https://clouddocs.f5.com/products/extensions/f5-cloud-failover/latest/)
 to manage run-time update of GCP resources (routes, alias IPs, etc.) on failover
@@ -23,7 +28,7 @@ resources that have the label `f5_cloud_failover_label` populated with value
 ```hcl
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
-  version                           = "1.2.2"
+  version                           = "2.0.0"
   project_id                        = "my-project-id"
   num_instances                     = 2
   zones                             = ["us-central1-a", "us-central1-b"]
@@ -53,8 +58,8 @@ module "cfe" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| google | >= 3.47 |
+| terraform | ~> 0.13.5 |
+| google | >= 3.48 |
 
 ## Providers
 

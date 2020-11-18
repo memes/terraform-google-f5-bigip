@@ -4,15 +4,15 @@
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
 # be changed to the correct resource name/identifier.
 
-# Only supported on Terraform 0.12
+# Only supported on Terraform 0.13
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13.5"
 }
 
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
   source      = "memes/f5-bigip/google//modules/cfe-role"
-  version     = "1.2.2"
+  version     = "2.0.0"
   target_type = "project"
   target_id   = var.project_id
   members     = [format("serviceAccount:%s", var.service_account)]
@@ -21,7 +21,7 @@ module "cfe_role" {
 # Create a firewall rule to allow BIG-IP ConfigSync and failover
 module "cfe_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.2.2"
+  version               = "2.0.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.internal_network
@@ -96,7 +96,7 @@ module "cfe_bucket" {
 
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
-  version                           = "1.2.2"
+  version                           = "2.0.0"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
