@@ -70,9 +70,10 @@ The BIG-IP modules all have a common set of requirements.
 
 1. Terraform 0.12
 
-   A future version of these modules will target Terraform 0.13 once the majority
-   of module consumers request it. You can do this by adding a reaction to
-   tracking issue [#4](https://github.com/memes/terraform-google-f5-bigip/issues/4).
+   > You are viewing a **1.x release** of the modules, which supports
+   > **Terraform 0.12** only. *For modules compatible with Terraform 0.13, use a
+   > 2.x release.* Functionality is identical, but separate releases are required
+   > due to the difference in *variable validation* between Terraform 0.12 and 0.13.
 
 2. Google Cloud [Secret Manager](https://cloud.google.com/secret-manager)
 

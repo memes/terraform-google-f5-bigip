@@ -1,5 +1,10 @@
 # HA ConfigSync firewall sub-module
 
+> You are viewing a **1.x release** of the modules, which supports
+> **Terraform 0.12** only. *For modules compatible with Terraform 0.13, use a
+> 2.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This Terraform module is a helper to create a pair of firewall rules that allow
 ConfigSync traffic between BIG-IP instances on data-plane and control-plane
 networks.
