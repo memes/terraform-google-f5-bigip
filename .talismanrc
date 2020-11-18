@@ -7,6 +7,8 @@ fileignoreconfig:
   checksum: 84b612d9f4adc47176a85f5bda18a4a121a7e73e8bda196abba8a71c0c328714
 - filename: modules/cfe/README.md
   checksum: fb38de4b586459f2adbd718d14e8e55844c48edb9ed9281244e936663b87fb42
+- filename: modules/ha/README.md
+  checksum: d56f420982e55ca5dbb96b3744437d5b8f669d842bdca2288b3938d9d87dd3d0
 - filename: examples/standalone-1nic/terraform.tfvars.example
   checksum: d187aa6016a979ada6d5419134f8fa10c9ec8730cda1f410a24c4515624d1fa6
 - filename: examples/ha-2nic/terraform.tfvars.example
