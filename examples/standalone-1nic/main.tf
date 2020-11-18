@@ -7,7 +7,8 @@ terraform {
 }
 
 module "instance" {
-  source                            = "git::https://github.com/memes/f5-google-terraform-modules?ref=enhancement/publish_bigip_module"
+  source                            = "memes/f5-bigip/google"
+  version                           = "1.2.1"
   project_id                        = var.project_id
   zones                             = [var.zone]
   service_account                   = var.service_account
