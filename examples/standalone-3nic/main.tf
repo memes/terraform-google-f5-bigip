@@ -11,7 +11,7 @@ terraform {
 
 module "instance" {
   source                = "memes/f5-bigip/google"
-  version               = "1.2.1"
+  version               = "1.2.2"
   project_id            = var.project_id
   zones                 = [var.zone]
   service_account       = var.service_account
