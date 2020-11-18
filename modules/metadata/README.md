@@ -21,7 +21,7 @@ consumed by higher-order BIG-IP deployment modules.
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.13.5 |
 
 ## Providers
 

@@ -23,7 +23,7 @@ resources that have the label `f5_cloud_failover_label` populated with value
 ```hcl
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
-  version                           = "1.2.2"
+  version                           = "2.0.0"
   project_id                        = "my-project-id"
   num_instances                     = 2
   zones                             = ["us-central1-a", "us-central1-b"]
@@ -53,7 +53,7 @@ module "cfe" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.13.5 |
 | google | >= 3.47 |
 
 ## Providers

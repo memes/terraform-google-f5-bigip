@@ -1,9 +1,8 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13.5"
   required_providers {
     google = ">= 3.47"
   }
-  experiments = [variable_validation]
 }
 
 locals {

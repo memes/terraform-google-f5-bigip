@@ -24,7 +24,7 @@ defined.
 ```hcl
 module "configsync_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.2.2"
+  version               = "2.0.0"
   project_id            = "my-project-id"
   bigip_service_account = "bigip@my-project-id.iam.gserviceaccount.com"
   dataplane_network     = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/external"
@@ -42,7 +42,7 @@ defined, using the `internal` network for ConfigSync traffic on data-plane.
 ```hcl
 module "configsync_fw" {
   source                   = "memes/f5-bigip/google//modules/configsync-fw"
-  version                  = "1.2.2"
+  version                  = "2.0.0"
   project_id               = "my-project-id"
   bigip_service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
   dataplane_network        = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/internal"
@@ -60,7 +60,7 @@ module "configsync_fw" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.13.5 |
 | google | >= 3.47 |
 
 ## Providers

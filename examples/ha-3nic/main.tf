@@ -4,15 +4,15 @@
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
 # be changed to the correct resource name/identifier.
 
-# Only supported on Terraform 0.12
+# Only supported on Terraform 0.13
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13.5"
 }
 
 # Create a firewall rule to allow BIG-IP ConfigSync
 module "ha_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.2.2"
+  version               = "2.0.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.internal_network
@@ -51,7 +51,7 @@ resource "google_compute_address" "int" {
 
 module "ha" {
   source                            = "memes/f5-bigip/google//modules/ha"
-  version                           = "1.2.2"
+  version                           = "2.0.0"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
