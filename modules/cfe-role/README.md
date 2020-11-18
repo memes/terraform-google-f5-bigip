@@ -1,5 +1,10 @@
 # CFE-Role sub-module
 
+> You are viewing a **1.x release** of the modules, which supports
+> **Terraform 0.12** only. *For modules compatible with Terraform 0.13, use a
+> 2.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This Terraform module is a helper to create a custom IAM role that has the
 minimal permissions required for Cloud Failover Extension to function correctly.
 The role will be created in the specified project by default, but can be created
@@ -17,7 +22,7 @@ as an *Organization role* if preferred, for reuse across projects.
 ```hcl
 module "cfe_role" {
   source      = "memes/f5-bigip/google//modules/cfe-role"
-  version = "1.2.2"
+  version = "1.3.0"
   target_id   = "my-project-id"
   members     = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
 }
@@ -30,7 +35,7 @@ module "cfe_role" {
 ```hcl
 module "cfe_org_role" {
   source      = "memes/f5-bigip/google//modules/cfe-role"
-  version = "1.2.2"
+  version = "1.3.0"
   target_type = "org"
   target_id   = "my-org-id"
 }
@@ -44,8 +49,8 @@ module "cfe_org_role" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| google | >= 3.47 |
+| terraform | ~> 0.12.29, < 0.13 |
+| google | >= 3.48 |
 
 ## Providers
 

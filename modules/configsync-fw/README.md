@@ -1,5 +1,10 @@
 # HA ConfigSync firewall sub-module
 
+> You are viewing a **1.x release** of the modules, which supports
+> **Terraform 0.12** only. *For modules compatible with Terraform 0.13, use a
+> 2.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This Terraform module is a helper to create a pair of firewall rules that allow
 ConfigSync traffic between BIG-IP instances on data-plane and control-plane
 networks.
@@ -24,7 +29,7 @@ defined.
 ```hcl
 module "configsync_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.2.2"
+  version = "1.3.0"
   project_id            = "my-project-id"
   bigip_service_account = "bigip@my-project-id.iam.gserviceaccount.com"
   dataplane_network     = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/external"
@@ -42,7 +47,7 @@ defined, using the `internal` network for ConfigSync traffic on data-plane.
 ```hcl
 module "configsync_fw" {
   source                   = "memes/f5-bigip/google//modules/configsync-fw"
-  version                  = "1.2.2"
+  version = "1.3.0"
   project_id               = "my-project-id"
   bigip_service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
   dataplane_network        = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/internal"
@@ -60,14 +65,14 @@ module "configsync_fw" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| google | >= 3.47 |
+| terraform | ~> 0.12.29, < 0.13 |
+| google | >= 3.48 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | >= 3.47 |
+| google | >= 3.48 |
 
 ## Inputs
 

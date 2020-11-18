@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] and [1.3.0] - 2020-11-18
+
+> First of the parallel Terraform 0.13 and Terraform 0.12 specific releases.
+
+## Added
+
+## Changed
+
+- Enforcing Terraform 0.12.x or 0.13.x for 1.x and 2.x releases, respectively
+- Bumped Google provider to 3.48.0
+- Bumped Google IAM module to 6.4.0
+
+## Removed
+
 ## [1.2.2] - 2020-11-18
 
 ### Added
@@ -98,6 +112,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+[2.0.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.2...v2.0.0
+[1.3.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.2...v1.3.0
 [1.2.2]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.1.1...v1.2.0

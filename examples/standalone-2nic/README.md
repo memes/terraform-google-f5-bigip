@@ -1,5 +1,10 @@
 # Standalone BIG-IP with 2-NIC deployment
 
+> You are viewing a **1.x release** of the modules, which supports
+> **Terraform 0.12** only. *For modules compatible with Terraform 0.13, use a
+> 2.x release.* Functionality is identical, but separate releases are required
+> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+
 This example demonstrates how to use the
 [BIG-IP module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest)
 to deploy a single BIG-IP instance in a 2-NIC configuration.
@@ -53,7 +58,7 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
+| terraform | ~> 0.12.29, < 0.13 |
 
 ## Providers
 

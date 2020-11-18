@@ -6,12 +6,12 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.12.29, < 0.13"
 }
 
 module "instance" {
   source                = "memes/f5-bigip/google"
-  version               = "1.2.2"
+  version               = "1.3.0"
   project_id            = var.project_id
   zones                 = [var.zone]
   service_account       = var.service_account

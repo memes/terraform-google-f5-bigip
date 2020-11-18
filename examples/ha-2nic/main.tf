@@ -6,13 +6,13 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.12.29, < 0.13"
 }
 
 # Create a firewall rule to allow BIG-IP ConfigSync
 module "ha_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.2.2"
+  version               = "1.3.0"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.external_network
@@ -41,7 +41,7 @@ resource "google_compute_address" "mgt" {
 
 module "ha" {
   source                            = "memes/f5-bigip/google//modules/ha"
-  version                           = "1.2.2"
+  version                           = "1.3.0"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
