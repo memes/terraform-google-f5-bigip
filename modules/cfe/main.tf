@@ -22,6 +22,8 @@ module "ha" {
   zones                  = var.zones
   num_instances          = var.num_instances
   instance_name_template = var.instance_name_template
+  domain_name            = var.domain_name
+  search_domains         = var.search_domains
   description            = var.description
   metadata               = local.metadata
   # Make sure the labels applied to instances have the CFE specific key-value pair

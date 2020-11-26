@@ -22,8 +22,8 @@ module "metadata" {
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   custom_script                     = var.custom_script
   use_cloud_init                    = var.use_cloud_init
-  hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
-  search_domains                    = coalescelist(var.search_domains, flatten(["google.internal", [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]]))
+  hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s", format(var.instance_name_template, i), coalesce(var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)))]
+  search_domains                    = coalescelist(var.search_domains, compact(flatten(["google.internal", [var.domain_name], [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]])))
   do_payloads                       = var.do_payloads
   as3_payloads                      = var.as3_payloads
   install_cloud_libs                = var.install_cloud_libs
