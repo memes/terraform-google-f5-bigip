@@ -34,6 +34,16 @@ be replaced with the ordinal of each instance. Default value is 'bigip-%d'.
 EOD
 }
 
+variable "domain_name" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional domain name to append to generated instance names to fully-qualify
+them. If an empty string (default), then the instances will be qualified as-per
+Google Cloud internal naming conventions ".ZONE.c.PROJECT_ID.internal".
+EOD
+}
+
 variable "description" {
   type        = string
   default     = ""

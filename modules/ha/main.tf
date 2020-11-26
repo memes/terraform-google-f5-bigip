@@ -7,7 +7,7 @@ terraform {
 }
 
 locals {
-  hostnames = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
+  hostnames = [for i in range(0, var.num_instances) : format("%s.%s", format(var.instance_name_template, i), coalesce(var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)))]
   # Use first internal network addresses for sync group (per published guidelines)
   # if there is at least one internal subnet defined. Fallback to external (nic0)
   sync_group_addresses = length(var.internal_subnetworks) > 0 ? [for i in range(0, var.num_instances) : element(element(var.internal_subnetwork_network_ips, i), 0)] : var.external_subnetwork_network_ips
@@ -15,7 +15,7 @@ locals {
     hostname         = element(local.hostnames, i)
     allow_phone_home = var.allow_phone_home
     dns_servers      = var.dns_servers
-    search_domains   = coalescelist(var.search_domains, ["google.internal", format("%s.c.%s.internal", element(var.zones, i), var.project_id)])
+    search_domains   = coalescelist(var.search_domains, compact(["google.internal", var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)]))
     ntp_servers      = var.ntp_servers
     timezone         = var.timezone
     modules          = var.modules
@@ -42,6 +42,7 @@ module "instance" {
   zones                           = var.zones
   num_instances                   = var.num_instances
   instance_name_template          = var.instance_name_template
+  domain_name                     = var.domain_name
   description                     = var.description
   metadata                        = merge(var.metadata, local.allow_service_default_ext, local.allow_service_default_int)
   labels                          = var.labels
