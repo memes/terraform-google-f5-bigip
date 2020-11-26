@@ -43,6 +43,16 @@ an empty string, which will be replaced by a generated description at run-time.
 EOD
 }
 
+variable "domain_name" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional domain name to append to generated instance names to fully-qualify
+them. If an empty string (default), then the instances will be qualified as-per
+Google Cloud internal naming conventions ".ZONE.c.PROJECT_ID.internal".
+EOD
+}
+
 variable "metadata" {
   type        = map(string)
   default     = {}
