@@ -1,4 +1,4 @@
-# Example Terraform to create a three-NIC instance of BIG-IP using default
+# Example Terraform to create a two-NIC instance of BIG-IP using default
 # compute service account, and a Marketplace PAYG image.
 #
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
@@ -85,8 +85,11 @@ module "cfe_bucket" {
 }
 
 module "cfe" {
+  /* TODO: m.emes@f5.com - update with new module version
   source                            = "memes/f5-bigip/google//modules/cfe"
   version                           = "2.0.1"
+  */
+  source                            = "../../modules/cfe/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
