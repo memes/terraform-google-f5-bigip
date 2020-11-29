@@ -40,8 +40,11 @@ resource "google_compute_address" "mgt" {
 }
 
 module "ha" {
+  /* TODO: m.emes@f5.com
   source                            = "memes/f5-bigip/google//modules/ha"
-  version                           = "1.3.1"
+  version                           = "2.0.1"
+  */
+  source                            = "../../modules/ha/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
