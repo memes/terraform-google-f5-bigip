@@ -1,5 +1,5 @@
 <!-- spell-checker: ignore NIC -->
-# Cloud Failover Extension sub-module in a 2-NIC configuration with fully-qualified hostnames
+# Cloud Failover Extension sub-module (2-NIC) with FQDN hostnames generated using hex digits starting at number 11
 
 > You are viewing a **2.x release** of the modules, which supports
 > **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
@@ -29,20 +29,22 @@ installed and configured. The
 * BIG-IP will use service account: `bigip@my-project-id.iam.gserviceaccount.com`
 * BIG-IP admin user password is stored in Secret Manager under the key:
   `bigip-admin-password-key`
-* BIG-IPs will be named using pattern 'cfe-NN` with domain name `example.com`
+* BIG-IPs will be named using pattern `cfe-XX.example.com`, where XX is hexadecimal
+  and the first instance will be at decimal 11
 
 <!-- spell-checker: disable -->
 ```hcl
-project_id             = "my-project-id"
-zone                   = "us-west1-c"
-external_network       = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/external"
-external_subnet        = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
-management_network     = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/management"
-management_subnet      = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/mgmt-west"
-admin_password_key     = "bigip-admin-password-key"
-service_account        = "bigip@my-project-id.iam.gserviceaccount.com"
-instance_name_template = "cfe-%02d"
-domain_name            = "example.com"
+project_id              = "my-project-id"
+zone                    = "us-west1-c"
+external_network        = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/external"
+external_subnet         = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
+management_network      = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/management"
+management_subnet       = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/mgmt-west"
+admin_password_key      = "bigip-admin-password-key"
+service_account         = "bigip@my-project-id.iam.gserviceaccount.com"
+instance_name_template  = "cfe-%02x"
+instance_ordinal_offset = 11
+domain_name             = "example.com"
 ```
 <!-- spell-checker: enable -->
 
@@ -57,8 +59,8 @@ domain_name            = "example.com"
 ### Resources created
 
 <!-- spell-checker: ignore payg -->
-* 2x VMs running BIG-IP v15.1 PAYG license named `cfe-00.example.com` and
-  `cfe-01.example.com`.
+* 2x VMs running BIG-IP v15.1 PAYG license named `cfe-0b.example.com` and
+  `cfe-0c.example.com`.
 * 3 reserved internal IP addresses on `external` VPC network
   * 2 addresses will be assigned to BIG-IP instances
   * 1 will be used for a VIP that will be assigned to the active BIG-IP as an
@@ -101,6 +103,7 @@ domain_name            = "example.com"
 | external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
 | image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-0-1-3-0-0-4-payg-good-5gbps-200318182229"` | no |
 | instance\_name\_template | A format string that will be used when naming instance, that should include a<br>format token for including ordinal number. E.g. 'bigip-%d', such that %d will<br>be replaced with the ordinal of each instance. | `string` | n/a | yes |
+| instance\_ordinal\_offset | The offset to apply to zero-based instance naming. | `number` | n/a | yes |
 | management\_network | The fully-qualified network self-link for the *management* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
 | management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
 | num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
