@@ -18,15 +18,16 @@ locals {
 
 # CFE deployment is simply HA with a custom script to apply CFE JSON
 module "ha" {
-  source                 = "./../ha/"
-  project_id             = var.project_id
-  zones                  = var.zones
-  num_instances          = var.num_instances
-  instance_name_template = var.instance_name_template
-  domain_name            = var.domain_name
-  search_domains         = var.search_domains
-  description            = var.description
-  metadata               = local.metadata
+  source                  = "./../ha/"
+  project_id              = var.project_id
+  zones                   = var.zones
+  num_instances           = var.num_instances
+  instance_name_template  = var.instance_name_template
+  instance_ordinal_offset = var.instance_ordinal_offset
+  domain_name             = var.domain_name
+  search_domains          = var.search_domains
+  description             = var.description
+  metadata                = local.metadata
   # Make sure the labels applied to instances have the CFE specific key-value pair
   labels                          = merge(var.labels, { "${var.cfe_label_key}" = var.cfe_label_value })
   tags                            = var.tags
