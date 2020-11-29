@@ -111,5 +111,6 @@ module "cfe" {
   cfe_label_key                     = "f5_cloud_failover_label"
   cfe_label_value                   = "cfe-example"
   instance_name_template            = var.instance_name_template
+  instance_ordinal_offset           = var.instance_ordinal_offset
   domain_name                       = var.domain_name
 }
