@@ -39,3 +39,46 @@ fileignoreconfig:
   checksum: 8056324aee214a2ce52f28d9e7d124e4a56c67f0da940db22b5255f51e7776ff
 - filename: examples/ha-3nic/README.md
   checksum: 160f7c8fa12d0ec57fc629283541d7bf803534313f6aa4f54ae12fc0bafcef3b
+
+- filename: examples/ha-2nic-fqdn/terraform.tfvars.example
+  checksum: 8d2a1e0eb4710d8ecdf29b449ec8be046fd72363afda0052013556d91500adca
+- filename: examples/ha-3nic-fqdn-multi-az/terraform.tfvars.example
+  checksum: 0d8f06c4ef73e73e54cbc9fabf3511d89278b6c33f0a16a3bf61694aa5c4b629
+- filename: examples/cfe-2nic-multi-az/terraform.tfvars.example
+  checksum: 1d414f8d76a2480e0ee6ec603b3007830d36c60307191429a3d044c2a70fc762
+- filename: examples/cfe-2nic-fqdn/terraform.tfvars.example
+  checksum: d45db2f8814e04085cda7b76c46a3ed24b2267fa7f49f05434ef43afc9b42918
+- filename: examples/cfe-3nic-fqdn-multi-az/terraform.tfvars.example
+  checksum: 84fa9c2898f70fb5c9228fcc638a9f51b61a0392679fd387ef0049db126c16d2
+- filename: examples/ha-2nic-multi-az/terraform.tfvars.example
+  checksum: 22225296b81a16402c96c90c5a794fb22a628ee87ca6a87d1eeb7c5f56ba2047
+- filename: examples/ha-3nic-fqdn-multi-az/main.tf
+  checksum: 006f42f3be594f553ed451135167d3c9e4a26ba3a02d0fbca67ef8e07ab7c61a
+- filename: examples/standalone-1nic-fqdn-multi-az/main.tf
+  checksum: 646d9dcd9efd6b3508f61d0d47fe4b1ca93174ff5322aaab3ac653eb4966b590
+- filename: examples/standalone-1nic-fqdn-multi-az/terraform.tfvars.example
+  checksum: 44d18419ebf07457b017fb59554bf120ac981c41e4d23b9a4a437f05bac1d720
+- filename: examples/cfe-2nic-multi-az/main.tf
+  checksum: 703e91132c102e225cd5e588305135f5238bbb629c09c9b18cff1943c905efa1
+- filename: examples/standalone-1nic-fqdn-multi-az/README.md
+  checksum: 0f59e57fcaa33eb7faff96590babc820dc8359b646599089aa63b1eb6e053e85
+- filename: examples/cfe-3nic-fqdn-multi-az/main.tf
+  checksum: f0d58f8186e1868340e8b14fd599692ee4e77b30081fdfc8f4aaf33aeb344cbd
+- filename: examples/ha-2nic-fqdn/main.tf
+  checksum: 443bfd7de99df646ed6a48efa649da918cf2aaa650ed81d8a3f07416de1aabaf
+- filename: examples/cfe-2nic-fqdn/main.tf
+  checksum: 88ee54c10de31c1bac6cec3231b61a7b00930b7a80fc8c7fb2d84800eaa7e1e9
+- filename: examples/cfe-2nic-multi-az/README.md
+  checksum: 23157f8b008446bfa4a92fc105f8488f1bff340ea51abe5f1a876594ce52e390
+- filename: examples/cfe-3nic-fqdn-multi-az/README.md
+  checksum: 2fc83e81e80221a53c50f03e404ddd6fe4a94ab0829057d157b7b351aa2089ac
+- filename: examples/ha-2nic-multi-az/main.tf
+  checksum: e91c3503ffbca04d8931fcc40d51bf70edafe70f082389f26040b38e1a899169
+- filename: examples/ha-2nic-multi-az/README.md
+  checksum: 1455ee286e86ab8b84d58ba22a95e7e408812823604d23ef8690ea4070bfd15d
+- filename: examples/ha-2nic-fqdn/README.md
+  checksum: 80264d939f52360aaf5f5d2021505c28054c50f03d1aecf56f7d8138e6e70a4f
+- filename: examples/ha-3nic-fqdn-multi-az/README.md
+  checksum: 4934609490573b7c1ffa56f765f50e63f4b6ee8bc82fcdc02804d51394b01f61
+- filename: examples/cfe-2nic-fqdn/README.md
+  checksum: c010cd9fb47005bc76ec273a90e63b22e7e9bacde0f67364c4ddcf816b770a68
