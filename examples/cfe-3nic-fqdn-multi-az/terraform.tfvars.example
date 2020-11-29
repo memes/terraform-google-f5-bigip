@@ -1,0 +1,12 @@
+project_id             = "my-project-id"
+zones                  = ["us-west1-a", "us-west1-b"]
+external_network       = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/external"
+external_subnet        = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
+management_network     = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/management"
+management_subnet      = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/mgmt-west"
+internal_network       = "https://www.googleapis.com/compute/v1/projects/my-project-id/global/networks/internal"
+internal_subnet        = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/int-west"
+admin_password_key     = "bigip-admin-password-key"
+service_account        = "bigip@my-project-id.iam.gserviceaccount.com"
+instance_name_template = "cfe-%02d"
+domain_name            = "example.com"
