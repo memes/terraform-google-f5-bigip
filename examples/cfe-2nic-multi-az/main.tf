@@ -28,6 +28,10 @@ module "cfe_fw" {
   management_network    = var.management_network
 }
 
+locals {
+  region = replace(element(var.zones, 0), "/-[a-z]$/", "")
+}
+
 # Reserve IPs on external subnet for BIG-IP nic0s
 resource "google_compute_address" "ext" {
   count        = var.num_instances
@@ -35,7 +39,7 @@ resource "google_compute_address" "ext" {
   name         = format("bigip-ext-%d", count.index)
   subnetwork   = var.external_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Reserve VIP on external subnet for BIG-IP
@@ -44,7 +48,7 @@ resource "google_compute_address" "vip" {
   name         = "bigip-ext-vip"
   subnetwork   = var.external_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Reserve IPs on management subnet for BIG-IP nic1s
@@ -54,7 +58,7 @@ resource "google_compute_address" "mgt" {
   name         = format("bigip-mgt-%d", count.index)
   subnetwork   = var.management_subnet
   address_type = "INTERNAL"
-  region       = replace(var.zone, "/-[a-z]$/", "")
+  region       = local.region
 }
 
 # Random name for CFE bucket
@@ -92,7 +96,7 @@ module "cfe" {
   source                            = "../../modules/cfe/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
-  zones                             = [var.zone]
+  zones                             = var.zones
   machine_type                      = "n1-standard-8"
   service_account                   = var.service_account
   external_subnetwork               = var.external_subnet
