@@ -39,7 +39,6 @@ fileignoreconfig:
   checksum: 8056324aee214a2ce52f28d9e7d124e4a56c67f0da940db22b5255f51e7776ff
 - filename: examples/ha-3nic/README.md
   checksum: 160f7c8fa12d0ec57fc629283541d7bf803534313f6aa4f54ae12fc0bafcef3b
-
 - filename: examples/ha-2nic-fqdn/terraform.tfvars.example
   checksum: 8d2a1e0eb4710d8ecdf29b449ec8be046fd72363afda0052013556d91500adca
 - filename: examples/ha-3nic-fqdn-multi-az/terraform.tfvars.example
@@ -100,3 +99,5 @@ fileignoreconfig:
   checksum: 5cf6be10ad1ab375d45416c4166933d0e988683a0381bb01200f9bcb5875af39
 - filename: examples/ha-2nic-1-based-fqdn/README.md
   checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596
+- filename: modules/metadata/files/verifyHash
+  checksum: 2243b2b058240581d7a415f9dc6d749ad0f49a2ee07c04059c31e6c9daaf99a1
