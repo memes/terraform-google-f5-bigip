@@ -6,6 +6,10 @@ terraform {
   experiments = [variable_validation]
 }
 
+locals {
+  hostnames = [for i in range(0, var.num_instances) : format("%s.%s", format(var.instance_name_template, i + var.instance_ordinal_offset), coalesce(var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)))]
+}
+
 # Generate metadata for each instance
 module "metadata" {
   source                            = "./modules/metadata/"
@@ -23,8 +27,8 @@ module "metadata" {
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   custom_script                     = var.custom_script
   use_cloud_init                    = var.use_cloud_init
-  hostnames                         = [for i in range(0, var.num_instances) : format("%s.%s.c.%s.internal", format(var.instance_name_template, i), element(var.zones, i), var.project_id)]
-  search_domains                    = coalescelist(var.search_domains, flatten(["google.internal", [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]]))
+  hostnames                         = local.hostnames
+  search_domains                    = coalescelist(var.search_domains, compact(flatten(["google.internal", [var.domain_name], [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]])))
   do_payloads                       = var.do_payloads
   as3_payloads                      = var.as3_payloads
   install_cloud_libs                = var.install_cloud_libs
@@ -33,7 +37,8 @@ module "metadata" {
 resource "google_compute_instance" "bigip" {
   count    = var.num_instances
   project  = var.project_id
-  name     = format(var.instance_name_template, count.index)
+  name     = format(var.instance_name_template, count.index + var.instance_ordinal_offset)
+  hostname = element(local.hostnames, count.index)
   zone     = element(var.zones, count.index)
   labels   = var.labels
   metadata = element(module.metadata.metadata, count.index)
