@@ -12,14 +12,6 @@ The compute zone which will host the BIG-IP VMs.
 EOD
 }
 
-variable "external_network" {
-  type        = string
-  description = <<EOD
-The fully-qualified network self-link for the *external* network to which CFE
-firewall rules will be deployed.
-EOD
-}
-
 variable "external_subnet" {
   type        = string
   description = <<EOD
@@ -28,18 +20,18 @@ interface.
 EOD
 }
 
-variable "management_network" {
-  type        = string
-  description = <<EOD
-The fully-qualified network self-link for the *management* network to which CFE
-firewall rules will be deployed.
-EOD
-}
-
 variable "management_subnet" {
   type        = string
   description = <<EOD
 The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*
+interface.
+EOD
+}
+
+variable "internal_subnet" {
+  type        = string
+  description = <<EOD
+The fully-qualified subnetwork self-link to attach to the BIG-IP VM *internal*
 interface.
 EOD
 }
@@ -68,20 +60,19 @@ release as of the publishing of this module.
 EOD
 }
 
-variable "num_instances" {
-  type        = number
-  default     = 2
-  description = <<EOD
-The number of BIG-IP instances to create. Default is 2.
-EOD
-}
-
 variable "instance_name_template" {
   type        = string
   description = <<EOD
 A format string that will be used when naming instance, that should include a
 format token for including ordinal number. E.g. 'bigip-%d', such that %d will
 be replaced with the ordinal of each instance.
+EOD
+}
+
+variable "instance_ordinal_offset" {
+  type        = number
+  description = <<EOD
+The offset to apply to zero-based instance naming.
 EOD
 }
 

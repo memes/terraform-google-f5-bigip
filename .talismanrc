@@ -82,3 +82,21 @@ fileignoreconfig:
   checksum: 4934609490573b7c1ffa56f765f50e63f4b6ee8bc82fcdc02804d51394b01f61
 - filename: examples/cfe-2nic-fqdn/README.md
   checksum: c010cd9fb47005bc76ec273a90e63b22e7e9bacde0f67364c4ddcf816b770a68
+- filename: examples/standalone-3nic-fqdn-1-based/terraform.tfvars.example
+  checksum: f1d9de1323799e490211133cf0d4861934f831d5544bdd1699ccc2b11b7de05b
+- filename: examples/ha-2nic-1-based-fqdn/terraform.tfvars.example
+  checksum: 736ff559fdaef6787a1e20ce7de298ce7e671f21759d71c4e9cf81b716462fa4
+- filename: examples/cfe-2nic-hex-offset-fqdn/terraform.tfvars.example
+  checksum: 3801a49c29741ebb668695a4984eaf91a893e39452c9c5b9a3f305c71cd931f8
+- filename: examples/standalone-3nic-fqdn-1-based/main.tf
+  checksum: 59d976fbe27a4173d0775e9c4059344f59278ead377c464b85e94d35baf4d110
+- filename: examples/ha-2nic-1-based-fqdn/main.tf
+  checksum: ec1819c17b381b1ff3c03a70aa82817a59180043a946eba8e6a6b2958cbff879
+- filename: examples/cfe-2nic-hex-offset-fqdn/main.tf
+  checksum: 989e37dd297c3978d668557a3a7cec1cfbb03e6463926f25dff8ffeedfbe6a58
+- filename: examples/standalone-3nic-fqdn-1-based/README.md
+  checksum: ab9fda1c5666db6f267029fffb0b96c9227bf25b623c8921b673095e43faa9fa
+- filename: examples/cfe-2nic-hex-offset-fqdn/README.md
+  checksum: 5cf6be10ad1ab375d45416c4166933d0e988683a0381bb01200f9bcb5875af39
+- filename: examples/ha-2nic-1-based-fqdn/README.md
+  checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596

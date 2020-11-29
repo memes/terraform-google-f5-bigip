@@ -85,6 +85,13 @@ be replaced with the ordinal of each instance.
 EOD
 }
 
+variable "instance_ordinal_offset" {
+  type        = number
+  description = <<EOD
+The offset to apply to zero-based instance naming.
+EOD
+}
+
 variable "domain_name" {
   type        = string
   description = <<EOD

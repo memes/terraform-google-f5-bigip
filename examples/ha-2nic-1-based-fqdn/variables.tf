@@ -15,7 +15,7 @@ EOD
 variable "external_network" {
   type        = string
   description = <<EOD
-The fully-qualified network self-link for the *external* network to which CFE
+The fully-qualified network self-link for the *external* network to which HA
 firewall rules will be deployed.
 EOD
 }
@@ -31,7 +31,7 @@ EOD
 variable "management_network" {
   type        = string
   description = <<EOD
-The fully-qualified network self-link for the *management* network to which CFE
+The fully-qualified network self-link for the *management* network to which HA
 firewall rules will be deployed.
 EOD
 }
@@ -82,6 +82,13 @@ variable "instance_name_template" {
 A format string that will be used when naming instance, that should include a
 format token for including ordinal number. E.g. 'bigip-%d', such that %d will
 be replaced with the ordinal of each instance.
+EOD
+}
+
+variable "instance_ordinal_offset" {
+  type        = number
+  description = <<EOD
+The offset to apply to zero-based instance naming.
 EOD
 }
 
