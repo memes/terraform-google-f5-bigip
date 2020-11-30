@@ -25,7 +25,7 @@ variable "management_firewall_name" {
     error_message = "The management_firewall_name variable must be valid RFC1035."
   }
   description = <<EOD
-The name to use for Manangement (control-plane) network firewall rule. Default is
+The name to use for Management (control-plane) network firewall rule. Default is
 'allow-bigip-configsync-mgt'.
 EOD
 }
