@@ -12,15 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support custom domain names (issue #29)
-- Support changing the base number and format specifier used when generating instance names (issue #24)
-- Telemetry Streaming extension installed by default (issue #22)
+- Support custom domain names (issue [#29](https://github.com/memes/terraform-google-f5-bigip/issues/29))
+- Support changing the base number and format specifier used when generating instance names (issue [#24](https://github.com/memes/terraform-google-f5-bigip/issues/24))
+- Support setting admin password via cleartext metadata (issue [#21](https://github.com/memes/terraform-google-f5-bigip/issues/21))
+- Telemetry Streaming extension installed by default (issue [#22](https://github.com/memes/terraform-google-f5-bigip/issues/22))
 
 ### Changed
 
-- Fixed bug installing RPM extensions on BIG-IP v15.1.1 and BIG-IP v15.1.2 (issue #18)
-- Fixed bug when declaring complex 'allow-service' requirements (issue #25)
-- Bumped Cloud Libraries, AS3, DO, and CFE extensions to latest (issue #22)
+- Fixed bug installing RPM extensions on BIG-IP v15.1.1 and BIG-IP v15.1.2 (issue [#18](https://github.com/memes/terraform-google-f5-bigip/issues/18))
+- Fixed bug when declaring complex 'allow-service' requirements (issue [#25](https://github.com/memes/terraform-google-f5-bigip/issues/25))
+- Bumped Cloud Libraries, AS3, DO, and CFE extensions to latest (issue [#22](https://github.com/memes/terraform-google-f5-bigip/issues/22))
 
 ### Removed
 
