@@ -45,6 +45,9 @@ locals {
   ssh_keys = {
     ssh-keys = var.ssh_keys
   }
+  secret_implementor = {
+    secret_implementor = coalesce(var.secret_implementor, "invalid")
+  }
   metadata = [for i in range(0, var.num_instances) : merge(var.metadata,
     {
       enable-oslogin     = upper(var.enable_os_login)
@@ -61,5 +64,6 @@ locals {
     },
     var.ssh_keys != "" ? local.ssh_keys : local.empty,
     var.use_cloud_init ? local.cloud_init : local.startup_script,
+    var.secret_implementor != "" ? local.secret_implementor : local.empty,
   )]
 }

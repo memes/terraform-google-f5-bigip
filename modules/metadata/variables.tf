@@ -182,15 +182,33 @@ EOD
 }
 
 variable "admin_password_secret_manager_key" {
-  type        = string
+  type = string
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_-]{1,255}$", var.admin_password_secret_manager_key))
+    error_message = "The admin_password_secret_manager_key must be valid."
+  }
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
 BIG-IP admin account's password will be changed to the value retrieved from GCP
-Secret Manager using this key.
+Secret Manager (or other implementor - see `secret_implementor`) using this key.
 
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
 the secret value associated with this key, then the BIG-IP onboarding will fail
 to complete, and onboarding will require manual intervention.
+EOD
+}
+
+variable "secret_implementor" {
+  type    = string
+  default = ""
+  validation {
+    condition     = var.secret_implementor == "" || contains(["google_secret_manager", "metadata"], var.secret_implementor)
+    error_message = "The secret_implementor variable must be empty or a supported secret implementor."
+  }
+  description = <<EOD
+The secret retrieval implementor to use; default value is an empty string.
+Must be an empty string, 'google_secret_manager', or 'metadata'. Future
+enhancements will add other implementors.
 EOD
 }
 
