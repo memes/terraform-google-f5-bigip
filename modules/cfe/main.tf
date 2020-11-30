@@ -66,6 +66,7 @@ module "ha" {
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  secret_implementor                = var.secret_implementor
   as3_payloads                      = var.as3_payloads
   do_payloads                       = var.do_payloads
   install_cloud_libs                = var.install_cloud_libs

@@ -2,15 +2,15 @@
 ---
 fileignoreconfig:
 - filename: main.tf
-  checksum: feb6e1072a5db8caca993a507146ac049ff9c09adc0513be3573f34896103373
+  checksum: 230ab961635cb253d891701457b6023ffbcd15071266509680a6417685c755df
 - filename: README.md
-  checksum: 84b612d9f4adc47176a85f5bda18a4a121a7e73e8bda196abba8a71c0c328714
+  checksum: c87f7cf44e88eb25fdf669a8f19f96ae2b5917fdf9791902b7511622f08aed9e
 - filename: modules/cfe/README.md
-  checksum: fb38de4b586459f2adbd718d14e8e55844c48edb9ed9281244e936663b87fb42
+  checksum: ec3eeb1effc331ca298371c89d49879f111499a848ed426990b54e2ec5b1779e
 - filename: modules/ha/README.md
-  checksum: d56f420982e55ca5dbb96b3744437d5b8f669d842bdca2288b3938d9d87dd3d0
+  checksum: cd9cd2b77b796ff865f46ff5b32b7f09a860b56eddc93032aee9adbfc7fd9a55
 - filename: modules/metadata/README.md
-  checksum: e7314928a66ded8e2836711abf5dd36b040fc3fe3921cdfa52998389bd1644cc
+  checksum: 600b2b82cad3ccd9ae31f3c62d5e55be4bc70c631ef15e6e60286a006043a957
 - filename: examples/standalone-1nic/terraform.tfvars.example
   checksum: d187aa6016a979ada6d5419134f8fa10c9ec8730cda1f410a24c4515624d1fa6
 - filename: examples/ha-2nic/terraform.tfvars.example
@@ -101,3 +101,25 @@ fileignoreconfig:
   checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596
 - filename: modules/metadata/files/verifyHash
   checksum: 2243b2b058240581d7a415f9dc6d749ad0f49a2ee07c04059c31e6c9daaf99a1
+- filename: modules/ha/variables.tf
+  checksum: 432d545472d167c893afd070b8f3705d408c3171d4061565832648c74d84256d
+- filename: modules/metadata/files/setupUtils.sh
+  checksum: ce8658a1747a6864994e7c383367b57cde72df03d5456b42f0320c72ae0a1d99
+- filename: variables.tf
+  checksum: 2325557d0e00da3f683cbebd86f9a91b4cb5b4840bf27d0943fdc5024d999d49
+- filename: modules/cfe/variables.tf
+  checksum: eff25178b223910513e55054e0ce4343f18e6332ed3d842d150dd35188fea74f
+- filename: modules/metadata/variables.tf
+  checksum: 3a6e2dff31f9ef21e8a5acb29d61915f74a04853a44c1c9e7b856323cbcc5f1e
+- filename: modules/cfe/main.tf
+  checksum: 8f524cb55bd5915efed87ce1becbc2a8d5a772d47b70d69f40aae2fff5991bce
+- filename: modules/ha/main.tf
+  checksum: 266f262179b525dfbebb38f4ba2acdc23d570ad8f1158c211861befdc4c6aae1
+- filename: modules/metadata/main.tf
+  checksum: 81f40efbefbc5ac32eebffe10b7c8f435ed2de5a0c158c7973dbe90a1c829637
+- filename: examples/standalone-1nic-metadata-admin-password/terraform.tfvars.example
+  checksum: f08971dcde91419ce9d62eb6fc41b225941a1a340d5c403c246d73ccc35902b0
+- filename: examples/standalone-1nic-metadata-admin-password/main.tf
+  checksum: bcecb633fce7852ace83aed26f2951952569618c06a1783fc854fdd9f79f5df0
+- filename: examples/standalone-1nic-metadata-admin-password/README.md
+  checksum: 9f20f0a0baf9c77e37ac9204819055caab0fd182874ca56a7cbe50219432843f
