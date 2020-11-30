@@ -1,0 +1,10 @@
+project_id         = "my-project-id"
+zone               = "us-west1-c"
+subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
+service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
+secret_implementor = "metadata"
+# This value must match the metadata key containing the actual password
+admin_password_key = "bigip-admin-password"
+metadata = {
+    bigip-admin-password = "Sup3rS3cret#"
+}

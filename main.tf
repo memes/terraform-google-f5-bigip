@@ -25,6 +25,7 @@ module "metadata" {
   metadata                          = var.metadata
   default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  secret_implementor                = var.secret_implementor
   custom_script                     = var.custom_script
   use_cloud_init                    = var.use_cloud_init
   hostnames                         = local.hostnames
