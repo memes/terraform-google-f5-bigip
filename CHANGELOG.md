@@ -8,6 +8,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] and [1.4.0] - 2020-11-30
+
+These releases fundamentally change how initial networking is configured on BIG-IP
+instances; all configuration of non-management interfaces must happen via DO file.
+
+> When a consumer provides a DO payload it *must* contain stanzas to configure
+> non-management interfaces before full functionality will be enabled.
+
+### Added
+
+- Support for custom provided shutdown scripts (issue [#45](https://github.com/memes/terraform-google-f5-bigip/issues/45))
+
+### Changed
+
+- All external and internal interface configuration must happen via DO
+  (issues [#23](https://github.com/memes/terraform-google-f5-bigip/issues/23) and
+  [#26](https://github.com/memes/terraform-google-f5-bigip/issues/26))
+
+### Removed
+
 ## [2.0.2] and [1.3.2] - 2020-11-30
 
 ### Added
