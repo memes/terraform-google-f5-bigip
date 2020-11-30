@@ -45,7 +45,7 @@ for url in "$@"; do
         https://storage.googleapis.com/*)
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
-            out="/var/tmp/$(basename "${url%%?alt=media}")"
+            out="/var/config/rest/downloads/$(basename "${url%%?alt=media}")"
             info "Downloading ${url} to ${out}"
             curl -sfL --retry 20 -o "${out}" \
                     -H "Authorization: Bearer ${auth_token}" \
@@ -53,7 +53,7 @@ for url in "$@"; do
                 error "Download of GCS file from ${url} failed: $?"
             ;;
         ftp://*|http://*|https://*)
-            out="/var/tmp/$(basename "${url}")"
+            out="/var/config/rest/downloads/$(basename "${url}")"
             info "Downloading ${url} to ${out}"
             curl -sfL --retry 20 -o "${out}" "${url}" || \
                 error "Download of ${url} failed with exit code: $?"

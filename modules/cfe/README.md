@@ -41,7 +41,7 @@ module "cfe" {
   management_subnetwork_network_ips = ["10.0.1.10", "10.0.1.11"]
   internal_subnetworks              = ["projects/my-project-id/regions/us-central1/subnetworks/internal-central1"]
   internal_subnetwork_network_ips   = ["10.0.2.10", "10.0.2.11"]
-  image                             = "projects/f5-7626-networks-public/global/images/f5-bigip-15-0-1-3-0-0-4-payg-good-5gbps-200318182229"
+  image                             = "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"
   allow_phone_home                  = false
   allow_usage_analytics             = false
   admin_password_secret_manager_key = "bigip-admin-key"

@@ -81,7 +81,7 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
 | external\_network | The fully-qualified network self-link for the *external* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
 | external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-0-1-3-0-0-4-payg-good-5gbps-200318182229"` | no |
+| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 | management\_network | The fully-qualified network self-link for the *management* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
 | management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
 | num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
