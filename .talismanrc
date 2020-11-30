@@ -123,3 +123,5 @@ fileignoreconfig:
   checksum: bcecb633fce7852ace83aed26f2951952569618c06a1783fc854fdd9f79f5df0
 - filename: examples/standalone-1nic-metadata-admin-password/README.md
   checksum: 9f20f0a0baf9c77e37ac9204819055caab0fd182874ca56a7cbe50219432843f
+- filename: CHANGELOG.md
+  checksum: 5acfff3b96fc160efdd175b811f56db293241b64e75c3bbbf87729494dab9fc8
