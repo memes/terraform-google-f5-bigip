@@ -24,14 +24,13 @@ if [ ! -f /config/cloud/gce/network.config ]; then
         jq -r '(. | length) as $count |
                 to_entries |
                 map(.key=(if .key == 0 then "EXT" elif .key == 1 then "MGMT" else "INT\(.key-2)" end)) |
-                map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)"]) |
+                map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)", "\(.key)_MTU=\(.value.mtu)"]) |
                 .+ [["NIC_COUNT=\($count)"]] |
                 .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
                 .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
-    # XXX: workaround https://github.com/F5Networks/f5-declarative-onboarding/issues/147
-    # DO cannot fully replace the combination of self-ip/gateway/network routes
-    # needed for GCP, so allow boot-time configuration of allow-service per-nic
+    # Allow module user to override default gateway
     echo "DEFAULT_GATEWAY=\"$(get_instance_attribute default_gateway)\"" >> /config/cloud/gce/network.config
+    # Allow module user to specify 'allow-service' options as a per-interface option
     for iface in EXT INT0 INT1 INT2 INT3 INT4 INT5; do
         allow_service="$(get_instance_attribute ${iface}_ALLOW_SERVICE)"
         [ -n "${allow_service}" ] && echo "${iface}_ALLOW_SERVICE=\"${allow_service}\"" >> /config/cloud/gce/network.config
