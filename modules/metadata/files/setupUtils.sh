@@ -65,25 +65,51 @@ get_auth_token()
     return ${retval}
 }
 
-# Return the contents of a secret from GCP Secret Manager, using a metadata key
+# Return the contents of a secret from a secret implementor, using a metadata key
 # as the indirection layer. E.g. get_secret "foo" will lookup the instance
-# metadata value for "foo", and use that as the key for Secret Manager value
+# metadata value for "foo", and use that as the key for secret implementor value
 # lookup.
 #
-# $1 = metadata attribute key that should hold the Secret Manager key to
-# retrieve, defaults to 'admin_password_key'.
+# $1 = metadata attribute key that should hold the secret key to retrieve,
+# defaults to 'admin_password_key'.
 get_secret()
 {
+    secret_implementor="$(get_instance_attribute "secret_implementor" "google_secret_manager")"
     secret_key="$(get_instance_attribute "${1:-"admin_password_key"}")"
     if [ -n "${secret_key}" ]; then
-        auth_token="$(get_auth_token)" || error "Unable to get auth token: $?"
-        project_id="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/project/project-id')" || \
-            error "get_secret: Unable to get project id from metadata: Curl exit code $?"
-        curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${secret_key}/versions/latest:access" 2>/dev/null | \
-            jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
+        if eval "command -v get_secret_${secret_implementor} >/dev/null"; then
+            info "get_secret: retrieving password using ${secret_implementor}"
+            eval "get_secret_${secret_implementor} ${secret_key}"
+        else
+            info "get_secret: implementor ${secret_implementor} is undefined; sending an empty password to caller."
+            echo ""
+        fi
     else
+        info "get_secret: secret key is empty; sending an empty password to caller."
         echo ""
     fi
+    return 0
+}
+
+# Return the contents of a secret from GCP Secret Manager using the supplied key.
+#
+# $1 = project specific key of the secret manager value to lookup.
+get_secret_google_secret_manager()
+{
+    auth_token="$(get_auth_token)" || error "get_secret_google_secret_manager: Unable to get auth token: $?"
+    project_id="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/project/project-id')" || \
+        error "get_secret_google_secret_manager: Unable to get project id from metadata: Curl exit code $?"
+    curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
+        jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
+    return 0
+}
+
+# Return the contents of a secret from metadata attribute. This is NOT secure.
+#
+# $1 = metadata key to lookup for secret value.
+get_secret_metadata()
+{
+    get_instance_attribute "${1}"
     return 0
 }
 

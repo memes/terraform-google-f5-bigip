@@ -24,13 +24,54 @@ variable "instance_name_template" {
   type    = string
   default = "bigip-%d"
   validation {
-    condition     = can(regex("%[0-9]*(?:\\.[0-9]+)?d", var.instance_name_template))
-    error_message = "The instance_name_template variable must include a valid numeric placeholder '%d' field."
+    condition     = can(regex("%[0-9]*(?:\\.[0-9]+)?[bdoOxX]", var.instance_name_template))
+    error_message = "The instance_name_template variable must include a valid integer placeholder field. I.e. '%d', '%x', etc."
   }
   description = <<EOD
 A format string that will be used when naming instance, that should include a
-format token for including ordinal number. E.g. 'bigip-%d', such that %d will
-be replaced with the ordinal of each instance. Default value is 'bigip-%d'.
+format token for including integer ordinal numbers as defined in Go `fmt` package,
+including support for zero-padding etc. Default value is 'bigip-%d' which will
+generate names of 'bigip-0', 'bigip-1', through 'bigip-N', where N is the number
+of instances - 1.
+
+Examples:
+instance_name_template = "bigip-%03d" will create instances named 'bigip-000',
+'bigip-001', etc.
+instance_name_template = "prod-ha-%x" will create instances using lower-case hex
+, such as 'prod-ha-0' ... 'prod-ha-1f'.
+
+See `instance_ordinal_offset` variable to change the lower bounds of the numbering
+scheme.
+EOD
+}
+
+variable "instance_ordinal_offset" {
+  type    = number
+  default = 0
+  validation {
+    condition     = var.instance_ordinal_offset >= 0 && floor(var.instance_ordinal_offset) == var.instance_ordinal_offset
+    error_message = "The instance_ordinal_offset variable must be an integer >= 0."
+  }
+  description = <<EOD
+An offset to apply to each instance ordinal when naming; use to change zero-based
+instance ordinal to a different number when setting instance names and hostnames.
+Default value is '0'.
+
+E.g. to change 0-based instance names ('bigip-0', 'bigip-1', etc.) to 1-based
+instance names ('bigip-1', 'bigip-2', etc.) use
+instance_ordinal_offset = 1
+
+See `instance_name_template` for more examples.
+EOD
+}
+
+variable "domain_name" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional domain name to append to generated instance names to fully-qualify
+them. If an empty string (default), then the instances will be qualified as-per
+Google Cloud internal naming conventions ".ZONE.c.PROJECT_ID.internal".
 EOD
 }
 
@@ -503,11 +544,25 @@ variable "admin_password_secret_manager_key" {
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
 BIG-IP admin account's password will be changed to the value retrieved from GCP
-Secret Manager using this key.
+Secret Manager (or other implementor - see `secret_implementor`) using this key.
 
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
 the secret value associated with this key, then the BIG-IP onboarding will fail
 to complete, and onboarding will require manual intervention.
+EOD
+}
+
+variable "secret_implementor" {
+  type    = string
+  default = ""
+  validation {
+    condition     = var.secret_implementor == "" || contains(["google_secret_manager", "metadata"], var.secret_implementor)
+    error_message = "The secret_implementor variable must be empty or a supported secret implementor."
+  }
+  description = <<EOD
+The secret retrieval implementor to use; default value is an empty string.
+Must be an empty string, 'google_secret_manager', or 'metadata'. Future
+enhancements will add other implementors.
 EOD
 }
 
@@ -615,16 +670,17 @@ EOD
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm"
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
-Onboarding extensions.
+list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
+Onboarding, and Telemetry Streaming extensions.
 EOD
 }

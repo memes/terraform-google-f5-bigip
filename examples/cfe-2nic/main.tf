@@ -1,4 +1,4 @@
-# Example Terraform to create a three-NIC instance of BIG-IP using default
+# Example Terraform to create a two-NIC instance of BIG-IP using default
 # compute service account, and a Marketplace PAYG image.
 #
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
@@ -12,7 +12,7 @@ terraform {
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
   source      = "memes/f5-bigip/google//modules/cfe-role"
-  version     = "1.3.1"
+  version     = "1.3.2"
   target_type = "project"
   target_id   = var.project_id
   members     = [format("serviceAccount:%s", var.service_account)]
@@ -21,7 +21,7 @@ module "cfe_role" {
 # Create a firewall rule to allow BIG-IP ConfigSync and failover
 module "cfe_fw" {
   source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.3.1"
+  version               = "1.3.2"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.external_network
@@ -86,7 +86,7 @@ module "cfe_bucket" {
 
 module "cfe" {
   source                            = "memes/f5-bigip/google//modules/cfe"
-  version                           = "1.3.1"
+  version                           = "1.3.2"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]

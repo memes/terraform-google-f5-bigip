@@ -1,0 +1,7 @@
+project_id             = "my-project-id"
+zones                  = ["us-west1-c", "us-west1-a"]
+subnet                 = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
+admin_password_key     = "bigip-admin-password-key"
+service_account        = "bigip@my-project-id.iam.gserviceaccount.com"
+instance_name_template = "my-bigip-%02d"
+domain_name            = "example.com"

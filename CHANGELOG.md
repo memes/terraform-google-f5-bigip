@@ -8,29 +8,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] and [1.3.2] - 2020-11-30
+
+### Added
+
+- Support custom domain names (issue #29)
+- Support changing the base number and format specifier used when generating instance names (issue #24)
+- Telemetry Streaming extension installed by default (issue #22)
+
+### Changed
+
+- Fixed bug installing RPM extensions on BIG-IP v15.1.1 and BIG-IP v15.1.2 (issue #18)
+- Fixed bug when declaring complex 'allow-service' requirements (issue #25)
+- Bumped Cloud Libraries, AS3, DO, and CFE extensions to latest (issue #22)
+
+### Removed
+
 ## [2.0.1] and [1.3.1] - 2020-11-18
 
-## Added
+### Added
 
-## Changed
+### Changed
 
 - Added Terraform 0.12/0.13 notice to main README
 
-## Removed
+### Removed
 
 ## [2.0.0] and [1.3.0] - 2020-11-18
 
 > First of the parallel Terraform 0.13 and Terraform 0.12 specific releases.
 
-## Added
+### Added
 
-## Changed
+### Changed
 
 - Enforcing Terraform 0.12.x or 0.13.x for 1.x and 2.x releases, respectively
 - Bumped Google provider to 3.48.0
 - Bumped Google IAM module to 6.4.0
 
-## Removed
+### Removed
 
 ## [1.2.2] - 2020-11-18
 
@@ -122,6 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+[2.0.2]: https://github.com/memes/f5-google-terraform-modules/compare/v2.0.1...v2.0.2
+[1.3.2]: https://github.com/memes/f5-google-terraform-modules/compare/v1.3.1...v1.3.2
 [2.0.1]: https://github.com/memes/f5-google-terraform-modules/compare/v2.0.0...v2.0.1
 [1.3.1]: https://github.com/memes/f5-google-terraform-modules/compare/v1.3.0...v1.3.1
 [2.0.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.2.2...v2.0.0

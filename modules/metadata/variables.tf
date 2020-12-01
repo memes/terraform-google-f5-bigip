@@ -137,17 +137,18 @@ EOD
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.22.0/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.6.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.22.1/f5-appsvcs-3.22.1-1.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.15.0/f5-declarative-onboarding-1.15.0-3.noarch.rpm",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",
+    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
 the BIG-IP VM during initial boot. The contents of each download will be compared
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
-list will install F5 Cloud Libraries (w/GCE extension), AS3, and Declarative
-Onboarding extensions.
+list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
+Onboarding, and Telemetry Streaming extensions.
 EOD
 }
 
@@ -181,15 +182,33 @@ EOD
 }
 
 variable "admin_password_secret_manager_key" {
-  type        = string
+  type = string
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9_-]{1,255}$", var.admin_password_secret_manager_key))
+    error_message = "The admin_password_secret_manager_key must be valid."
+  }
   description = <<EOD
 The Secret Manager key for BIG-IP admin password; during initialisation, the
 BIG-IP admin account's password will be changed to the value retrieved from GCP
-Secret Manager using this key.
+Secret Manager (or other implementor - see `secret_implementor`) using this key.
 
 NOTE: if the secret does not exist, is misidentified, or if the VM cannot read
 the secret value associated with this key, then the BIG-IP onboarding will fail
 to complete, and onboarding will require manual intervention.
+EOD
+}
+
+variable "secret_implementor" {
+  type    = string
+  default = ""
+  validation {
+    condition     = var.secret_implementor == "" || contains(["google_secret_manager", "metadata"], var.secret_implementor)
+    error_message = "The secret_implementor variable must be empty or a supported secret implementor."
+  }
+  description = <<EOD
+The secret retrieval implementor to use; default value is an empty string.
+Must be an empty string, 'google_secret_manager', or 'metadata'. Future
+enhancements will add other implementors.
 EOD
 }
 

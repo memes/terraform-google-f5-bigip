@@ -21,10 +21,10 @@ as an *Organization role* if preferred, for reuse across projects.
 <!-- spell-checker: disable -->
 ```hcl
 module "cfe_role" {
-  source      = "memes/f5-bigip/google//modules/cfe-role"
-  version = "1.3.1"
-  target_id   = "my-project-id"
-  members     = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
+  source    = "memes/f5-bigip/google//modules/cfe-role"
+  version   = "1.3.2"
+  target_id = "my-project-id"
+  members   = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
 }
 ```
 <!-- spell-checker: enable -->
@@ -35,7 +35,7 @@ module "cfe_role" {
 ```hcl
 module "cfe_org_role" {
   source      = "memes/f5-bigip/google//modules/cfe-role"
-  version = "1.3.1"
+  version     = "1.3.2"
   target_type = "org"
   target_id   = "my-org-id"
 }

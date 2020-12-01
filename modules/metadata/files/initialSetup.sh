@@ -34,7 +34,7 @@ if [ ! -f /config/cloud/gce/network.config ]; then
     echo "DEFAULT_GATEWAY=\"$(get_instance_attribute default_gateway)\"" >> /config/cloud/gce/network.config
     for iface in EXT INT0 INT1 INT2 INT3 INT4 INT5; do
         allow_service="$(get_instance_attribute ${iface}_ALLOW_SERVICE)"
-        [ -n "${allow_service}" ] && echo "${iface}_ALLOW_SERVICE=${allow_service}" >> /config/cloud/gce/network.config
+        [ -n "${allow_service}" ] && echo "${iface}_ALLOW_SERVICE=\"${allow_service}\"" >> /config/cloud/gce/network.config
     done
     chmod 0644 /config/cloud/gce/network.config
 fi

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.15.0/src/schema/1.15.0/base.schema.json",
-  "schemaVersion": "1.15.0",
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.17.0/src/schema/1.17.0/base.schema.json",
+  "schemaVersion": "1.17.0",
   "class": "Device",
   "async": true,
   "label": "auto-onboard for HA instance",
