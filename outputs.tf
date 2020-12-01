@@ -73,3 +73,19 @@ A list of the public IP addresses assigned to instances on the internal NICs,
 if present.
 EOD
 }
+
+output "zone_instances" {
+  value       = { for z in toset(var.zones) : z => [for vm in google_compute_instance.bigip : vm.self_link if z == vm.zone] }
+  description = <<EOD
+A map of compute zones from var.zones input variable to instance self-links. If
+no instances are deployed to a zone, the mapping will be to an empty list.
+
+E.g. if `var.zones = ["us-east1-a", "us-east1-b", "us-east1-c"]` and
+`var.num_instances = 2` then the output will be:
+{
+  us-east1-a = [self-link-instance0]
+  us-east1-b = [self-link-instance1]
+  us-east1-c = []
+}
+EOD
+}
