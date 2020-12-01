@@ -24,7 +24,7 @@ if [ "${NIC_COUNT:-0}" -gt 1 ] && [ -n "${MGMT_GATEWAY}" ]; then
         [ -e /dev/ttyS0 ] && \
             echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: updating management default gateway to ${MGMT_GATEWAY}" >/dev/ttyS0
         tmsh delete sys management-route default
-        tmsh create sys management-route default gateway "${MGMT_GATEWAY}"
+        tmsh create sys management-route default gateway "${MGMT_GATEWAY}" mtu "${MGMT_MTU:-1460}"
         tmsh save sys config
         default_gw="$(tmsh list sys management-route default gateway | awk 'NR==2 { print $2 }')"
     done
