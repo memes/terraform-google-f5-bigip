@@ -135,8 +135,4 @@ resource "google_compute_instance" "bigip" {
       }
     }
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
