@@ -37,12 +37,6 @@ if [ "${NIC_COUNT:-0}" -gt 1 ]; then
         tmsh create sys management-route mgmt_net network "${MGMT_NETWORK}/${MGMT_MASK}" gateway "${MGMT_GATEWAY}" mtu "${MGMT_MTU:-1460}"
         tmsh create sys management-route default gateway "${MGMT_GATEWAY}" mtu "${MGMT_MTU:-1460}"
     fi
-
-    # Add a default route - this may faigive a warning message if there isn't a
-    # matching nic - with fallback to NIC0 gateway
-    # shellcheck disable=SC2154
-    info "Setting default gateway to ${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
-    tmsh create net route default gw "${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
 fi
 
 # Update common settings

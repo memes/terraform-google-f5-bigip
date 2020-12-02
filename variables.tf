@@ -505,23 +505,6 @@ image from F5's official project or the instance will fail to onboard correctly.
 EOD
 }
 
-variable "default_gateway" {
-  type        = string
-  default     = "$EXT_GATEWAY"
-  description = <<EOD
-Set this to the value to use as the default gateway for BIG-IP instances. This
-could be an IP address or environment variable to use at run-time. If left blank,
-the onboarding script will use the gateway for nic0.
-
-Default value is '$EXT_GATEWAY' which will match the run-time upstream gateway
-for nic0.
-
-NOTE: this string will be inserted into the boot script as-is; it can be an IPv4
-address, or a shell variable that is known to exist during network configuration
-script execution.
-EOD
-}
-
 variable "use_cloud_init" {
   type        = bool
   default     = false
