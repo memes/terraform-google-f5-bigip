@@ -23,6 +23,9 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 ### Removed
 
+- `default_gateway` input variable; abusing this variable to use a management
+  network gateway is not permitted via Declarative Onboarding and was always a
+  work around.
 - Terraform lifecycle `create_before_destroy` rule on BIG-IP VM instances (issue [#46](https://github.com/memes/terraform-google-f5-bigip/issues/46))
 
 ## [2.0.2] and [1.3.2] - 2020-11-30
