@@ -1,9 +1,10 @@
 # BIG-IP HA cluster module
 
 > You are viewing a **2.x release** of the modules, which supports
-> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
-> 1.x release.* Functionality is identical, but separate releases are required
-> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+> **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
+> use a 1.x release.* Functionality is identical, but separate releases are
+> required due to the difference in *variable validation* between Terraform 0.12
+> and 0.13+.
 
 This module encapsulates the creation of BIG-IP HA cluster with ConfigSync
 enabled.
@@ -51,7 +52,7 @@ module "ha" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 | google | >= 3.48 |
 
 ## Providers

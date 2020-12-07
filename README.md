@@ -1,9 +1,10 @@
 # Unofficial F5 BIG-IP Terraform modules for Google Cloud Platform
 
 > You are viewing a **2.x release** of the modules, which supports
-> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
-> 1.x release.* Functionality is identical, but separate releases are required
-> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+> **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
+> use a 1.x release.* Functionality is identical, but separate releases are
+> required due to the difference in *variable validation* between Terraform 0.12
+> and 0.13+.
 
 <!-- spell-checker:ignore markdownlint -->
 <!-- markdownlint-disable MD033 -->
@@ -73,12 +74,12 @@ the README files in each sub-module.
 
 The BIG-IP modules all have a common set of requirements.
 
-1. Terraform 0.13.x
+1. Terraform 0.13.x or 0.14.x
 
    > You are viewing a **2.x release** of the modules, which supports
-   > **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
-   > 1.x release.* Functionality is identical, but separate releases are required
-   > due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+   > **Terraform 0.13 or 0.14** only. *For modules compatible with Terraform 0.12,
+   > use a 1.x release.* Functionality is identical, but separate releases are required
+   > due to the difference in *variable validation* between Terraform 0.12 and 0.13+.
 
 2. Google Cloud [Secret Manager](https://cloud.google.com/secret-manager)
 
@@ -118,7 +119,7 @@ For guidelines and steps to diagnose deployment and run-time issues see
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 | google | >= 3.48 |
 
 ## Providers

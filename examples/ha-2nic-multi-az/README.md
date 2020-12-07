@@ -1,9 +1,10 @@
 # High Availability sub-module with 2-NIC deployment in multiple availability zones
 
 > You are viewing a **2.x release** of the modules, which supports
-> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
-> 1.x release.* Functionality is identical, but separate releases are required
-> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+> **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
+> use a 1.x release.* Functionality is identical, but separate releases are
+> required due to the difference in *variable validation* between Terraform 0.12
+> and 0.13+.
 
 This example demonstrates how to use the
 [HA sub-module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest/submodules/ha)
@@ -69,7 +70,7 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 
 ## Providers
 
