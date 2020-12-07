@@ -82,7 +82,7 @@
         "class": "Route",
         "gw": "replace",
         "network": "default",
-        "mtu": ${jsonencode(lookup(interfaces[0], "mtu", "replace"))}
+        "mtu": ${jsonencode(length(interfaces) > 1 ? lookup(interfaces[0], "mtu", "replace") : "replace")}
     }
   }
 }

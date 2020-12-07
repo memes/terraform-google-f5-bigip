@@ -71,10 +71,10 @@ A list of DNS search domains for BIG-IP instances to use.
 EOD
 }
 
-variable "internal_nic_count" {
+variable "nic_count" {
   type        = number
   description = <<EOD
-The number of internal network interfaces that will be present in the BIG-IP VMs.
+The number of network interfaces that will be present in the BIG-IP VMs.
 EOD
 }
 

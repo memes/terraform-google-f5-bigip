@@ -14,7 +14,8 @@ locals {
       search_domains   = var.search_domains,
       timezone         = var.timezone,
       modules          = var.modules,
-      interfaces = concat(
+      # Only include dynamic interfaces if there is > 1 nic on the VMs
+      interfaces = var.nic_count > 1 ? concat(
         [
           {
             name          = "external"
@@ -29,11 +30,11 @@ locals {
             vips = length(var.external_subnetwork_vip_cidrs) > i ? element(var.external_subnetwork_vip_cidrs, i) : []
           }
         ],
-        [for j in range(0, var.internal_nic_count) :
+        [for j in range(2, var.nic_count) :
           {
-            name          = j == 0 ? "internal" : format("internal%d", i)
-            tag           = 4092 - j
-            num           = format("1.%d", j + 2)
+            name          = j == 2 ? "internal" : format("internal%d", j - 1)
+            tag           = 4094 - j
+            num           = format("1.%d", j)
             address       = coalesce(length(var.internal_subnetwork_network_ips) > i ? (length(element(var.internal_subnetwork_network_ips, i)) > j ? element(element(var.internal_subnetwork_network_ips, i), j) : "") : "", "replace")
             allow_service = "none"
             public = var.provision_internal_public_ip ? {
@@ -43,7 +44,7 @@ locals {
             vips = length(var.internal_subnetwork_vip_cidrs) > i ? element(var.internal_subnetwork_vip_cidrs, i) : []
           }
         ]
-      )
+      ) : []
     }
   )]
 }
