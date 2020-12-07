@@ -69,7 +69,7 @@ metadata = {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 
 ## Providers
 

@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.13
 terraform {
-  required_version = "~> 0.13.5"
+  required_version = "> 0.12"
 }
 
 # Create a custom CFE role for BIG-IP service account

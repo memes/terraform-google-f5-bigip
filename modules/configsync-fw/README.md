@@ -66,7 +66,7 @@ module "configsync_fw" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 | google | >= 3.48 |
 
 ## Providers

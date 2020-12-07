@@ -49,7 +49,7 @@ module "cfe_org_role" {
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 | google | >= 3.48 |
 
 ## Providers
