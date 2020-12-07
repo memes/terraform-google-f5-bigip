@@ -3,7 +3,7 @@
 #
 # Install tarballs and RPMs from a list of URL arguments.
 # E.g. installCloudLibs "URL" ... "URL"
-set -e
+#set -e
 
 if [ -f /config/cloud/gce/setupUtils.sh ]; then
     . /config/cloud/gce/setupUtils.sh
@@ -18,6 +18,30 @@ if [ $# -lt 1 ]; then
     info "No libraries to install; exiting"
     return 0
 fi
+
+# Download attempt can fail, especially after reseting network parameters on a
+# 'small' instance, so retry up to 10 times.
+retry_download() {
+    # shellcheck disable=SC2039
+    local url="$1"
+    # shellcheck disable=SC2039
+    local out="$2"
+    shift
+    shift
+    attempt=0
+    while [ "${attempt:-0}" -lt 10 ]; do
+        info "retry_download: ${attempt}: Downloading ${url} to ${out}"
+        curl -sfL --retry 20 -o "${out}" "$@" "${url}"
+        retval=$?
+        [ "${retval}" -eq 0 ] && break
+        info "retry_download:: ${attempt} Failed to download from ${url}: exit code: $?; sleeping before retry"
+        sleep 10
+        attempt=$((attempt+1))
+    done
+    [ "${attempt}" -ge 10 ] && \
+        error "retry_download: ${attempt}: Failed to download from ${url}; giving up"
+    return 0
+}
 
 [ -f /config/cloud/gce/network.config ] && . /config/cloud/gce/network.config
 
@@ -46,17 +70,11 @@ for url in "$@"; do
             auth_token="$(get_auth_token)" || \
                 error "Unable to get auth token: $?"
             out="/var/config/rest/downloads/$(basename "${url%%?alt=media}")"
-            info "Downloading ${url} to ${out}"
-            curl -sfL --retry 20 -o "${out}" \
-                    -H "Authorization: Bearer ${auth_token}" \
-                    "${url}" || \
-                error "Download of GCS file from ${url} failed: $?"
+            retry_download "${url}" "${out}" -H "Authorization: Bearer ${auth_token}"
             ;;
         ftp://*|http://*|https://*)
             out="/var/config/rest/downloads/$(basename "${url}")"
-            info "Downloading ${url} to ${out}"
-            curl -sfL --retry 20 -o "${out}" "${url}" || \
-                error "Download of ${url} failed with exit code: $?"
+            retry_download "${url}" "${out}"
             ;;
         /*)
             out="${url}"
