@@ -15,6 +15,8 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 ### Added
 
+- Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
+
 ### Changed
 
 - Non-management interface configuration is entirely configured through
