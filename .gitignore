@@ -6,6 +6,7 @@
 .terraform
 *.tfstate
 *.tfstate.*
+.terraform.lock.hcl
 
 # Don't include any local automatic variable assignment files
 terraform.tfvars
