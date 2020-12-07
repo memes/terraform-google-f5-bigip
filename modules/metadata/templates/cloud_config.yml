@@ -89,6 +89,12 @@ write_files:
 
       [Install]
       WantedBy=multi-user.target
+  - path: /config/cloud/gce/do_filter.jq
+    permissions: 0644
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${do_replace_filter.jq}
 
 # BIG-IP versions on GCP that support cloud-init are also using systemd; enable
 # and launch the unit that runs initialSetup.sh script on first boot.

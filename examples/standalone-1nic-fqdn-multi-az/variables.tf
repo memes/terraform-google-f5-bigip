@@ -5,10 +5,10 @@ The GCP project identifier where the cluster will be created.
 EOD
 }
 
-variable "zone" {
-  type        = string
+variable "zones" {
+  type        = list(string)
   description = <<EOD
-The compute zone which will host the BIG-IP VMs.
+The list of compute zones which will host the BIG-IP VMs.
 EOD
 }
 

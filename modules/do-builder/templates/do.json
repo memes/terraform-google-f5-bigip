@@ -1,0 +1,88 @@
+{
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.17.0/src/schema/1.17.0/base.schema.json",
+  "schemaVersion": "1.17.0",
+  "class": "Device",
+  "async": true,
+  "label": "auto-onboard",
+  "Common":{
+    "class": "Tenant",
+    "system": {
+      "class": "System",
+%{ if length(hostname) > 0 ~}
+      "hostname": "${format("%.64s", hostname)}",
+%{ endif ~}
+      "autoPhonehome": ${jsonencode(allow_phone_home)}
+    },
+    "dns": {
+      "class": "DNS",
+      "nameServers": ${jsonencode(dns_servers)},
+      "search": ${jsonencode(search_domains)}
+    },
+    "ntp": {
+      "class": "NTP",
+      "servers": ${jsonencode(ntp_servers)},
+      "timezone": "${timezone}"
+    },
+    "provision": {
+%{ for k,v in modules ~}
+      "${k}": "${v}",
+%{ endfor ~}
+      "class": "Provision"
+    },
+%{ for iface in interfaces ~}
+    "${iface.name}": {
+      "class": "VLAN",
+      "tag": ${iface.tag},
+      "mtu": ${jsonencode(lookup(iface, "mtu", "replace"))},
+      "interfaces": [
+        {
+          "name": "${iface.num}",
+          "tagged": false
+        }
+      ]
+    },
+    "${iface.name}-self": {
+      "class": "SelfIp",
+      "address": "${iface.address}",
+      "vlan": "${iface.name}",
+      "allowService": "${iface.allow_service}",
+      "trafficGroup": "traffic-group-local-only"
+    },
+%{ if length(lookup(iface, "public", {})) > 0 ~}
+    "${iface.name}-self-public": {
+      "class": "SelfIp",
+      "address": "${iface.public.address}",
+      "vlan": "${iface.name}",
+      "allowService": "${iface.public.allow_service}",
+      "trafficGroup": "traffic-group-local-only"
+    },
+%{ endif ~}%{ for vip in iface.vips ~}
+    "${iface.name}-self-${replace(vip, "/[^0-9]/", "-")}: {
+      "class": "SelfIp",
+      "address": "${vip}",
+      "vlan": "${iface.name}",
+      "allowService": "${iface.allow_service}",
+      "trafficGroup": "traffic-group-local-only"
+    },
+%{ endfor ~}
+    "${iface.name}-rt-gw": {
+      "class": "Route",
+      "target": "${iface.name}",
+      "network": "replace",
+      "mtu": ${jsonencode(lookup(iface, "mtu", "replace"))}
+    },
+    "${iface.name}-rt-net": {
+      "class": "Route",
+      "gw": "replace",
+      "network": "replace",
+      "mtu": ${jsonencode(lookup(iface, "mtu", "replace"))}
+    },
+%{ endfor ~}
+    "default": {
+        "class": "Route",
+        "gw": "replace",
+        "network": "default",
+        "mtu": ${jsonencode(lookup(interfaces[0], "mtu", "replace"))}
+    }
+  }
+}
