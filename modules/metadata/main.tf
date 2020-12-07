@@ -44,6 +44,7 @@ locals {
       shutdown-script = templatefile("${path.module}/templates/shutdown_script.sh",
         {}
       )
+      default_gateway       = var.default_gateway
       install_cloud_libs    = join(" ", var.install_cloud_libs)
       allow_usage_analytics = upper(var.allow_usage_analytics)
       admin_password_key    = var.admin_password_secret_manager_key
