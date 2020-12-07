@@ -1,9 +1,10 @@
 # Cloud Failover Extension sub-module using with 3-NICs, fully-qualified hostnames, to multiple availability zones
 
 > You are viewing a **2.x release** of the modules, which supports
-> **Terraform 0.13** only. *For modules compatible with Terraform 0.12, use a
-> 1.x release.* Functionality is identical, but separate releases are required
-> due to the difference in *variable validation* between Terraform 0.12 and 0.13.
+> **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
+> use a 1.x release.* Functionality is identical, but separate releases are
+> required due to the difference in *variable validation* between Terraform 0.12
+> and 0.13+.
 
 This example demonstrates how to use the
 [CFE sub-module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest/submodules/cfe)
@@ -88,7 +89,7 @@ domain_name            = "example.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.13.5 |
+| terraform | > 0.12 |
 
 ## Providers
 
