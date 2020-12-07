@@ -4,7 +4,7 @@
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
 # be changed to the correct resource name/identifier.
 
-# Only supported on Terraform 0.13
+# Only supported on Terraform 0.13 and Terraform 0.14
 terraform {
   required_version = "> 0.12"
 }
