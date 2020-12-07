@@ -2,7 +2,7 @@
 ---
 fileignoreconfig:
 - filename: main.tf
-  checksum: 230ab961635cb253d891701457b6023ffbcd15071266509680a6417685c755df
+  checksum: a8f06a0c3f582e6a1e7abe3bef3fee01b7eb45f1c511d5a0160b6bc7fdc2af90
 - filename: README.md
   checksum: c87f7cf44e88eb25fdf669a8f19f96ae2b5917fdf9791902b7511622f08aed9e
 - filename: modules/cfe/README.md
@@ -127,3 +127,7 @@ fileignoreconfig:
   checksum: 5acfff3b96fc160efdd175b811f56db293241b64e75c3bbbf87729494dab9fc8
 - filename: modules/metadata/files/initialSetup.sh
   checksum: 031c17b1e31c8759fcac8cd999586a91b45098a184e7dfc38056717b89a6d652
+- filename: modules/do-builder/files/do_replace_filter.jq
+  checksum: a1875e9527549f2b4f3e8b59ec4d7c58560fd7e49441293233a43837f429f977
+- filename: modules/do-builder/README.md
+  checksum: 62a20aa2e3808ba0638ae83fbbe0ac33b42216fedc60ef1991c569b3fa16e1d3

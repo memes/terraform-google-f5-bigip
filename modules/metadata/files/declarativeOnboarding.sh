@@ -42,12 +42,21 @@ done
 raw="$(mktemp -p /var/tmp)"
 extract_payload "${1}" > "${raw}" || \
     error "Unable to extract encoded payload: $?"
-# Execute the raw JSON as a jq file; allows environment substitutions to embed
-# Admin password, for example, at run-time.
-payload="$(mktemp -p /var/tmp)"
-ADMIN_PASSWORD="${ADMIN_PASSWORD}" jq -nrf "${raw}" > "${payload}" || \
-    error "Unable to process raw file as JSON: $?"
-rm -f "${raw}" || info "Unable to delete ${raw}"
+
+if [ -f /config/cloud/gce/do_filter.jq ]; then
+    # Execute the raw JSON through a jq filter; allows run-time substitutions to
+    # update ip addresses, MTUs, admin passwords, etc.
+    payload="$(mktemp -p /var/tmp)"
+    curl -sf --retry 20  -H 'Metadata-Flavor: Google' \
+            'http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/?recursive=true' | \
+        jq --arg password "${ADMIN_PASSWORD}" \
+            --from-file /config/cloud/gce/do_filter.jq \
+            --slurp - "${raw}" > "${payload}" || \
+        error "Unable to process raw DO file ${raw} through jq: $?"
+    rm -f "${raw}" || info "Unable to delete ${raw}"
+else
+    payload="${raw}"
+fi
 
 info "Applying Declarative Onboarding payload"
 # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
