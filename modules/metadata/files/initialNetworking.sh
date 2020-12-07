@@ -18,18 +18,19 @@ wait_bigip_ready
 
 [ -f /config/cloud/gce/network.config ] && . /config/cloud/gce/network.config
 
-# Only reset the interfaces if there is >1 NIC defined
+info "Resetting all routes"
+tmsh delete net route all
+info "Resetting all self addresses"
+tmsh delete net self all
+info "Resetting all vlans"
+tmsh delete net vlan all
+
+# Only reset the management interface if there is >1 NIC defined
 if [ "${NIC_COUNT:-0}" -gt 1 ]; then
     info "Resetting management settings"
     tmsh modify sys global-settings mgmt-dhcp disabled
     tmsh delete sys management-route all
     tmsh delete sys management-ip all
-    info "Resetting all routes"
-    tmsh delete net route all
-    info "Resetting all self addresses"
-    tmsh delete net self all
-    info "Resetting all vlans"
-    tmsh delete net vlan all
     if [ -n "${MGMT_ADDRESS}" ] && [ -n "${MGMT_GATEWAY}" ] && [ -n "${MGMT_NETWORK}" ] && [ -n "${MGMT_MASK}" ]; then
         info "Configuring management interface"
         tmsh create sys management-ip "${MGMT_ADDRESS}/32"
@@ -37,13 +38,13 @@ if [ "${NIC_COUNT:-0}" -gt 1 ]; then
         tmsh create sys management-route mgmt_net network "${MGMT_NETWORK}/${MGMT_MASK}" gateway "${MGMT_GATEWAY}" mtu "${MGMT_MTU:-1460}"
         tmsh create sys management-route default gateway "${MGMT_GATEWAY}" mtu "${MGMT_MTU:-1460}"
     fi
-
-    # Add a default route - this may faigive a warning message if there isn't a
-    # matching nic - with fallback to NIC0 gateway
-    # shellcheck disable=SC2154
-    info "Setting default gateway to ${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
-    tmsh create net route default gw "${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
 fi
+
+# Add a default route - this may faigive a warning message if there isn't a
+# matching nic - with fallback to NIC0 gateway
+# shellcheck disable=SC2154
+info "Setting default gateway to ${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
+tmsh create net route default gw "${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
 
 # Update common settings
 info "Removing DHCP provided ntp servers from management"
