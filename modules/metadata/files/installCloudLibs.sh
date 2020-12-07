@@ -34,7 +34,7 @@ retry_download() {
         curl -sfL --retry 20 -o "${out}" "$@" "${url}"
         retval=$?
         [ "${retval}" -eq 0 ] && break
-        info "retry_download:: ${attempt} Failed to download from ${url}: exit code: $?; sleeping before retry"
+        info "retry_download: ${attempt}: Failed to download from ${url}: exit code: $?; sleeping before retry"
         sleep 10
         attempt=$((attempt+1))
     done
