@@ -1,0 +1,4 @@
+project_id = "my-project-id"
+# Set id to empty string to auto-generate a semi-random id
+id         = ""
+members    = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
