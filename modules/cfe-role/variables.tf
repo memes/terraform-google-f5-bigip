@@ -21,15 +21,16 @@ EOD
 
 variable "id" {
   type    = string
-  default = "bigip_cfe"
+  default = ""
   validation {
-    condition     = can(regex("^[a-z0-9_.]{3,64}$", var.id))
-    error_message = "The id variable must be between 3 and 64 characters in length, and only contain alphanumeric, underscore and periods."
+    condition     = var.id == "" || can(regex("^[a-z0-9_.]{3,64}$", var.id))
+    error_message = "The id variable must be empty or between 3 and 64 characters in length and only contain alphanumeric, underscore and periods."
   }
   description = <<EOD
-An identifier to use for the new role; default is 'bigip_cfe'. This id must
-be unique at the organization or project level depending on value of target_type
-respectively. E.g. multiple projects can all have a 'bigip_cfe' role defined,
+An identifier to use for the new role; default is an empty string which will
+generate a unique identifier. If a value is provided, it must be unique at the
+organization or project level depending on value of target_type respectively.
+E.g. multiple projects can all have a 'bigip_cfe' role defined,
 but an organization level role must be uniquely named.
 EOD
 }
