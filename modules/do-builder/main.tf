@@ -1,5 +1,6 @@
 terraform {
   required_version = "~> 0.12.29, < 0.13"
+  experiments      = [variable_validation]
 }
 
 # Build a set of Declarative Onboarding files
