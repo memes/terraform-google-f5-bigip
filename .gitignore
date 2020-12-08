@@ -13,6 +13,3 @@ terraform.tfvars
 terraform.tfvars.json
 *.auto.tfvars
 *.auto.tfvars.json
-
-# Don't commit foundations directory - just used for testing and not part of solution
-foundations
