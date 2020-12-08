@@ -11,7 +11,7 @@ locals {
 
 # Generate a set of DO payloads *if* none are supplied as an input
 module "do_payloads" {
-  source                          = "./modules/do-builder"
+  source                          = "./modules/do-builder/"
   num_instances                   = length(var.do_payloads) > 0 ? 0 : var.num_instances
   ntp_servers                     = var.ntp_servers
   timezone                        = var.timezone
