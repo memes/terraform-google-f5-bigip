@@ -184,10 +184,39 @@ internal_subnetwork_vip_cidrs = [
 EOD
 }
 
-variable "additional_config" {
-  type        = map(any)
+variable "allow_service" {
+  type        = map(string)
   default     = {}
   description = <<EOD
-A map of additional configuration parameters to add to the generated JSON.
+A map of 'allowService' values to apply to named DO interfaces. If an specific
+value is not found for an interface, the value 'none' shall be applied to internal
+interfaces, and default to external.
+
+E.g. to allow default service on internal but none on external interfaces:
+allow_service = {
+  external = "none"
+  internal = "default"
+}
+EOD
+}
+
+variable "additional_configs" {
+  type        = list(string)
+  default     = []
+  description = <<EOD
+A list of additional DO configuration snippets JSON to merge with the generated
+payloads. Any JSON provided here will be inserted as-is into the "Common" object
+after any self IPs, routes, etc. Entries will not be merged or validated.
+
+E.g. to add a new self IP to each generated payload:
+
+additional_configs = [
+  "\"extra-self\": {
+    \"class\": \"SelfIp\",
+    \"address\": \"1.2.3.4/32\",
+    ...
+  }",
+  ...
+]
 EOD
 }
