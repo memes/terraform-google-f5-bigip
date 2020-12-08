@@ -57,7 +57,7 @@
       "trafficGroup": "${lookup(iface.public, "traffic_group", "traffic-group-local-only")}"
     },
 %{ endif ~}%{ for vip in iface.vips ~}
-    "${iface.name}-self-${replace(vip, "/[^0-9]/", "-")}: {
+    "${iface.name}-self-${replace(vip, "/[^0-9]/", "-")}": {
       "class": "SelfIp",
       "address": "${vip}",
       "vlan": "${iface.name}",
