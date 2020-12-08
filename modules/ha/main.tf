@@ -10,30 +10,44 @@ locals {
   hostnames = [for i in range(0, var.num_instances) : format("%s.%s", format(var.instance_name_template, i + var.instance_ordinal_offset), coalesce(var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)))]
   # Use first internal network addresses for sync group (per published guidelines)
   # if there is at least one internal subnet defined. Fallback to external (nic0)
+  sync_self_name       = length(var.internal_subnetworks) > 0 ? "internal-self" : "external-self"
   sync_group_addresses = length(var.internal_subnetworks) > 0 ? [for i in range(0, var.num_instances) : element(element(var.internal_subnetwork_network_ips, i), 0)] : var.external_subnetwork_network_ips
-  do_payloads = coalescelist(var.do_payloads, [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json", {
-    hostname         = element(local.hostnames, i)
-    allow_phone_home = var.allow_phone_home
-    dns_servers      = var.dns_servers
-    search_domains   = coalescelist(var.search_domains, compact(["google.internal", var.domain_name, format("%s.c.%s.internal", element(var.zones, i), var.project_id)]))
-    ntp_servers      = var.ntp_servers
-    timezone         = var.timezone
-    modules          = var.modules
-    # Self-ip and VLAN name must match the self-ip declared in initialNetworking.sh
-    sync_address           = element(local.sync_group_addresses, i)
+  ha_do_snippets = length(var.do_payloads) > 0 ? [] : [for i in range(0, var.num_instances) : templatefile("${path.module}/templates/do.json", {
+    # Self-ip and VLAN name must match the self-ip declared in DO from do-builder
+    sync_self_name         = local.sync_self_name
+    sync_self_ip           = element(local.sync_group_addresses, i)
     failover_group_members = local.sync_group_addresses
     auto_sync              = true
     save_on_auto_sync      = false
     network_failover       = true
     fullload_on_sync       = false
     asm_sync               = false
-  })])
-  allow_service_default_ext = length(var.internal_subnetworks) > 0 ? {} : {
-    EXT_ALLOW_SERVICE = "default"
+  })]
+}
+
+# Generate a set of DO payloads *if* none are supplied as an input
+module "do_payloads" {
+  source                          = "../do-builder/"
+  num_instances                   = length(var.do_payloads) > 0 ? 0 : var.num_instances
+  ntp_servers                     = var.ntp_servers
+  timezone                        = var.timezone
+  modules                         = var.modules
+  allow_phone_home                = var.allow_phone_home
+  hostnames                       = local.hostnames
+  dns_servers                     = var.dns_servers
+  search_domains                  = coalescelist(var.search_domains, compact(flatten(["google.internal", [var.domain_name], [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]])))
+  nic_count                       = 1 + length(compact(concat([var.management_subnetwork], var.internal_subnetworks)))
+  provision_external_public_ip    = var.provision_external_public_ip
+  external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_vip_cidrs   = [var.external_subnetwork_vip_cidrs]
+  provision_internal_public_ip    = var.provision_internal_public_ip
+  internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_vip_cidrs   = [var.internal_subnetwork_vip_cidrs]
+  additional_configs              = local.ha_do_snippets
+  # Enable default service on internal interface if present
+  allow_service = {
+    internal = length(var.internal_subnetworks) > 0 ? "default" : "none"
   }
-  allow_service_default_int = length(var.internal_subnetworks) > 0 ? {
-    INT0_ALLOW_SERVICE = "default"
-  } : {}
 }
 
 module "instance" {
@@ -45,7 +59,7 @@ module "instance" {
   instance_ordinal_offset         = var.instance_ordinal_offset
   domain_name                     = var.domain_name
   description                     = var.description
-  metadata                        = merge(var.metadata, local.allow_service_default_ext, local.allow_service_default_int)
+  metadata                        = var.metadata
   labels                          = var.labels
   tags                            = var.tags
   min_cpu_platform                = var.min_cpu_platform
@@ -87,6 +101,6 @@ module "instance" {
   secret_implementor                = var.secret_implementor
   custom_script                     = var.custom_script
   as3_payloads                      = var.as3_payloads
-  do_payloads                       = local.do_payloads
+  do_payloads                       = coalescelist(var.do_payloads, module.do_payloads.do_payloads)
   install_cloud_libs                = var.install_cloud_libs
 }
