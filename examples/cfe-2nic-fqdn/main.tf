@@ -92,8 +92,11 @@ module "cfe_bucket" {
 }
 
 module "cfe" {
+  /* TODO: @memes
   source                            = "memes/f5-bigip/google//modules/cfe"
   version                           = "1.3.2"
+  */
+  source                            = "../../modules/cfe/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]
