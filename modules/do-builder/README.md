@@ -30,8 +30,9 @@ No provider.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| additional\_config | A map of additional configuration parameters to add to the generated JSON. | `map(any)` | `{}` | no |
+| additional\_configs | A list of additional DO configuration snippets JSON to merge with the generated<br>payloads. Any JSON provided here will be inserted as-is into the "Common" object<br>after any self IPs, routes, etc. Entries will not be merged or validated.<br><br>E.g. to add a new self IP to each generated payload:<br><br>additional\_configs = [<br>  "\"extra-self\": {<br>    \"class\": \"SelfIp\",<br>    \"address\": \"1.2.3.4/32\",<br>    ...<br>  }",<br>  ...<br>] | `list(string)` | `[]` | no |
 | allow\_phone\_home | Allow the BIG-IP VMs to send high-level device use information to help F5<br>optimize development resources. If set to false the information is not sent. | `bool` | n/a | yes |
+| allow\_service | A map of 'allowService' values to apply to named DO interfaces. If an specific<br>value is not found for an interface, the value 'none' shall be applied to internal<br>interfaces, and default to external.<br><br>E.g. to allow default service on internal but none on external interfaces:<br>allow\_service = {<br>  external = "none"<br>  internal = "default"<br>} | `map(string)` | `{}` | no |
 | dns\_servers | A list of DNS servers for BIG-IP instances to use. | `list(string)` | n/a | yes |
 | external\_subnetwork\_network\_ips | A list of IP addresses that will be assigned to BIG-IP instances on their external<br>interface. The list may be empty, or contain empty strings, to selectively<br>applies addresses to instances. | `list(string)` | n/a | yes |
 | external\_subnetwork\_vip\_cidrs | A list of VIP CIDR lists to assign to BIG-IP instances on their<br>external interface. E.g. to assign two CIDR blocks as VIPs on the first instance,<br>and a single IP address as a VIP on the second instance:-<br><br>external\_subnetwork\_vip\_cidrs = [<br>  [<br>    "10.1.0.0/16",<br>    "10.2.0.0/24",<br>  ],<br>  [<br>    "192.168.0.1/32",<br>  ]<br>] | `list(list(string))` | n/a | yes |

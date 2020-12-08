@@ -46,7 +46,7 @@
       "address": "${iface.address}",
       "vlan": "${iface.name}",
       "allowService": "${iface.allow_service}",
-      "trafficGroup": "traffic-group-local-only"
+      "trafficGroup": "${lookup(iface, "traffic_group", "traffic-group-local-only")}"
     },
 %{ if length(lookup(iface, "public", {})) > 0 ~}
     "${iface.name}-self-public": {
@@ -54,7 +54,7 @@
       "address": "${iface.public.address}",
       "vlan": "${iface.name}",
       "allowService": "${iface.public.allow_service}",
-      "trafficGroup": "traffic-group-local-only"
+      "trafficGroup": "${lookup(iface.public, "traffic_group", "traffic-group-local-only")}"
     },
 %{ endif ~}%{ for vip in iface.vips ~}
     "${iface.name}-self-${replace(vip, "/[^0-9]/", "-")}: {
@@ -62,7 +62,7 @@
       "address": "${vip}",
       "vlan": "${iface.name}",
       "allowService": "${iface.allow_service}",
-      "trafficGroup": "traffic-group-local-only"
+      "trafficGroup": "${lookup(iface, "vip_traffic_group", "traffic-group-local-only")}"
     },
 %{ endfor ~}
     "${iface.name}-rt-gw": {
@@ -80,9 +80,11 @@
 %{ endfor ~}
     "default": {
         "class": "Route",
-        "gw": "replace",
+        "gw": "${default_gw_address}",
         "network": "default",
         "mtu": ${jsonencode(length(interfaces) > 1 ? lookup(interfaces[0], "mtu", "replace") : "replace")}
-    }
+    }%{ if additional_config != "" ~},
+    ${additional_config}
+    %{ endif ~}
   }
 }
