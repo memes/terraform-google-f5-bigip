@@ -35,11 +35,15 @@ module "service_accounts" {
 
 # Alpha - allows internet egress if the instance(s) have public IPs or via NAT
 module "alpha" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-alpha", var.prefix)
   delete_default_internet_gateway_routes = false
+  mtu                                    = var.alpha_mtu
   subnets = [
     {
       subnet_name           = format("alpha-%s", local.short_region)
@@ -52,11 +56,15 @@ module "alpha" {
 
 # Beta - a NAT gateway will be provisioned to support egress
 module "beta" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-beta", var.prefix)
   delete_default_internet_gateway_routes = false
+  mtu                                    = var.beta_mtu
   subnets = [
     {
       subnet_name           = format("beta-%s", local.short_region)
@@ -69,11 +77,15 @@ module "beta" {
 
 # Gamma - no default routes
 module "gamma" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-gamma", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.gamma_mtu
   subnets = [
     {
       subnet_name           = format("gamma-%s", local.short_region)
@@ -94,11 +106,15 @@ module "gamma" {
 
 # Delta - no default routes
 module "delta" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-delta", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.delta_mtu
   subnets = [
     {
       subnet_name           = format("delta-%s", local.short_region)
@@ -119,11 +135,15 @@ module "delta" {
 
 # Epsilon - no default routes
 module "epsilon" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-epsilon", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.epsilon_mtu
   subnets = [
     {
       subnet_name           = format("epsilon-%s", local.short_region)
@@ -144,11 +164,15 @@ module "epsilon" {
 
 # Zeta - no default routes
 module "zeta" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-zeta", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.zeta_mtu
   subnets = [
     {
       subnet_name           = format("zeta-%s", local.short_region)
@@ -169,11 +193,15 @@ module "zeta" {
 
 # Eta - no default routes
 module "eta" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-eta", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.eta_mtu
   subnets = [
     {
       subnet_name           = format("eta-%s", local.short_region)
@@ -194,11 +222,15 @@ module "eta" {
 
 # Theta - no default routes
 module "theta" {
+  /* TODO: @memes - update when Google module supports MTU
   source                                 = "terraform-google-modules/network/google"
   version                                = "2.5.0"
+  */
+  source                                 = "git::https://github.com/memes/terraform-google-network?ref=memes/vpc_mtu"
   project_id                             = var.project_id
   network_name                           = format("%s-theta", var.prefix)
   delete_default_internet_gateway_routes = true
+  mtu                                    = var.theta_mtu
   subnets = [
     {
       subnet_name           = format("theta-%s", local.short_region)
