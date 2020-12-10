@@ -29,8 +29,8 @@ on `external` interfaces. VIPs declared this way are implemented as
 * BIG-IP will use service account: `bigip@my-project-id.iam.gserviceaccount.com`
 * BIG-IP admin user password is stored in Secret Manager under the key:
   `bigip-admin-password-key`
-* BIG-IP VIPs on data-plane (external): `"172.16.0.8/30"` on first instance, and
-  `"172.16.0.12/30"` on second instance
+* BIG-IP VIPs on data-plane (external): `"172.16.1.8/30"` on first instance, and
+  `"172.16.1.12/30"` on second instance
 
 <!-- spell-checker: disable -->
 ```hcl
@@ -43,8 +43,8 @@ internal_subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-
 admin_password_key = "bigip-admin-password-key"
 service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 external_vips      = [
-  ["172.16.0.8/30"],  # first instance
-  ["172.16.0.12/30"], # second instance
+  ["172.16.1.8/30"],  # first instance
+  ["172.16.1.12/30"], # second instance
 ]
 ```
 <!-- spell-checker: enable -->
