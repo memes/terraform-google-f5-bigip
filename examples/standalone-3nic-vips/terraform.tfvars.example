@@ -6,4 +6,4 @@ management_subnet  = "https://www.googleapis.com/compute/v1/projects/my-project-
 internal_subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/int-west"
 admin_password_key = "bigip-admin-password-key"
 service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
-external_vips       = [["172.16.0.8/30"], ["172.16.0.12/30"]]
+external_vips       = [["172.16.1.8/30"], ["172.16.1.12/30"]]
