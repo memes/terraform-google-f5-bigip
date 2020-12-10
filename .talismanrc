@@ -145,3 +145,9 @@ fileignoreconfig:
   checksum: 415ef31f6efc981b70ab9e084b721c2924375531e0884a319a7d0f5505bce53a
 - filename: examples/standalone-4nic-vips/README.md
   checksum: 6b8c718b128bda34f53b4d46ffe2f75b6331545eaeec91b026e0d6841723649b
+- filename: examples/standalone-3nic-public-ips/terraform.tfvars.example
+  checksum: c65f4b9242c325ee18745f5a928c480c40a8f570eaaf49aef4e72dc61d2bcac1
+- filename: examples/standalone-3nic-public-ips/main.tf
+  checksum: 94316e66d2bdd1a32338c1143500d6c64b8c72d1e36ef77a641ea70259032fba
+- filename: examples/standalone-3nic-public-ips/README.md
+  checksum: 272f8a39593efffd7b87c121d14f751d6b34e567c98fea3846ecb115ed8d57b2
