@@ -8,19 +8,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## TODO @memes [2.1.0] and [1.4.0] - TBD
+
+This release contains fundamental changes to the way that data-plane interfaces
+are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
+
+### Added
+
+- Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
+- Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
+
+### Changed
+
+- Non-management interface configuration is entirely configured through
+  Declarative Onboarding JSON (issue [#23](https://github.com/memes/terraform-google-f5-bigip/issues/23)
+  and [#26](https://github.com/memes/terraform-google-f5-bigip/issues/26))
+- CFE custom role will automatically generate semi-random identifiers for the role (issue [#61](https://github.com/memes/terraform-google-f5-bigip/issues/61))
+
+### Removed
+
+- Terraform lifecycle `create_before_destroy` rule on BIG-IP VM instances (issue [#46](https://github.com/memes/terraform-google-f5-bigip/issues/46))
+
 ## [2.0.2] and [1.3.2] - 2020-11-30
 
 ### Added
 
-- Support custom domain names (issue #29)
-- Support changing the base number and format specifier used when generating instance names (issue #24)
-- Telemetry Streaming extension installed by default (issue #22)
+- Support custom domain names (issue [#29](https://github.com/memes/terraform-google-f5-bigip/issues/29))
+- Support changing the base number and format specifier used when generating instance names (issue [#24](https://github.com/memes/terraform-google-f5-bigip/issues/24))
+- Support setting admin password via cleartext metadata (issue [#21](https://github.com/memes/terraform-google-f5-bigip/issues/21))
+- Telemetry Streaming extension installed by default (issue [#22](https://github.com/memes/terraform-google-f5-bigip/issues/22))
 
 ### Changed
 
-- Fixed bug installing RPM extensions on BIG-IP v15.1.1 and BIG-IP v15.1.2 (issue #18)
-- Fixed bug when declaring complex 'allow-service' requirements (issue #25)
-- Bumped Cloud Libraries, AS3, DO, and CFE extensions to latest (issue #22)
+- Fixed bug installing RPM extensions on BIG-IP v15.1.1 and BIG-IP v15.1.2 (issue [#18](https://github.com/memes/terraform-google-f5-bigip/issues/18))
+- Fixed bug when declaring complex 'allow-service' requirements (issue [#25](https://github.com/memes/terraform-google-f5-bigip/issues/25))
+- Bumped Cloud Libraries, AS3, DO, and CFE extensions to latest (issue [#22](https://github.com/memes/terraform-google-f5-bigip/issues/22))
 
 ### Removed
 
@@ -138,6 +160,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+[2.1.0]: https://github.com/memes/f5-google-terraform-modules/compare/v2.0.2...v2.1.0
+[1.4.0]: https://github.com/memes/f5-google-terraform-modules/compare/v1.3.2...v1.4.0
 [2.0.2]: https://github.com/memes/f5-google-terraform-modules/compare/v2.0.1...v2.0.2
 [1.3.2]: https://github.com/memes/f5-google-terraform-modules/compare/v1.3.1...v1.3.2
 [2.0.1]: https://github.com/memes/f5-google-terraform-modules/compare/v2.0.0...v2.0.1

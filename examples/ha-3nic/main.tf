@@ -50,8 +50,11 @@ resource "google_compute_address" "int" {
 }
 
 module "ha" {
+  /* TODO: @memes
   source                            = "memes/f5-bigip/google//modules/ha"
   version                           = "1.3.2"
+  */
+  source                            = "../../modules/ha/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]

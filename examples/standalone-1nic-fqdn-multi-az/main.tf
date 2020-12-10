@@ -7,10 +7,13 @@ terraform {
 }
 
 module "instance" {
+  /* TODO: @memes
   source                            = "memes/f5-bigip/google"
   version                           = "1.3.2"
+  */
+  source                            = "../../"
   project_id                        = var.project_id
-  zones                             = [var.zone]
+  zones                             = var.zones
   service_account                   = var.service_account
   external_subnetwork               = var.subnet
   image                             = var.image

@@ -81,6 +81,12 @@ ${custom_config_sh}
 EOF
     chmod 0755 /config/cloud/gce/customConfig.sh
 fi
+if [ ! -f /config/cloud/gce/do_filter.jq ]; then
+    base64 -d <<EOF | zcat > /config/cloud/gce/do_filter.jq
+${do_filter_jq}
+EOF
+    chmod 0644 /config/cloud/gce/do_filter.jq
+fi
 
 [ -x /config/cloud/gce/initialSetup.sh ] || \
     error "/config/cloud/gce/initialSetup.sh is missing"
