@@ -278,8 +278,8 @@ variable "external_subnetwork_network_ips" {
     error_message = "Each external_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of IP addresses to assign to BIG-IP instances on their external
-interface. The list may be empty, or contain empty strings, to selectively
+An optional list of private IP addresses to assign to BIG-IP instances on their
+externa interface. The list may be empty, or contain empty strings, to selectively
 applies addresses to instances.
 EOD
 }
@@ -305,6 +305,23 @@ external_subnetwork_vip_cidrs = [
     "192.168.0.1/32",
   ]
 ]
+EOD
+}
+
+variable "external_subnetwork_public_ips" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.external_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.external_subnetwork_public_ips)
+    error_message = "Each external_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of public IP addresses to assign to BIG-IP instances on their
+external interface. The list may be empty, or contain empty strings, to selectively
+applies addresses to instances.
+
+Note: these values are only applied if `provision_external_public_ip` is 'true'
+and will be ignored if that value is false.
 EOD
 }
 
@@ -353,7 +370,7 @@ variable "management_subnetwork_network_ips" {
     error_message = "Each management_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of IP addresses to assign to BIG-IP instances on their
+An optional list of private IP addresses to assign to BIG-IP instances on their
 management interface. The list may be empty, or contain empty strings, to
 selectively applies addresses to instances.
 EOD
@@ -380,6 +397,23 @@ external_subnetwork_vip_cidrs = [
     "192.168.0.1/32",
   ]
 ]
+EOD
+}
+
+variable "management_subnetwork_public_ips" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.management_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.management_subnetwork_public_ips)
+    error_message = "Each management_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of public IP addresses to assign to BIG-IP instances on their
+management interface. The list may be empty, or contain empty strings, to
+selectively applies addresses to instances.
+
+Note: these values are only applied if `provision_management_public_ip` is 'true'
+and will be ignored if that value is false.
 EOD
 }
 
@@ -432,10 +466,11 @@ variable "internal_subnetwork_network_ips" {
     error_message = "Each internal_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of lists of IP addresses to assign to BIG-IP instances on their
-internal interface. The list may be empty, or contain empty strings, to
+An optional list of lists of private IP addresses to assign to BIG-IP instances
+on their internal interface. The list may be empty, or contain empty strings, to
 selectively applies addresses to instances. E.g. to assign addresses to two
-internal networks:-
+internal networks:
+
 internal_subnetwork_network_ips = [
   # Will be assigned to first instance
   [
@@ -473,6 +508,38 @@ internal_subnetwork_vip_cidrs = [
   [
     ["192.168.0.1/32"], # first internal nic
   ]
+]
+EOD
+}
+
+variable "internal_subnetwork_public_ips" {
+  type    = list(list(string))
+  default = []
+  validation {
+    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_public_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
+    error_message = "Each internal_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of lists of public IP addresses to assign to BIG-IP instances
+on their internal interface. The list may be empty, or contain empty strings, to
+selectively applies addresses to instances.
+
+Note: these values are only applied if `provision_internal_public_ip` is 'true'
+and will be ignored if that value is false.
+
+E.g. to assign addresses to two internal networks:
+
+internal_subnetwork_network_ips = [
+  # Will be assigned to first instance
+  [
+    "x.x.x.x", # first internal nic
+    "y.y.y.y", # second internal nic
+  ],
+  # Will be assigned to second instance
+  [
+    ...
+  ],
+  ...
 ]
 EOD
 }

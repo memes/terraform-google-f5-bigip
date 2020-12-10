@@ -23,9 +23,11 @@ module "do_payloads" {
   nic_count                       = 1 + length(compact(concat([var.management_subnetwork], var.internal_subnetworks)))
   provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
   external_subnetwork_vip_cidrs   = var.external_subnetwork_vip_cidrs
   provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   internal_subnetwork_vip_cidrs   = var.internal_subnetwork_vip_cidrs
 }
 
@@ -99,6 +101,7 @@ resource "google_compute_instance" "bigip" {
       for_each = compact(var.provision_external_public_ip ? ["1"] : [])
       content {
         network_tier = var.external_subnetwork_tier
+        nat_ip       = length(var.external_subnetwork_public_ips) > count.index ? element(var.external_subnetwork_public_ips, count.index) : ""
       }
     }
 
@@ -121,6 +124,7 @@ resource "google_compute_instance" "bigip" {
         for_each = compact(var.provision_management_public_ip ? ["1"] : [])
         content {
           network_tier = var.management_subnetwork_tier
+          nat_ip       = length(var.management_subnetwork_public_ips) > count.index ? element(var.management_subnetwork_public_ips, count.index) : ""
         }
       }
 
@@ -146,11 +150,12 @@ resource "google_compute_instance" "bigip" {
         for_each = compact(var.provision_internal_public_ip ? ["1"] : [])
         content {
           network_tier = var.internal_subnetwork_tier
+          nat_ip       = length(var.internal_subnetwork_public_ips) > count.index ? element(element(var.internal_subnetwork_public_ips, count.index), network_interface.key) : ""
         }
       }
 
       dynamic "alias_ip_range" {
-        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(var.internal_subnetwork_vip_cidrs, count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
+        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, ["invalid"]), count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
         content {
           ip_cidr_range = alias_ip_range.value
         }
