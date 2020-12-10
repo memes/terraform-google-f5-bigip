@@ -74,7 +74,7 @@ No provider.
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM. | `string` | n/a | yes |
-| zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
+| zones | The list of compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
 
 ## Outputs
 

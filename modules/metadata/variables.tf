@@ -48,51 +48,6 @@ can be an official F5 image from GCP Marketplace, or a customised image.
 EOD
 }
 
-variable "ntp_servers" {
-  type        = list(string)
-  default     = ["169.254.169.254"]
-  description = <<EOD
-An optional list of NTP servers for BIG-IP instances to use. The default is
-["169.254.169.254"] to use GCE metadata server.
-EOD
-}
-
-variable "timezone" {
-  type        = string
-  default     = "UTC"
-  description = <<EOD
-The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances. The
-default is 'UTC'. See the TZ column here
-(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.
-For example, 'US/Eastern'.
-EOD
-}
-
-variable "modules" {
-  type = map(string)
-  default = {
-    ltm = "nominal"
-  }
-  description = <<EOD
-A map of BIG-IP module = provisioning-level pairs to enable, where the module
-name is key, and the provisioning-level is the value. This value is used with the
-default Declaration Onboarding template; a better option for full control is to
-explicitly declare the modules to be provisioned as part of a custom JSON file.
-See `do_payload`.
-
-E.g. the default is
-modules = {
-  ltm = "nominal"
-}
-
-To provision ASM and LTM, the value might be:-
-modules = {
-  ltm = "nominal"
-  asm = "nominal"
-}
-EOD
-}
-
 variable "allow_usage_analytics" {
   type        = bool
   default     = true
@@ -108,15 +63,6 @@ variable "region" {
   description = <<EOD
 An optional region attribute to include in usage analytics. Default value is an
 empty string.
-EOD
-}
-
-variable "allow_phone_home" {
-  type        = bool
-  default     = true
-  description = <<EOD
-Allow the BIG-IP VMs to send high-level device use information to help F5
-optimize development resources. If set to false the information is not sent.
 EOD
 }
 
@@ -239,39 +185,18 @@ EOD
 
 variable "do_payloads" {
   type        = list(string)
-  default     = []
   description = <<EOD
-An optional, but recommended, list of Declarative Onboarding JSON that can be used to
-setup the BIG-IP instance. If left blank (default), a minimal Declarative
-Onboarding will be generated and used.
+A list of Declarative Onboarding JSON that will be used to setup the BIG-IP
+instance.
 EOD
 }
 
-variable "hostnames" {
-  type        = list(string)
-  default     = []
+variable "do_filter_jq" {
+  type        = string
+  default     = ""
   description = <<EOD
-An optional list of hostname declarations to set per-instance hostname in
-generated DO file. Default is an empty list, which will exclude hostname
-from the generated DO file.
-EOD
-}
-
-variable "dns_servers" {
-  type        = list(string)
-  default     = ["169.254.169.254"]
-  description = <<EOD
-An optional list of DNS servers for BIG-IP instances to use. The default is
-["169.254.169.254"] to use GCE metadata server.
-EOD
-}
-
-variable "search_domains" {
-  type        = list(string)
-  default     = ["google.internal"]
-  description = <<EOD
-An optional list of DNS search domains for BIG-IP instances to use. The default
-is ["google.internal"].
+An optional JQ filter to apply to DO payloads prior to apply. Default is an empty
+string.
 EOD
 }
 

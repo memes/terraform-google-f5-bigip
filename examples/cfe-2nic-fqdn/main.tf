@@ -11,8 +11,11 @@ terraform {
 
 # Create a custom CFE role for BIG-IP service account
 module "cfe_role" {
+  /* TODO: @memes
   source      = "memes/f5-bigip/google//modules/cfe-role"
   version     = "2.0.2"
+  */
+  source      = "../../modules/cfe-role/"
   target_type = "project"
   target_id   = var.project_id
   members     = [format("serviceAccount:%s", var.service_account)]
@@ -89,8 +92,11 @@ module "cfe_bucket" {
 }
 
 module "cfe" {
+  /* TODO: @memes
   source                            = "memes/f5-bigip/google//modules/cfe"
   version                           = "2.0.2"
+  */
+  source                            = "../../modules/cfe/"
   project_id                        = var.project_id
   num_instances                     = var.num_instances
   zones                             = [var.zone]

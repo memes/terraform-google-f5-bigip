@@ -2,7 +2,7 @@
 ---
 fileignoreconfig:
 - filename: main.tf
-  checksum: 230ab961635cb253d891701457b6023ffbcd15071266509680a6417685c755df
+  checksum: a8f06a0c3f582e6a1e7abe3bef3fee01b7eb45f1c511d5a0160b6bc7fdc2af90
 - filename: README.md
   checksum: c87f7cf44e88eb25fdf669a8f19f96ae2b5917fdf9791902b7511622f08aed9e
 - filename: modules/cfe/README.md
@@ -123,3 +123,25 @@ fileignoreconfig:
   checksum: bcecb633fce7852ace83aed26f2951952569618c06a1783fc854fdd9f79f5df0
 - filename: examples/standalone-1nic-metadata-admin-password/README.md
   checksum: 9f20f0a0baf9c77e37ac9204819055caab0fd182874ca56a7cbe50219432843f
+- filename: CHANGELOG.md
+  checksum: 5acfff3b96fc160efdd175b811f56db293241b64e75c3bbbf87729494dab9fc8
+- filename: modules/metadata/files/initialSetup.sh
+  checksum: 031c17b1e31c8759fcac8cd999586a91b45098a184e7dfc38056717b89a6d652
+- filename: modules/do-builder/files/do_replace_filter.jq
+  checksum: a1875e9527549f2b4f3e8b59ec4d7c58560fd7e49441293233a43837f429f977
+- filename: modules/do-builder/README.md
+  checksum: 62a20aa2e3808ba0638ae83fbbe0ac33b42216fedc60ef1991c569b3fa16e1d3
+- filename: modules/ha/templates/do.json
+  checksum: efceb4c035be4cdfc338b1b0d5bfa02ec2b39c61af7dcb42b5d7a07355510264
+- filename: examples/standalone-3nic-vips/terraform.tfvars.example
+  checksum: 7c833d8e6b36f5fd5c325a78e64e703f443e089659e5b6aa4e96ed00ddf191e2
+- filename: examples/standalone-4nic-vips/terraform.tfvars.example
+  checksum: 9380afcd4ea30a91251e71d5bae285b94b59320866eb802b66353ca3af6a6199
+- filename: examples/standalone-4nic-vips/main.tf
+  checksum: 5167083672a383995d07e49702371afb69d8e5248e21977d12f762bad8d685d7
+- filename: examples/standalone-3nic-vips/main.tf
+  checksum: ef8fec051274f6299c282b3b2f1b2b138964ff9f9a4715fa0a108ad3816ce772
+- filename: examples/standalone-3nic-vips/README.md
+  checksum: 415ef31f6efc981b70ab9e084b721c2924375531e0884a319a7d0f5505bce53a
+- filename: examples/standalone-4nic-vips/README.md
+  checksum: 6b8c718b128bda34f53b4d46ffe2f75b6331545eaeec91b026e0d6841723649b

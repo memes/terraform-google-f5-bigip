@@ -440,19 +440,19 @@ EOD
 }
 
 variable "internal_subnetwork_vip_cidrs" {
-  type    = list(string)
+  type    = list(list(string))
   default = []
   validation {
     condition     = length(distinct([for cidr in var.internal_subnetwork_vip_cidrs : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
     error_message = "Each internal_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
   }
   description = <<EOD
-An optional list of CIDRs to assign to *active* BIG-IP instance as VIPs on its
-internal interface. E.g. to assign two CIDR blocks as VIPs:-
+An optional list of list of CIDRs to assign to *active* BIG-IP instance as VIPs
+on its internal interface. E.g. to assign two CIDR blocks as VIPs:-
 
 internal_subnetwork_vip_cidrs = [
-  "10.1.0.0/16",
-  "10.2.0.0/24",
+  ["10.1.0.0/16"], # assigned to first internal nic
+  ["10.2.0.0/24"], # assigned to second internal nic
 ]
 EOD
 }
