@@ -137,11 +137,10 @@ resource "google_compute_instance" "bigip" {
   # Assign NIC2-8 to any internal subnetworks, and will never receive a public
   # IP address
   dynamic "network_interface" {
-    for_each = toset(var.internal_subnetworks)
+    for_each = { for subnet in var.internal_subnetworks : index(var.internal_subnetworks, subnet) => subnet }
     content {
       subnetwork = network_interface.value
-      # XXX - handle this correctly
-      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(element(var.internal_subnetwork_network_ips, count.index), 0) : ""
+      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(element(var.internal_subnetwork_network_ips, count.index), network_interface.key) : ""
 
       dynamic "access_config" {
         for_each = compact(var.provision_internal_public_ip ? ["1"] : [])
@@ -151,7 +150,7 @@ resource "google_compute_instance" "bigip" {
       }
 
       dynamic "alias_ip_range" {
-        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index ? element(var.internal_subnetwork_vip_cidrs, count.index) : []
+        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(var.internal_subnetwork_vip_cidrs, count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
         content {
           ip_cidr_range = alias_ip_range.value
         }
