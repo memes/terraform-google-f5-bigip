@@ -133,3 +133,15 @@ fileignoreconfig:
   checksum: 62a20aa2e3808ba0638ae83fbbe0ac33b42216fedc60ef1991c569b3fa16e1d3
 - filename: modules/ha/templates/do.json
   checksum: efceb4c035be4cdfc338b1b0d5bfa02ec2b39c61af7dcb42b5d7a07355510264
+- filename: examples/standalone-3nic-vips/terraform.tfvars.example
+  checksum: 7c833d8e6b36f5fd5c325a78e64e703f443e089659e5b6aa4e96ed00ddf191e2
+- filename: examples/standalone-4nic-vips/terraform.tfvars.example
+  checksum: 9380afcd4ea30a91251e71d5bae285b94b59320866eb802b66353ca3af6a6199
+- filename: examples/standalone-4nic-vips/main.tf
+  checksum: 5167083672a383995d07e49702371afb69d8e5248e21977d12f762bad8d685d7
+- filename: examples/standalone-3nic-vips/main.tf
+  checksum: ef8fec051274f6299c282b3b2f1b2b138964ff9f9a4715fa0a108ad3816ce772
+- filename: examples/standalone-3nic-vips/README.md
+  checksum: 415ef31f6efc981b70ab9e084b721c2924375531e0884a319a7d0f5505bce53a
+- filename: examples/standalone-4nic-vips/README.md
+  checksum: 6b8c718b128bda34f53b4d46ffe2f75b6331545eaeec91b026e0d6841723649b
