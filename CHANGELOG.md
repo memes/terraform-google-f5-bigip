@@ -17,6 +17,7 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 - Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
 - Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
+- Retry logic when getting a secret from Google Secret Manager (issue [#60](https://github.com/memes/terraform-google-f5-bigip/issues/60))
 
 ### Changed
 
@@ -24,6 +25,7 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
   Declarative Onboarding JSON (issue [#23](https://github.com/memes/terraform-google-f5-bigip/issues/23)
   and [#26](https://github.com/memes/terraform-google-f5-bigip/issues/26))
 - CFE custom role will automatically generate semi-random identifiers for the role (issue [#61](https://github.com/memes/terraform-google-f5-bigip/issues/61))
+- Fixed support for multiple Alias IP definitions applied to multiple internal nics
 
 ### Removed
 
