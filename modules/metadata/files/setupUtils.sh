@@ -36,12 +36,37 @@ get_instance_attribute()
             fi
             break
         fi
-        info "get_instance_attribute: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
+        info "get_instance_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
         sleep 10
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
-        info "get_instance_attribute: Failed to get a result for ${1} from metadata server"
+        info "get_instance_attribute: ${attempt}: Failed to get a result for ${1} from metadata server"
+    return ${retval}
+}
+
+# Retrieves a value associated with the supplied key from the project metadata
+# $1 = attribute key to pull
+get_project_attribute()
+{
+    attempt=0
+    while [ "${attempt:-0}" -lt 10 ]; do
+        http_status=$(curl -so /dev/null -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}")
+        retval=$?
+        if [ "${retval}" -eq 0 ]; then
+            if [ "${http_status}" -eq 200 ]; then
+                curl -s --retry 20 -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}?alt=text"
+            else
+                echo ""
+            fi
+            break
+        fi
+        info "get_project_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
+        sleep 10
+        attempt=$((attempt+1))
+    done
+    [ "${attempt}" -ge 10 ] && \
+        info "get_project_attribute: ${attempt}: Failed to get a result for ${1} from metadata server"
     return ${retval}
 }
 
@@ -56,12 +81,12 @@ get_auth_token()
             echo "${auth_token}"
             break
         fi
-        info "get_auth_token: Curl failed with exit code $?; sleeping before retry"
+        info "get_auth_token: ${attempt}: Curl failed with exit code $?; sleeping before retry"
         sleep 10
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
-        info "Failed to get an auth token from metadata server"
+        info "get_auth_token: ${attempt}: Failed to get an auth token from metadata server"
     return ${retval}
 }
 
@@ -97,10 +122,28 @@ get_secret()
 get_secret_google_secret_manager()
 {
     auth_token="$(get_auth_token)" || error "get_secret_google_secret_manager: Unable to get auth token: $?"
-    project_id="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/project/project-id')" || \
+    project_id="$(get_project_attribute project-id)" || \
         error "get_secret_google_secret_manager: Unable to get project id from metadata: Curl exit code $?"
-    curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
-        jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
+    attempt=0
+    while [ "${attempt:-0}" -lt 10 ]; do
+        http_status=$(curl -so /dev/null -w '%{http_code}' -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null)
+        retval=$?
+        if [ "${retval}" -eq 0 ]; then
+            if [ "${http_status}" -eq 200 ]; then
+                curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
+                    jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
+            else
+                echo ""
+            fi
+            break
+        fi
+        info "get_secret_google_secret_manager: ${attempt}: Curl failed to get secret from Secret Manager: exit code: ${retval}; sleeping before retry"
+        sleep 10
+        attempt=$((attempt+1))
+    done
+    [ "${attempt}" -ge 10 ] && \
+        info "get_secret_google_secret_manager: ${attempt}: Failed to get a secret from Secret Manager"
+
     return 0
 }
 
