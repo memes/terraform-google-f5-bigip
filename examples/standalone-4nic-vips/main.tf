@@ -4,15 +4,15 @@
 # Note: values to be updated by implementor are shown as [ITEM], where ITEM should
 # be changed to the correct resource name/identifier.
 
-# Only supported on Terraform 0.13 and Terraform 0.14
+# Only supported on Terraform 0.12
 terraform {
-  required_version = "> 0.12"
+  required_version = "~> 0.12.29"
 }
 
 module "instance" {
   /* TODO @memes
   source                = "memes/f5-bigip/google"
-  version               = "2.0.2"
+  version               = "1.3.2"
   */
   source                        = "../../"
   project_id                    = var.project_id
