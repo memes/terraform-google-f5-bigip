@@ -1,76 +1,125 @@
-output "bastion_name" {
-  value       = module.bastion.hostname
-  description = <<EOD
-The name of the bastion VM.
-EOD
-}
-
-output "bigip_sa" {
-  value       = module.service_accounts.emails["bigip"]
+output "sa" {
+  value       = module.sa.emails["bigip"]
   description = <<EOD
 The fully-qualified service account email to use with BIG-IP instances.
 EOD
 }
 
-output "service_sa" {
-  value       = module.service_accounts.emails["backend"]
+output "secret_id" {
+  value       = module.password.secret_id
   description = <<EOD
-The fully-qualified service account email to use with backend service instances.
+The project-local secret id containing the generated BIG-IP admin password.
 EOD
 }
 
-output "alpha_west" {
-  value       = module.alpha.subnets["us-west1/alpha-west"].self_link
+output "alpha_net" {
+  value       = module.alpha.network_self_link
   description = <<EOD
-Alpha us-west1 subnet self-link.
+Self-link of the alpha network.
 EOD
 }
 
-output "beta_west" {
-  value       = module.beta.subnets["us-west1/beta-west"].self_link
+output "alpha_subnet" {
+  value       = element(module.alpha.subnets_self_links, 0)
   description = <<EOD
-beta us-west1 subnet self-link.
+Self-link of the alpha subnet.
 EOD
 }
 
-output "gamma_west" {
-  value       = module.gamma.subnets["us-west1/gamma-west"].self_link
+output "beta_net" {
+  value       = module.beta.network_self_link
   description = <<EOD
-gamma us-west1 subnet self-link.
+Self-link of the beta network.
 EOD
 }
 
-output "delta_west" {
-  value       = module.delta.subnets["us-west1/delta-west"].self_link
+output "beta_subnet" {
+  value       = element(module.beta.subnets_self_links, 0)
   description = <<EOD
-delta us-west1 subnet self-link.
+Self-link of the beta subnet.
 EOD
 }
 
-output "epsilon_west" {
-  value       = module.epsilon.subnets["us-west1/epsilon-west"].self_link
+output "gamma_net" {
+  value       = module.gamma.network_self_link
   description = <<EOD
-epsilon us-west1 subnet self-link.
+Self-link of the gamma network.
 EOD
 }
 
-output "zeta_west" {
-  value       = module.zeta.subnets["us-west1/zeta-west"].self_link
+output "gamma_subnet" {
+  value       = element(module.gamma.subnets_self_links, 0)
   description = <<EOD
-zeta us-west1 subnet self-link.
+Self-link of the gamma subnet.
 EOD
 }
 
-output "eta_west" {
-  value       = module.eta.subnets["us-west1/eta-west"].self_link
+output "delta_net" {
+  value       = module.delta.network_self_link
   description = <<EOD
-eta us-west1 subnet self-link.
+Self-link of the delta network.
 EOD
 }
 
-output "theta_west" {
-  value       = module.theta.subnets["us-west1/theta-west"].self_link
+output "delta_subnet" {
+  value       = element(module.delta.subnets_self_links, 0)
   description = <<EOD
-theta us-west1 subnet self-link.
+Self-link of the delta subnet.
+EOD
+}
+
+output "epsion_net" {
+  value       = module.epsilon.network_self_link
+  description = <<EOD
+Self-link of the epsilon network.
+EOD
+}
+
+output "epsilon_subnet" {
+  value       = element(module.epsilon.subnets_self_links, 0)
+  description = <<EOD
+Self-link of the epsilon subnet.
+EOD
+}
+
+output "zeta_net" {
+  value       = module.zeta.network_self_link
+  description = <<EOD
+Self-link of the zeta network.
+EOD
+}
+
+output "zeta_subnet" {
+  value       = element(module.zeta.subnets_self_links, 0)
+  description = <<EOD
+Self-link of the zeta subnet.
+EOD
+}
+
+output "eta_net" {
+  value       = module.eta.network_self_link
+  description = <<EOD
+Self-link of the eta network.
+EOD
+}
+
+output "eta" {
+  value       = element(module.eta.subnets_self_links, 0)
+  description = <<EOD
+Self-link of the eta subnet.
+EOD
+}
+
+output "theta_net" {
+  value       = module.theta.network_self_link
+  description = <<EOD
+Self-link of the theta network.
+EOD
+}
+
+output "theta_subnet" {
+  value       = element(module.theta.subnets_self_links, 0)
+  description = <<EOD
+Self-link of the theta subnet.
 EOD
 }
