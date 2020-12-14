@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.13 and Terraform 0.14
 terraform {
-  required_version = "> 0.12"
+  required_version = "~> 0.12.29, < 0.13"
 }
 
 # Reserve public IP on external subnet for BIG-IP nic0
@@ -36,7 +36,7 @@ resource "google_compute_address" "int_public" {
 module "instance" {
   /* TODO: @memes
   source                = "memes/f5-bigip/google"
-  version               = "2.0.2"
+  version               = "1.3.2"
   */
   source                           = "../../"
   project_id                       = var.project_id
