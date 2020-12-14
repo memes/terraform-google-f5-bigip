@@ -25,7 +25,7 @@ locals {
             address       = length(var.external_subnetwork_network_ips) > i ? format("%s/32", element(var.external_subnetwork_network_ips, i)) : "replace"
             allow_service = lookup(var.allow_service, "external", "default")
             public = var.provision_external_public_ip ? {
-              address       = "replace"
+              address       = length(var.external_subnetwork_public_ips) > i ? format("%s/32", element(var.external_subnetwork_public_ips, i)) : "replace"
               allow_service = lookup(var.allow_service, "external", "default")
             } : {}
             vips = length(var.external_subnetwork_vip_cidrs) > i ? element(var.external_subnetwork_vip_cidrs, i) : []
@@ -36,13 +36,13 @@ locals {
             name          = j == 2 ? "internal" : format("internal%d", j - 2)
             tag           = 4094 - j
             num           = format("1.%d", j)
-            address       = coalesce(length(var.internal_subnetwork_network_ips) > i ? (length(element(var.internal_subnetwork_network_ips, i)) > j ? format("%s/32", element(element(var.internal_subnetwork_network_ips, i), j)) : "") : "", "replace")
+            address       = coalesce(length(var.internal_subnetwork_network_ips) > i ? (length(element(var.internal_subnetwork_network_ips, i)) > j - 2 ? format("%s/32", element(element(var.internal_subnetwork_network_ips, i), j)) : "") : "", "replace")
             allow_service = lookup(var.allow_service, j == 2 ? "internal" : format("internal%d", j - 2), "none")
             public = var.provision_internal_public_ip ? {
-              address       = "replace"
+              address       = coalesce(length(var.internal_subnetwork_public_ips) > i ? (length(element(coalescelist(var.internal_subnetwork_public_ips, ["replace"]), i)) > j - 2 ? format("%s/32", element(element(var.internal_subnetwork_public_ips, i), j)) : "") : "", "replace")
               allow_service = lookup(var.allow_service, j == 2 ? "internal" : format("internal%d", j - 2), "none")
             } : {}
-            vips = length(var.internal_subnetwork_vip_cidrs) > i && length(element(var.internal_subnetwork_vip_cidrs, i)) > j - 2 ? element(element(var.internal_subnetwork_vip_cidrs, i), j - 2) : []
+            vips = length(var.internal_subnetwork_vip_cidrs) > i && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, ["replace"]), i)) > j - 2 ? element(element(var.internal_subnetwork_vip_cidrs, i), j - 2) : []
           }
         ]
       ) : []

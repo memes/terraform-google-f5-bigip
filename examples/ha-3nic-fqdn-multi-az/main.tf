@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12.29"
+  required_version = "~> 0.12.29, < 0.13"
 }
 
 # Create a firewall rule to allow BIG-IP ConfigSync
