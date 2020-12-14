@@ -1,4 +1,4 @@
-# Standalone BIG-IP (3-NIC) with one-based FQDN
+# Standalone BIG-IP with 3-NICs and public IP addresses assigned to each
 
 > You are viewing a **2.x release** of the modules, which supports
 > **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
@@ -8,9 +8,8 @@
 
 This example demonstrates how to use the
 [BIG-IP module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest)
-to deploy a single BIG-IP instance in a 3-NIC configuration with VIPs assigned
-on `external` interfaces. VIPs declared this way are implemented as
-[Alias IPs](https://cloud.google.com/vpc/docs/alias-ip#alias_ip_ranges_defined_in_a_vm_network_interface).
+to deploy a single BIG-IP instance in a 3-NIC configuration with reserved Public
+IP addresses.
 
 > **NOTE:** This example does not include firewall rules, ingress routes, or any
 > other dependencies needed to for a fully-functional deployment. The intent is
@@ -30,23 +29,16 @@ on `external` interfaces. VIPs declared this way are implemented as
 * BIG-IP will use service account: `bigip@my-project-id.iam.gserviceaccount.com`
 * BIG-IP admin user password is stored in Secret Manager under the key:
   `bigip-admin-password-key`
-* BIG-IP VIPs on data-plane (external): `"172.16.1.8/30"` on first instance, and
-  `"172.16.1.12/30"` on second instance
 
 <!-- spell-checker: disable -->
 ```hcl
 project_id         = "my-project-id"
-num_instances      = 2
 zone               = "us-west1-c"
 external_subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/ext-west"
 management_subnet  = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/mgmt-west"
 internal_subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-id/regions/us-west1/subnetworks/int-west"
 admin_password_key = "bigip-admin-password-key"
 service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
-external_vips      = [
-  ["172.16.1.8/30"],  # first instance
-  ["172.16.1.12/30"], # second instance
-]
 ```
 <!-- spell-checker: enable -->
 
@@ -61,7 +53,7 @@ external_vips      = [
 ### Resources created
 
 <!-- spell-checker: ignore payg -->
-* 2x VM running BIG-IP v15.1 PAYG license
+* 1x VM running BIG-IP v15.1 PAYG license
 
 <!-- spell-checker:ignore markdownlint -->
 <!-- markdownlint-disable MD033 MD034-->
@@ -74,7 +66,9 @@ external_vips      = [
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| google | n/a |
 
 ## Inputs
 
@@ -82,11 +76,9 @@ No provider.
 |------|-------------|------|---------|:--------:|
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
 | external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
-| external\_vips | A list of list of CIDRs to apply to each instance as an Alias IP (VIP). | `list(list(string))` | n/a | yes |
 | image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 | internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*internal\*<br>interface. | `string` | n/a | yes |
 | management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
-| num\_instances | The number of BIG-IP instances to create. | `number` | n/a | yes |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
@@ -95,7 +87,7 @@ No provider.
 
 | Name | Description |
 |------|-------------|
-| instance\_self\_links | Self-link of the BIG-IP instances. |
+| instance\_self\_link | Self-link of the BIG-IP instance. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

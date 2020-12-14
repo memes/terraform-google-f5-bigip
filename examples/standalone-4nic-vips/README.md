@@ -49,8 +49,8 @@ internal_subnets   = [
 admin_password_key = "bigip-admin-password-key"
 service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 external_vips      = [
-    ["172.16.0.8/30"],  # first instance
-    ["172.16.0.12/30"], # second instance
+    ["172.16.1.8/30"],  # first instance
+    ["172.16.1.12/30"], # second instance
 ]
 internal_vips      = [
     # first instance

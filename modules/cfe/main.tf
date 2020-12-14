@@ -46,18 +46,21 @@ module "ha" {
   provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_tier        = var.external_subnetwork_tier
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
   # Only apply VIPs to first instance
   external_subnetwork_vip_cidrs     = var.external_subnetwork_vip_cidrs
   management_subnetwork             = var.management_subnetwork
   provision_management_public_ip    = var.provision_management_public_ip
   management_subnetwork_tier        = var.management_subnetwork_tier
   management_subnetwork_network_ips = var.management_subnetwork_network_ips
+  management_subnetwork_public_ips  = var.management_subnetwork_public_ips
   # Only apply VIPs to first instance
   management_subnetwork_vip_cidrs = var.management_subnetwork_vip_cidrs
   internal_subnetworks            = var.internal_subnetworks
   provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_tier        = var.internal_subnetwork_tier
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   # Only apply VIPs to first instance
   internal_subnetwork_vip_cidrs     = var.internal_subnetwork_vip_cidrs
   allow_usage_analytics             = var.allow_usage_analytics
