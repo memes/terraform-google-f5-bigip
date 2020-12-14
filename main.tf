@@ -143,18 +143,18 @@ resource "google_compute_instance" "bigip" {
     for_each = { for subnet in var.internal_subnetworks : index(var.internal_subnetworks, subnet) => subnet }
     content {
       subnetwork = network_interface.value
-      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(element(var.internal_subnetwork_network_ips, count.index), network_interface.key) : ""
+      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(coalescelist(element(var.internal_subnetwork_network_ips, count.index), [""]), network_interface.key) : ""
 
       dynamic "access_config" {
         for_each = compact(var.provision_internal_public_ip ? ["1"] : [])
         content {
           network_tier = var.internal_subnetwork_tier
-          nat_ip       = length(var.internal_subnetwork_public_ips) > count.index ? element(element(var.internal_subnetwork_public_ips, count.index), network_interface.key) : ""
+          nat_ip       = length(var.internal_subnetwork_public_ips) > count.index ? element(coalescelist(element(var.internal_subnetwork_public_ips, count.index), [""]), network_interface.key) : ""
         }
       }
 
       dynamic "alias_ip_range" {
-        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, ["invalid"]), count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
+        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, [""]), count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
         content {
           ip_cidr_range = alias_ip_range.value
         }
