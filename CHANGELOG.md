@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- spell-checker: ignore markdownlint -->
+<!-- spell-checker: ignore markdownlint nics -->
 <!-- markdownlint-disable MD024 -->
 
 All notable changes to this project will be documented in this file.
@@ -18,6 +18,7 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 - Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
 - Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
 - Retry logic when getting a secret from Google Secret Manager (issue [#60](https://github.com/memes/terraform-google-f5-bigip/issues/60))
+- Added support for assigning public IP addresses to interfaces (issue [[#57](https://github.com/memes/terraform-google-f5-bigip/issues/57)])
 
 ### Changed
 
