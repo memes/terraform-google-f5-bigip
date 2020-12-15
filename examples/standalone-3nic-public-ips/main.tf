@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.13 and Terraform 0.14
 terraform {
-  required_version = "~> 0.12.29, < 0.13"
+  required_version = "~> 0.12.28, < 0.13"
 }
 
 # Reserve public IP on external subnet for BIG-IP nic0

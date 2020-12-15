@@ -2,7 +2,7 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12.29, < 0.13"
+  required_version = "~> 0.12.28, < 0.13"
 }
 
 # Create a custom CFE role with semi-random id

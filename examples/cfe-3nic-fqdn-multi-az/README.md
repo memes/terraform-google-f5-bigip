@@ -88,7 +88,7 @@ domain_name            = "example.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.29, < 0.13 |
+| terraform | ~> 0.12.28, < 0.13 |
 
 ## Providers
 
