@@ -27,6 +27,19 @@ ADMIN_PASSWORD="$(get_secret admin_password_key)"
 retry=0
 while [ ${retry} -lt 10 ]; do
     curl -skf --retry 20 -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+        -H "Content-Type: application/json" \
+        -d '{"maxMessageBodySize":134217728}' \
+        "https://${MGMT_ADDRESS:-localhost}:8100/mgmt/shared/server/messaging/settings/8100" && break
+    info "Setting shared message size failed, sleeping before retest: curl exit code $?"
+    sleep 5
+    retry=$((retry+1))
+done
+[ ${retry} -ge 10 ] && \
+    info "Failed to set shared message size; continuing anyway"
+
+retry=0
+while [ ${retry} -lt 10 ]; do
+    curl -skf --retry 20 -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json;charset=UTF-8" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -o /dev/null \
