@@ -71,7 +71,7 @@ else
     payload="${raw}"
 fi
 
-info "Applying Declarative Onboarding payload"
+info "Applying Declarative Onboarding payload from ${payload}"
 # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
 # https://github.com/F5Networks/f5-declarative-onboarding/issues/79
 id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -80,7 +80,6 @@ id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.id')" || \
     error "Error applying Declarative Onboarding payload from ${payload}: curl exit code $?"
-rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -107,3 +106,5 @@ while true; do
     info "Sleeping before rechecking Declarative Onboarding tasks"
     sleep 5
 done
+rm -f "${payload}" || info "Unable to delete ${payload}"
+exit 0
