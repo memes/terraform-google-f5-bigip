@@ -27,6 +27,12 @@ ${setup_utils_sh}
 EOF
     chmod 0755 /config/cloud/gce/setupUtils.sh
 fi
+if [ ! -f /config/cloud/gce/earlySetup.sh ]; then
+    base64 -d <<EOF | zcat > /config/cloud/gce/earlySetup.sh
+${early_setup_sh}
+EOF
+    chmod 0755 /config/cloud/gce/earlySetup.sh
+fi
 if [ ! -f /config/cloud/gce/multiNicMgmtSwap.sh ]; then
     base64 -d <<EOF | zcat > /config/cloud/gce/multiNicMgmtSwap.sh
 ${multi_nic_mgt_swap_sh}
