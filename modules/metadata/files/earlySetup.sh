@@ -19,8 +19,10 @@ info "Waiting for mcpd to be ready"
 wait_bigip_ready
 
 # Provision extra RAM
+info "Provisioning 1000mb of extra RAM"
 /usr/bin/setdb provision.extramb 1000 || \
     info "Unable to provision extra RAM"
+info "Allow restjavad to use extra RAM"
 /usr/bin/setdb restjavad.useextramb true || \
     info "Unable to use extra RAM in restjavad"
 
