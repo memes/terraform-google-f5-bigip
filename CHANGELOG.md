@@ -15,10 +15,12 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 ### Added
 
-- Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
+- Terraform 0.14 is supported (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
 - Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
 - Retry logic when getting a secret from Google Secret Manager (issue [#60](https://github.com/memes/terraform-google-f5-bigip/issues/60))
-- Added support for assigning public IP addresses to interfaces (issue [[#57](https://github.com/memes/terraform-google-f5-bigip/issues/57)])
+- Assign reserved public IP addresses to interfaces (issue [[#57](https://github.com/memes/terraform-google-f5-bigip/issues/57)])
+- Early setup script which enables and assigns extra RAM to restjavad - resolves intermittent issues when applying DO
+  (issue [#73](https://github.com/memes/terraform-google-f5-bigip/issues/73))
 
 ### Changed
 
