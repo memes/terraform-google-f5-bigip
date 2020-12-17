@@ -100,7 +100,7 @@ write_files:
     encoding: gz+b64
     owner: root
     content: |
-      ${do_replace_filter.jq}
+      ${do_filter_jq}
 
 # BIG-IP versions on GCP that support cloud-init are also using systemd; enable
 # and launch the unit that runs initialSetup.sh script on first boot.
