@@ -11,8 +11,10 @@ locals {
   custom_script = coalesce(var.custom_script, file("${path.module}/files/customConfig.sh"))
   startup = templatefile(var.use_cloud_init ? "${path.module}/templates/cloud_config.yml" : "${path.module}/templates/startup_script.sh",
     {
-      setup_utils_sh            = base64gzip(file("${path.module}/files/setupUtils.sh")),
-      early_setup_sh            = base64gzip(file("${path.module}/files/earlySetup.sh")),
+      setup_utils_sh = base64gzip(file("${path.module}/files/setupUtils.sh")),
+      early_setup_sh = base64gzip(templatefile("${path.module}/templates/earlySetup.sh", {
+        extramb = var.extramb
+      })),
       multi_nic_mgt_swap_sh     = base64gzip(file("${path.module}/files/multiNicMgmtSwap.sh")),
       initial_networking_sh     = base64gzip(file("${path.module}/files/initialNetworking.sh")),
       verify_hash_tcl           = base64gzip(file("${path.module}/files/verifyHash")),

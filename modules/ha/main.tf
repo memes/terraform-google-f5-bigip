@@ -107,4 +107,5 @@ module "instance" {
   as3_payloads                      = var.as3_payloads
   do_payloads                       = coalescelist(var.do_payloads, module.do_payloads.do_payloads)
   install_cloud_libs                = var.install_cloud_libs
+  extramb                           = var.extramb
 }

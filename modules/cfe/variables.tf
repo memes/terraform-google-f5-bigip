@@ -749,3 +749,17 @@ label pair on storage, and failover addresses, but nothing more. You will need t
 override and provide the correct CFE payload for your environment.
 EOD
 }
+
+variable "extramb" {
+  type    = number
+  default = 1000
+  validation {
+    condition     = var.extramb >= 0 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0."
+  }
+  description = <<EOD
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.
+The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting
+too low can cause issues when applying large DO or AS3 payloads.
+EOD
+}
