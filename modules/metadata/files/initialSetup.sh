@@ -48,6 +48,15 @@ info "Waiting for mcpd to be ready"
 . /usr/lib/bigstart/bigip-ready-functions
 wait_bigip_ready
 
+# Early initialisation
+if [ ! -f /config/cloud/gce/earlySetupComplete ]; then
+    [ -x /config/cloud/gce/earlySetup.sh ] || \
+        error "/config/cloud/gce/earlySetup.sh is missing"
+    /config/cloud/gce/earlySetup.sh || \
+        error "earlySetup script failed with exit code: $?"
+    touch /config/cloud/gce/earlySetupComplete
+fi
+
 # Switch management nic as needed; this may reboot the instance
 # Do this early in case the customer's networking prohibts onboarding through
 # nic0. E.g. internal repos only available on management network, etc.
