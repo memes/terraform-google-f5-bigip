@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck disable=SC1091,SC2086,SC2154
+# shellcheck disable=SC1091,SC2086,SC2154,SC2046
 #
 # This script will set BIG-IP parameters that are best set early in the onboarding
 # process
@@ -8,7 +8,7 @@
 if [ -f /config/cloud/gce/setupUtils.sh ]; then
     . /config/cloud/gce/setupUtils.sh
 else
-    echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: ERROR: unable to source /config/cloud/gce/setupUtils.sh" >&2
+    echo "$${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: ERROR: unable to source /config/cloud/gce/setupUtils.sh" >&2
     [ -e /dev/ttyS0 ] && \
         echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: ERROR: unable to source /config/cloud/gce/setupUtils.sh" >/dev/ttyS0
     exit 1
