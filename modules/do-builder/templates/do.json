@@ -13,6 +13,14 @@
 %{ endif ~}
       "autoPhonehome": ${jsonencode(allow_phone_home)}
     },
+    "dbVars": {
+      "class": "DbVariables",
+      "ui.advisory.enabled": true,
+      "ui.advisory.color": "green",
+      "ui.advisory.text": "/Common/hostname".
+      "provision.extramb": ${jsonencode(extramb)},
+      "config.allow.rfc3927": "enable"
+    },
     "dns": {
       "class": "DNS",
       "nameServers": ${jsonencode(dns_servers)},

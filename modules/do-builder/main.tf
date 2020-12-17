@@ -10,6 +10,7 @@ locals {
     {
       allow_phone_home = var.allow_phone_home,
       hostname         = length(var.hostnames) > i ? element(var.hostnames, i) : "",
+      extramb          = var.extramb,
       ntp_servers      = var.ntp_servers,
       dns_servers      = var.dns_servers,
       search_domains   = var.search_domains,

@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091,SC2086,SC2154
 #
 # This script will set BIG-IP parameters that are best set early in the onboarding
 # process
@@ -19,8 +19,8 @@ info "Waiting for mcpd to be ready"
 wait_bigip_ready
 
 # Provision extra RAM
-info "Provisioning 1000mb of extra RAM"
-/usr/bin/setdb provision.extramb 1000 || \
+info "Provisioning ${extramb}MB of RAM"
+/usr/bin/setdb provision.extramb ${extramb} || \
     info "Unable to provision extra RAM"
 info "Allow restjavad to use extra RAM"
 /usr/bin/setdb restjavad.useextramb true || \

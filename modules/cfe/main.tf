@@ -75,4 +75,5 @@ module "ha" {
   do_payloads                       = var.do_payloads
   install_cloud_libs                = var.install_cloud_libs
   custom_script                     = file("${path.module}/files/cloudFailoverExtension.sh")
+  extramb                           = var.extramb
 }
