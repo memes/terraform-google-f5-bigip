@@ -18,7 +18,7 @@
       "ui.advisory.enabled": true,
       "ui.advisory.color": "green",
       "ui.advisory.text": "/Common/hostname".
-      "provision.extramb": ${jsonencode(extramb)},
+      "provision.extramb": "${extramb}",
       "config.allow.rfc3927": "enable"
     },
     "dns": {
