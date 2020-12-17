@@ -30,6 +30,7 @@ module "do_payloads" {
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
   internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   internal_subnetwork_vip_cidrs   = var.internal_subnetwork_vip_cidrs
+  extramb                         = var.extramb
 }
 
 # Generate metadata for each instance
@@ -53,6 +54,7 @@ module "metadata" {
   do_payloads                       = coalescelist(var.do_payloads, module.do_payloads.do_payloads)
   as3_payloads                      = var.as3_payloads
   install_cloud_libs                = var.install_cloud_libs
+  extramb                           = var.extramb
 }
 
 resource "google_compute_instance" "bigip" {
