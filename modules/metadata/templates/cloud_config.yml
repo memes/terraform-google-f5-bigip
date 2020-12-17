@@ -7,6 +7,12 @@ write_files:
     owner: root
     content: |
       ${setup_utils_sh}
+  - path: /config/cloud/gce/earlySetup.sh
+    permissions: 0755
+    encoding: gz+b64
+    owner: root
+    content: |
+      ${early_setup_sh}
   - path: /config/cloud/gce/multiNicMgmtSwap.sh
     permissions: 0755
     encoding: gz+b64
