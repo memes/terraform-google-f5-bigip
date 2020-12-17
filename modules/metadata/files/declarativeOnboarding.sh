@@ -20,6 +20,19 @@ if [ -z "${1}" ]; then
     exit 0
 fi
 
+retry=0
+while [ ${retry} -lt 10 ]; do
+    curl -sf --retry 20 -u "admin:" --max-time 60 \
+        -H "Content-Type: application/json" \
+        -d '{"maxMessageBodySize":134217728}' \
+        "http://${MGMT_ADDRESS:-localhost}:8100/mgmt/shared/server/messaging/settings/8100" && break
+    info "Setting shared message size failed, sleeping before retest: curl exit code $?"
+    sleep 5
+    retry=$((retry+1))
+done
+[ ${retry} -ge 10 ] && \
+    info "Failed to set shared message size; continuing anyway"
+
 ADMIN_PASSWORD="$(get_secret admin_password_key)"
 [ -z "${ADMIN_PASSWORD}" ] && \
     error "Couldn't retrieve admin password from Secrets Manager"
@@ -58,7 +71,7 @@ else
     payload="${raw}"
 fi
 
-info "Applying Declarative Onboarding payload"
+info "Applying Declarative Onboarding payload from ${payload}"
 # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
 # https://github.com/F5Networks/f5-declarative-onboarding/issues/79
 id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -67,7 +80,6 @@ id="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.id')" || \
     error "Error applying Declarative Onboarding payload from ${payload}: curl exit code $?"
-rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -94,3 +106,5 @@ while true; do
     info "Sleeping before rechecking Declarative Onboarding tasks"
     sleep 5
 done
+rm -f "${payload}" || info "Unable to delete ${payload}"
+exit 0
