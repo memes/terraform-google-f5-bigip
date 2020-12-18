@@ -535,15 +535,6 @@ internal_subnetwork_network_ips = [
 EOD
 }
 
-variable "allow_usage_analytics" {
-  type        = bool
-  default     = true
-  description = <<EOD
-Allow the BIG-IP VMs to send anonymous statistics to F5 to help us determine how
-to improve our solutions (default). If set to false no statistics will be sent.
-EOD
-}
-
 variable "allow_phone_home" {
   type        = bool
   default     = true

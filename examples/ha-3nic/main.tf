@@ -68,6 +68,5 @@ module "ha" {
   internal_subnetwork_network_ips   = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
 }
