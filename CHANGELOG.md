@@ -33,6 +33,8 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 ### Removed
 
 - Terraform lifecycle `create_before_destroy` rule on BIG-IP VM instances (issue [#46](https://github.com/memes/terraform-google-f5-bigip/issues/46))
+- Obsolete and unused variables; `description`, `license_type`, `allow_usage_analytics`,
+  `region` and `enable_os_login` (issue [#27](https://github.com/memes/terraform-google-f5-bigip/issues/27))
 
 ## [2.0.2] and [1.3.2] - 2020-11-30
 
