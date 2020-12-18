@@ -59,7 +59,6 @@ module "instance" {
   instance_name_template          = var.instance_name_template
   instance_ordinal_offset         = var.instance_ordinal_offset
   domain_name                     = var.domain_name
-  description                     = var.description
   metadata                        = var.metadata
   labels                          = var.labels
   tags                            = var.tags

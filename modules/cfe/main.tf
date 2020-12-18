@@ -25,7 +25,6 @@ module "ha" {
   instance_ordinal_offset = var.instance_ordinal_offset
   domain_name             = var.domain_name
   search_domains          = var.search_domains
-  description             = var.description
   metadata                = local.metadata
   # Make sure the labels applied to instances have the CFE specific key-value pair
   labels                          = merge(var.labels, { "${var.cfe_label_key}" = var.cfe_label_value })
