@@ -41,7 +41,6 @@ locals {
   }
   metadata = [for i in range(0, var.num_instances) : merge(var.metadata,
     {
-      enable-oslogin     = upper(var.enable_os_login)
       serial-port-enable = upper(var.enable_serial_console)
       shutdown-script = templatefile("${path.module}/templates/shutdown_script.sh",
         {}

@@ -35,7 +35,6 @@ module "ha" {
   automatic_restart               = var.automatic_restart
   preemptible                     = var.preemptible
   ssh_keys                        = var.ssh_keys
-  enable_os_login                 = var.enable_os_login
   enable_serial_console           = var.enable_serial_console
   image                           = var.image
   delete_disk_on_destroy          = var.delete_disk_on_destroy

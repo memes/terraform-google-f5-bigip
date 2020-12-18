@@ -4,13 +4,13 @@ fileignoreconfig:
 - filename: main.tf
   checksum: a8f06a0c3f582e6a1e7abe3bef3fee01b7eb45f1c511d5a0160b6bc7fdc2af90
 - filename: README.md
-  checksum: c87f7cf44e88eb25fdf669a8f19f96ae2b5917fdf9791902b7511622f08aed9e
+  checksum: e5d356c0d7eb120a66901c220bead0fbdaf823e90a01515884cda184f99adcd2
 - filename: modules/cfe/README.md
-  checksum: ec3eeb1effc331ca298371c89d49879f111499a848ed426990b54e2ec5b1779e
+  checksum: 600a13055a14a7f26e55ee71421b59c2d68f1194138ae0cf39cf1554df3c91ba
 - filename: modules/ha/README.md
-  checksum: cd9cd2b77b796ff865f46ff5b32b7f09a860b56eddc93032aee9adbfc7fd9a55
+  checksum: afd9d71232e22dfd591dd67c7062355c534c5caec1b10f3aaac08ea883266f9f
 - filename: modules/metadata/README.md
-  checksum: 600b2b82cad3ccd9ae31f3c62d5e55be4bc70c631ef15e6e60286a006043a957
+  checksum: 4b72b7f4c9af54c3f47b3f982c99e17ad05611bab7706805f2a2e302464bf0b9
 - filename: examples/standalone-1nic/terraform.tfvars.example
   checksum: d187aa6016a979ada6d5419134f8fa10c9ec8730cda1f410a24c4515624d1fa6
 - filename: examples/ha-2nic/terraform.tfvars.example

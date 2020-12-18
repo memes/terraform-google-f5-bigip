@@ -43,7 +43,6 @@ No provider.
 | default\_gateway | Set this to the value to use as the default gateway for BIG-IP instances. This<br>could be an IP address, a shell command, or environment variable to use at<br>run-time. Set to blank to delete the default gateway without an explicit<br>replacement.<br><br>Default value is '$EXT\_GATEWAY' which will match the run-time upstream gateway<br>for nic0.<br><br>NOTE: this string will be inserted into the boot script as-is. | `string` | `"$EXT_GATEWAY"` | no |
 | do\_filter\_jq | An optional JQ filter to apply to DO payloads prior to apply. Default is an empty<br>string. | `string` | `""` | no |
 | do\_payloads | A list of Declarative Onboarding JSON that will be used to setup the BIG-IP<br>instance. | `list(string)` | n/a | yes |
-| enable\_os\_login | Set to true to enable OS Login on the VMs. Default value is false. If disabled<br>you must ensure that SSH keys are set explicitly for this instance (see<br>`ssh_keys` or set in project metadata. | `bool` | `false` | no |
 | enable\_serial\_console | Set to true to enable serial port console on the VMs. Default value is false. | `bool` | `false` | no |
 | extramb | The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.<br>The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting<br>too low can cause issues when applying large DO or AS3 payloads. | `number` | `1000` | no |
 | image | The self-link URI for a BIG-IP image to use as a base for the VM cluster. This<br>can be an official F5 image from GCP Marketplace, or a customised image. | `string` | n/a | yes |
@@ -51,7 +50,7 @@ No provider.
 | metadata | An optional map of initial metadata values that will be the base of generated<br>metadata. | `map(string)` | `{}` | no |
 | num\_instances | The number of BIG-IP metadata sets to provision. Default value is 1. | `number` | `1` | no |
 | secret\_implementor | The secret retrieval implementor to use; default value is an empty string.<br>Must be an empty string, 'google\_secret\_manager', or 'metadata'. Future<br>enhancements will add other implementors. | `string` | `""` | no |
-| ssh\_keys | An optional set of SSH public keys, concatenated into a single string. The keys<br>will be added to instance metadata. Default is an empty string.<br><br>See also `enable_os_login`. | `string` | `""` | no |
+| ssh\_keys | An optional set of SSH public keys, concatenated into a single string. The keys<br>will be added to instance metadata. Default is an empty string. | `string` | `""` | no |
 | use\_cloud\_init | If this value is set to true, cloud-init will be used as the initial<br>configuration approach; false (default) will fall-back to a standard shell<br>script for boot-time configuration.<br><br>Note: the BIG-IP version must support Cloud Init on GCP for this to function<br>correctly. E.g. v15.1+. | `bool` | `false` | no |
 
 ## Outputs
