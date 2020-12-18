@@ -7,16 +7,6 @@ metadata.
 EOD
 }
 
-variable "enable_os_login" {
-  type        = bool
-  default     = false
-  description = <<EOD
-Set to true to enable OS Login on the VMs. Default value is false. If disabled
-you must ensure that SSH keys are set explicitly for this instance (see
-`ssh_keys` or set in project metadata.
-EOD
-}
-
 variable "enable_serial_console" {
   type        = bool
   default     = false
@@ -31,8 +21,6 @@ variable "ssh_keys" {
   description = <<EOD
 An optional set of SSH public keys, concatenated into a single string. The keys
 will be added to instance metadata. Default is an empty string.
-
-See also `enable_os_login`.
 EOD
 }
 
