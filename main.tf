@@ -41,7 +41,6 @@ module "metadata" {
   image                             = var.image
   enable_os_login                   = var.enable_os_login
   enable_serial_console             = var.enable_serial_console
-  allow_usage_analytics             = var.allow_usage_analytics
   ssh_keys                          = var.ssh_keys
   metadata                          = var.metadata
   default_gateway                   = var.default_gateway

@@ -47,12 +47,11 @@ locals {
       shutdown-script = templatefile("${path.module}/templates/shutdown_script.sh",
         {}
       )
-      default_gateway       = var.default_gateway
-      install_cloud_libs    = join(" ", var.install_cloud_libs)
-      allow_usage_analytics = upper(var.allow_usage_analytics)
-      admin_password_key    = var.admin_password_secret_manager_key
-      as3_payload           = base64gzip(element(local.as3_payloads, i))
-      do_payload            = base64gzip(element(var.do_payloads, i))
+      default_gateway    = var.default_gateway
+      install_cloud_libs = join(" ", var.install_cloud_libs)
+      admin_password_key = var.admin_password_secret_manager_key
+      as3_payload        = base64gzip(element(local.as3_payloads, i))
+      do_payload         = base64gzip(element(var.do_payloads, i))
     },
     var.ssh_keys != "" ? local.ssh_keys : local.empty,
     var.use_cloud_init ? local.cloud_init : local.startup_script,
