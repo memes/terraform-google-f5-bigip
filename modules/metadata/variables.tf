@@ -66,20 +66,6 @@ empty string.
 EOD
 }
 
-variable "license_type" {
-  type    = string
-  default = "byol"
-  validation {
-    condition     = contains(list("byol", "payg"), var.license_type)
-    error_message = "The license_type variable must be one of 'byol', or 'payg'."
-  }
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
-EOD
-}
-
 variable "install_cloud_libs" {
   type = list(string)
   default = [

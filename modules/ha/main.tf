@@ -97,7 +97,6 @@ module "instance" {
   internal_subnetwork_vip_cidrs     = [var.internal_subnetwork_vip_cidrs]
   allow_usage_analytics             = var.allow_usage_analytics
   allow_phone_home                  = var.allow_phone_home
-  license_type                      = var.license_type
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
