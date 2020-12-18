@@ -532,16 +532,6 @@ optimize development resources. If set to false the information is not sent.
 EOD
 }
 
-variable "license_type" {
-  type        = string
-  default     = "byol"
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
-EOD
-}
-
 variable "default_gateway" {
   type        = string
   default     = "$EXT_GATEWAY"
