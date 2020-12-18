@@ -48,15 +48,6 @@ can be an official F5 image from GCP Marketplace, or a customised image.
 EOD
 }
 
-variable "region" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional region attribute to include in usage analytics. Default value is an
-empty string.
-EOD
-}
-
 variable "install_cloud_libs" {
   type = list(string)
   default = [
