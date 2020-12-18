@@ -65,15 +65,6 @@ See `instance_name_template` for more examples.
 EOD
 }
 
-variable "description" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional description that will be applied to the instances. Default value is
-an empty string, which will be replaced by a generated description at run-time.
-EOD
-}
-
 variable "domain_name" {
   type        = string
   default     = ""
