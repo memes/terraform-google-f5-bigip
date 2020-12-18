@@ -60,7 +60,6 @@ module "instance" {
   instance_name_template          = var.instance_name_template
   instance_ordinal_offset         = var.instance_ordinal_offset
   domain_name                     = var.domain_name
-  description                     = var.description
   metadata                        = var.metadata
   labels                          = var.labels
   tags                            = var.tags
@@ -70,7 +69,6 @@ module "instance" {
   automatic_restart               = var.automatic_restart
   preemptible                     = var.preemptible
   ssh_keys                        = var.ssh_keys
-  enable_os_login                 = var.enable_os_login
   enable_serial_console           = var.enable_serial_console
   image                           = var.image
   delete_disk_on_destroy          = var.delete_disk_on_destroy
@@ -97,9 +95,7 @@ module "instance" {
   internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   # Only apply VIPs to first instance
   internal_subnetwork_vip_cidrs     = [var.internal_subnetwork_vip_cidrs]
-  allow_usage_analytics             = var.allow_usage_analytics
   allow_phone_home                  = var.allow_phone_home
-  license_type                      = var.license_type
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key

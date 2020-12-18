@@ -25,7 +25,6 @@ module "instance" {
   internal_subnetworks              = [var.internal_subnet]
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
   instance_name_template            = var.instance_name_template
   instance_ordinal_offset           = var.instance_ordinal_offset

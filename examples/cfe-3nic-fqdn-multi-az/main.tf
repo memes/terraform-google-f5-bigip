@@ -121,7 +121,6 @@ module "cfe" {
   internal_subnetwork_network_ips   = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
   instance_name_template            = var.instance_name_template
   domain_name                       = var.domain_name

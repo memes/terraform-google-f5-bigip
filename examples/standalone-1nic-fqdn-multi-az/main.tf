@@ -18,7 +18,6 @@ module "instance" {
   external_subnetwork               = var.subnet
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
   instance_name_template            = var.instance_name_template
   domain_name                       = var.domain_name
