@@ -75,15 +75,6 @@ Google Cloud internal naming conventions ".ZONE.c.PROJECT_ID.internal".
 EOD
 }
 
-variable "description" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional description that will be applied to the instances. Default value is
-an empty string, which will be replaced by a generated description at run-time.
-EOD
-}
-
 variable "metadata" {
   type        = map(string)
   default     = {}
@@ -165,18 +156,6 @@ variable "ssh_keys" {
   description = <<EOD
 An optional set of SSH public keys, concatenated into a single string. The keys
 will be added to instance metadata. Default is an empty string.
-
-See also `enable_os_login`.
-EOD
-}
-
-variable "enable_os_login" {
-  type        = bool
-  default     = false
-  description = <<EOD
-Set to true to enable OS Login on the VMs. Default value is false as BIG-IP does
-not support in OS Login mode currently.
-NOTE: this value will override an 'enable-oslogin' key in `metadata` map.
 EOD
 }
 
@@ -544,31 +523,12 @@ internal_subnetwork_network_ips = [
 EOD
 }
 
-variable "allow_usage_analytics" {
-  type        = bool
-  default     = true
-  description = <<EOD
-Allow the BIG-IP VMs to send anonymous statistics to F5 to help us determine how
-to improve our solutions (default). If set to false no statistics will be sent.
-EOD
-}
-
 variable "allow_phone_home" {
   type        = bool
   default     = true
   description = <<EOD
 Allow the BIG-IP VMs to send high-level device use information to help F5
 optimize development resources. If set to false the information is not sent.
-EOD
-}
-
-variable "license_type" {
-  type        = string
-  default     = "byol"
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
 EOD
 }
 
