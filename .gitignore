@@ -13,3 +13,8 @@ terraform.tfvars
 terraform.tfvars.json
 *.auto.tfvars
 *.auto.tfvars.json
+
+# Kitchen testing
+.kitchen
+test/setup/harness.tfvars
+Gemfile.lock

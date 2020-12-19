@@ -6,12 +6,19 @@ terraform {
 # Service account impersonation (if enabled) and Google provider setup is
 # handled in providers.tf
 
+# Generate a random prefix
+resource "random_pet" "prefix" {
+  keepers = {
+    project_id = var.project_id
+  }
+}
+
 # Create the service account(s) to be used in the project
 module "sa" {
   source     = "terraform-google-modules/service-accounts/google"
   version    = "3.0.1"
   project_id = var.project_id
-  prefix     = var.prefix
+  prefix     = random_pet.prefix.id
   names      = ["bigip"]
   project_roles = [
     "${var.project_id}=>roles/logging.logWriter",
@@ -25,10 +32,10 @@ module "password" {
   source     = "memes/secret-manager/google//modules/random"
   version    = "1.0.2"
   project_id = var.project_id
-  id         = format("%s-bigip-admin-key", var.prefix)
+  id         = format("%s-bigip-admin-key", random_pet.prefix.id)
   accessors = [
     # Generated service account email address is predictable - use it directly
-    format("serviceAccount:%s-bigip@%s.iam.gserviceaccount.com", var.prefix, var.project_id),
+    format("serviceAccount:%s-bigip@%s.iam.gserviceaccount.com", random_pet.prefix.id, var.project_id),
   ]
   length           = 16
   special_char_set = "@#%&*()-_=+[]<>:?"
@@ -48,7 +55,7 @@ module "alpha" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-alpha", var.prefix)
+  network_name                           = format("%s-alpha", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1500
   subnets = [
@@ -70,7 +77,7 @@ module "beta" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-beta", var.prefix)
+  network_name                           = format("%s-beta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1460
   subnets = [
@@ -91,7 +98,7 @@ module "gamma" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-gamma", var.prefix)
+  network_name                           = format("%s-gamma", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1500
   subnets = [
@@ -112,7 +119,7 @@ module "delta" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-delta", var.prefix)
+  network_name                           = format("%s-delta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1490
   subnets = [
@@ -133,7 +140,7 @@ module "epsilon" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-epsilon", var.prefix)
+  network_name                           = format("%s-epsilon", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1480
   subnets = [
@@ -154,7 +161,7 @@ module "zeta" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-zeta", var.prefix)
+  network_name                           = format("%s-zeta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1470
   subnets = [
@@ -175,7 +182,7 @@ module "eta" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-eta", var.prefix)
+  network_name                           = format("%s-eta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1460
   subnets = [
@@ -196,7 +203,7 @@ module "theta" {
   */
   source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
   project_id                             = var.project_id
-  network_name                           = format("%s-theta", var.prefix)
+  network_name                           = format("%s-theta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1465
   subnets = [
@@ -217,8 +224,8 @@ module "beta-nat" {
   version                            = "~> 1.3.0"
   project_id                         = var.project_id
   region                             = var.region
-  name                               = format("%s-beta", var.prefix)
-  router                             = format("%s-beta", var.prefix)
+  name                               = format("%s-beta", random_pet.prefix.id)
+  router                             = format("%s-beta", random_pet.prefix.id)
   create_router                      = true
   source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
   network                            = module.beta.network_self_link
