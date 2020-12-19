@@ -151,3 +151,7 @@ fileignoreconfig:
   checksum: 94316e66d2bdd1a32338c1143500d6c64b8c72d1e36ef77a641ea70259032fba
 - filename: examples/standalone-3nic-public-ips/README.md
   checksum: 272f8a39593efffd7b87c121d14f751d6b34e567c98fea3846ecb115ed8d57b2
+- filename: test/fixtures/root/main.tf
+  checksum: 7909b2e65a44d71e0c302ee9a11077653e6ce49d1a3a2b30ecdff93b34ce2d9e
+- filename: test/fixtures/root/README.md
+  checksum: 377f1a619945f58e4ddde94e02183afdb87119834e0c7b31da3febb246129321

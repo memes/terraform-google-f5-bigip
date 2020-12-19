@@ -30,13 +30,6 @@ The GCP project identifier to use for testing.
 EOD
 }
 
-variable "prefix" {
-  type        = string
-  description = <<EOD
-The prefix to apply to GCP resources created in this test run.
-EOD
-}
-
 variable "region" {
   type        = string
   default     = "us-west1"
