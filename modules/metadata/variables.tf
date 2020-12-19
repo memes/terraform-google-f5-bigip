@@ -7,16 +7,6 @@ metadata.
 EOD
 }
 
-variable "enable_os_login" {
-  type        = bool
-  default     = false
-  description = <<EOD
-Set to true to enable OS Login on the VMs. Default value is false. If disabled
-you must ensure that SSH keys are set explicitly for this instance (see
-`ssh_keys` or set in project metadata.
-EOD
-}
-
 variable "enable_serial_console" {
   type        = bool
   default     = false
@@ -31,8 +21,6 @@ variable "ssh_keys" {
   description = <<EOD
 An optional set of SSH public keys, concatenated into a single string. The keys
 will be added to instance metadata. Default is an empty string.
-
-See also `enable_os_login`.
 EOD
 }
 
@@ -45,38 +33,6 @@ variable "image" {
   description = <<EOD
 The self-link URI for a BIG-IP image to use as a base for the VM cluster. This
 can be an official F5 image from GCP Marketplace, or a customised image.
-EOD
-}
-
-variable "allow_usage_analytics" {
-  type        = bool
-  default     = true
-  description = <<EOD
-Allow the BIG-IP VMs to send anonymous statistics to F5 to help us determine how
-to improve our solutions (default). If set to false no statistics will be sent.
-EOD
-}
-
-variable "region" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional region attribute to include in usage analytics. Default value is an
-empty string.
-EOD
-}
-
-variable "license_type" {
-  type    = string
-  default = "byol"
-  validation {
-    condition     = contains(list("byol", "payg"), var.license_type)
-    error_message = "The license_type variable must be one of 'byol', or 'payg'."
-  }
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
 EOD
 }
 

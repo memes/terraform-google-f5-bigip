@@ -36,12 +36,8 @@ module "do_payloads" {
 module "metadata" {
   source                            = "./modules/metadata/"
   num_instances                     = var.num_instances
-  region                            = replace(element(var.zones, 0), "/-[a-z]$/", "")
-  license_type                      = var.license_type
   image                             = var.image
-  enable_os_login                   = var.enable_os_login
   enable_serial_console             = var.enable_serial_console
-  allow_usage_analytics             = var.allow_usage_analytics
   ssh_keys                          = var.ssh_keys
   metadata                          = var.metadata
   default_gateway                   = var.default_gateway
