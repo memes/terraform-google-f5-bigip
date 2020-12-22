@@ -1,0 +1,165 @@
+# Declares a shared inspec profile that can reused by specific test suites
+# spell-checker: ignore inspec nics preemptible extramb
+---
+name: shared-gce
+title: Shared BIG-IP verifier through inspec-gce based controls
+maintainer: Matthew Emes <m.emes@f5.com>
+license: Apache-2.0
+depends:
+  - name: inspec-gcp
+    git: https://github.com/inspec/inspec-gcp.git
+    tag: v1.8.2
+inputs:
+  - name: input_num_nics
+    type: string
+    required: true
+  - name: input_reserve_addresses
+    type: string
+    required: true
+  - name: input_num_instances
+    type: string
+    required: false
+  - name: input_description
+    type: string
+    required: false
+  - name: input_metadata
+    type: string
+    required: false
+  - name: input_labels
+    type: string
+    required: false
+  - name: input_tags
+    type: string
+    required: false
+  - name: input_min_cpu_platform
+    type: string
+    required: false
+  - name: input_machine_type
+    type: string
+    required: false
+  - name: input_automatic_restart
+    type: string
+    required: false
+  - name: input_preemptible
+    type: string
+    required: false
+  - name: input_ssh_keys
+    type: string
+    required: false
+  - name: input_enable_serial_console
+    type: string
+    required: false
+  - name: input_image
+    type: string
+    required: false
+  - name: input_delete_disk_on_destroy
+    type: string
+    required: false
+  - name: input_disk_type
+    type: string
+    required: false
+  - name: input_disk_size_gb
+    type: string
+    required: false
+  - name: input_provision_external_public_ip
+    type: string
+    required: false
+  - name: input_external_subnetwork_tier
+    type: string
+    required: false
+  - name: input_provision_management_public_ip
+    type: string
+    required: false
+  - name: input_management_subnetwork_tier
+    type: string
+    required: false
+  - name: input_provision_internal_public_ip
+    type: string
+    required: false
+  - name: input_internal_subnetwork_tier
+    type: string
+    required: false
+  - name: input_install_cloud_libs
+    type: string
+    required: false
+  - name: input_allow_phone_home
+    type: string
+    required: false
+  - name: input_default_gateway"
+    type: string
+    required: false
+  - name: input_use_cloud_init
+    type: string
+    required: false
+  - name: output_admin_password_secret_manager_key
+    type: string
+    required: true
+  - name: input_extramb
+    type: string
+    required: false
+  - name: input_dns_servers
+    type: string
+    required: false
+  - name: input_search_domains
+    type: string
+    required: false
+  - name: input_ntp_servers
+    type: string
+    required: false
+  - name: input_timezone
+    type: string
+    required: false
+  - name: input_secret_implementor
+    type: string
+    required: false
+  - name: input_modules
+    type: string
+    required: false
+  - name: output_project_id
+    type: string
+    required: true
+  - name: output_prefix
+    type: string
+    required: true
+  - name: output_zones
+    type: array
+    required: true
+  - name: output_private_addresses
+    type: array
+    required: false
+  - name: output_public_addresses
+    type: array
+    required: false
+  - name: output_self_links
+    type: array
+    required: true
+  - name: output_service_account
+    type: string
+    required: true
+  - name: output_admin_password_secret_manager_key
+    type: string
+    required: true
+  - name: output_alpha_subnet
+    type: string
+    required: true
+  - name: output_beta_subnet
+    type: string
+    required: false
+  - name: output_gamma_subnet
+    type: string
+    required: false
+  - name: output_delta_subnet
+    type: string
+    required: false
+  - name: output_epsilon_subnet
+    type: string
+    required: false
+  - name: output_zeta_subnet
+    type: string
+    required: false
+  - name: output_eta_subnet
+    type: string
+    required: false
+  - name: output_theta_subnet
+    type: string
+    required: false
