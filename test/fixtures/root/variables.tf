@@ -250,7 +250,7 @@ EOD
 
 variable "enable_serial_console" {
   type        = bool
-  default     = true
+  default     = false
   description = <<EOD
 Set to true to enable serial port console on the VMs. Default value is false.
 EOD
@@ -515,5 +515,13 @@ variable "extramb" {
 The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.
 The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting
 too low can cause issues when applying large DO or AS3 payloads.
+EOD
+}
+
+variable "override_admin_password_secret_manager_key" {
+  type        = string
+  default     = ""
+  description = <<EOD
+Override the Secret Manager key for BIG-IP admin password.
 EOD
 }

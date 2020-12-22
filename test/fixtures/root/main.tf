@@ -75,7 +75,8 @@ module "root" {
   allow_phone_home                  = var.allow_phone_home
   default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
-  admin_password_secret_manager_key = var.admin_password_secret_manager_key
+  # allow override of admin_password_secret_manager_key from kitchen.yml
+  admin_password_secret_manager_key = coalesce(var.override_admin_password_secret_manager_key, var.admin_password_secret_manager_key)
   secret_implementor                = var.secret_implementor
   custom_script                     = var.custom_script
   as3_payloads                      = var.as3_payloads

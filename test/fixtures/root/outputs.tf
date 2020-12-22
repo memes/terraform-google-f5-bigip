@@ -38,7 +38,8 @@ EOD
 }
 
 output "admin_password_secret_manager_key" {
-  value       = var.admin_password_secret_manager_key
+  # allow override of admin_password_secret_manager_key from kitchen.yml
+  value       = coalesce(var.override_admin_password_secret_manager_key, var.admin_password_secret_manager_key)
   description = <<EOD
 The Secret Manager key for BIG-IP admin password.
 EOD

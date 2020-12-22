@@ -17,6 +17,7 @@ published modules.
 
 | Name | Version |
 |------|---------|
+| google | ~> 3.48 ~> 3.48 |
 | google.executor | ~> 3.48 ~> 3.48 |
 | random | n/a |
 
@@ -24,6 +25,7 @@ published modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| admin\_source\_cidrs | The list of source CIDRs that will be added to firewall rules to allow admin<br>access to BIG-IPs (SSH and GUI) on alpha and beta subnetworks. Only useful if<br>instance has a public IP address. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | project\_id | The GCP project identifier to use for testing. | `string` | n/a | yes |
 | region | The region to deploy test resources. Default is 'us-west1'. | `string` | `"us-west1"` | no |
 | tf\_sa\_email | The fully-qualified email address of the Terraform service account to use for<br>resource creation via account impersonation. If left blank, the default, then<br>the invoker's account will be used.<br><br>E.g. if you have permissions to impersonate:<br><br>tf\_sa\_email = "terraform@PROJECT\_ID.iam.gserviceaccount.com" | `string` | `""` | no |

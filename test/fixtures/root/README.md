@@ -41,7 +41,7 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | dns\_servers | An optional list of DNS servers for BIG-IP instances to use if custom DO payloads<br>are not provided. The default is ["169.254.169.254"] to use GCE metadata server. | `list(string)` | <pre>[<br>  "169.254.169.254"<br>]</pre> | no |
 | do\_payloads | The Declarative Onboarding contents to apply to the instances. Required. This<br>module has migrated to use of Declarative Onboarding for module activation,<br>licensing, NTP, DNS, and other basic configurations. Sample payloads are in the<br>examples folder.<br><br>Note: if left empty, the module will use a simple JSON that sets NTP and DNS,<br>and enables LTM. | `list(string)` | `[]` | no |
 | domain\_name | An optional domain name to append to generated instance names to fully-qualify<br>them. | `string` | `""` | no |
-| enable\_serial\_console | Set to true to enable serial port console on the VMs. Default value is false. | `bool` | `true` | no |
+| enable\_serial\_console | Set to true to enable serial port console on the VMs. Default value is false. | `bool` | `false` | no |
 | epsilon\_subnet | Self-link of epsilon subnet. | `string` | n/a | yes |
 | eta\_subnet | Self-link of eta subnet. | `string` | n/a | yes |
 | external\_subnetwork\_tier | The network tier to set for external subnetwork; must be one of 'PREMIUM'<br>(default) or 'STANDARD'. | `string` | `"PREMIUM"` | no |
@@ -61,6 +61,7 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | ntp\_servers | An optional list of NTP servers for BIG-IP instances to use if custom DO files<br>are not provided. The default is ["169.254.169.254"] to use GCE metadata server. | `list(string)` | <pre>[<br>  "169.254.169.254"<br>]</pre> | no |
 | num\_instances | The number of BIG-IP instances to provision. | `number` | `1` | no |
 | num\_nics | The number of network interfaces to provision in BIG-IP test instances. | `number` | n/a | yes |
+| override\_admin\_password\_secret\_manager\_key | Override the Secret Manager key for BIG-IP admin password. | `string` | `""` | no |
 | preemptible | If set to true, the BIG-IP instances will be deployed on preemptible VMs, which<br>could be terminated at any time, and have a maximum lifetime of 24 hours. | `string` | `false` | no |
 | prefix | The prefix to apply to GCP resources created in this test run. | `string` | n/a | yes |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |

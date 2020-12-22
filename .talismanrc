@@ -152,6 +152,10 @@ fileignoreconfig:
 - filename: examples/standalone-3nic-public-ips/README.md
   checksum: 272f8a39593efffd7b87c121d14f751d6b34e567c98fea3846ecb115ed8d57b2
 - filename: test/fixtures/root/main.tf
-  checksum: 7909b2e65a44d71e0c302ee9a11077653e6ce49d1a3a2b30ecdff93b34ce2d9e
+  checksum: 1cee950af323095620d2cdfe7ae6330470a4edf2e74ef6d6ee6a379137d58f1d
 - filename: test/fixtures/root/README.md
   checksum: 377f1a619945f58e4ddde94e02183afdb87119834e0c7b31da3febb246129321
+- filename: kitchen.yml
+  checksum: 50de0d12b6f0206e6fa0596f3712685a3795fe071d8662bcc1b6346137d6c825
+- filename: test/profiles/shared-gce/controls/gce.rb
+  checksum: 7b5a89716b62eb49cab0fa4f317d82ab558dbd6d07e6614e523198363362a798

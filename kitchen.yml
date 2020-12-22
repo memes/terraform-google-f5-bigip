@@ -1,0 +1,157 @@
+# spell-checker: ignore tfvars inspec nics bigip payg preemptible extramb
+---
+driver:
+  name: terraform
+  command_timeout: 300
+  verify_version: false
+  variable_files:
+    - test/setup/harness.tfvars
+
+provisioner:
+  name: terraform
+
+platforms:
+  - name: local
+
+verifier:
+  name: terraform
+  color: true
+  systems:
+    - name: inspec-gcp
+      backend: gcp
+      controls:
+        - suite
+        - gce_attributes
+        - gce_labels
+        - gce_metadata
+        - gce_network_interfaces
+        - generated_base_do
+        - generated_networking_do
+        - provided_do
+    - name: local
+      backend: local
+      controls:
+        - serial_log
+
+suites:
+  - name: root-1nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "1"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-1nic-minimal-%d"
+  - name: root-2nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "2"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-2nic-minimal-%d"
+  - name: root-3nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "3"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-3nic-minimal-%d"
+  - name: root-4nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "4"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-4nic-minimal-%d"
+        machine_type: n1-standard-8
+  - name: root-5nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "5"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-5nic-minimal-%d"
+        machine_type: n1-standard-8
+  - name: root-6nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "6"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-6nic-minimal-%d"
+        machine_type: n1-standard-8
+  - name: root-7nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "7"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-7nic-minimal-%d"
+        machine_type: n1-standard-8
+  - name: root-8nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "8"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "root-8nic-minimal-%d"
+        machine_type: n1-standard-8
+  - name: root-8nic-full
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "root-8nic-full-%d"
+        # yamllint disable-line rule:line-length
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        machine_type: n2-standard-8
+        instance_ordinal_offset: "1"
+        domain_name: example.com
+        # kitchen-terraform always applies -var then -var-file, so admin
+        # password key output from test/setup workspace cannot be overridden
+        # here. An extra input variable has been added to test/fixture/root to
+        # allow overriding from -var.
+        override_admin_password_secret_manager_key: admin-password
+        secret_implementor: metadata
+        # yamllint disable-line rule:line-length
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        labels: '{alpha=\"one\", beta=\"two\"}'
+        tags: '[\"apple\",\"banana\"]'
+        min_cpu_platform: Intel Cascade Lake
+        automatic_restart: "false"
+        preemptible: "true"
+        ssh_keys: admin THIS IS NOT A VALID SSH KEY
+        enable_serial_console: "true"
+        delete_disk_on_destroy: "true"
+        disk_type: pd-standard
+        disk_size_gb: "50"
+        provision_external_public_ip: "false"
+        external_subnetwork_tier: STANDARD
+        provision_management_public_ip: "true"
+        management_subnetwork_tier: STANDARD
+        provision_internal_public_ip: "true"
+        internal_subnetwork_tier: STANDARD
+        allow_phone_home: "false"
+        # spell-checker: ignore MGMT
+        default_gateway: "\\$MGMT_GATEWAY"
+        use_cloud_init: "true"
+        custom_script: "exit 0"
+        ntp_servers: '[\"0.pool.ntp.org\"]'
+        timezone: America/Los_Angeles
+        modules: '{ltm=\"nominal\", asm=\"none\"}'
+        dns_servers: '[\"8.8.8.8\"]'
+        search_domains: '[\"example.com\"]'
+        # yamllint disable-line rule:line-length
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
+        extramb: "1000"
+        as3_payloads: '[]'
+        do_payloads: '[]'

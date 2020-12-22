@@ -1,24 +1,22 @@
 # Test harness runner
 #
-# HARNESS_PROJECT_ID - the GCP project id to use for testing
-# HARNESS_TF_SA_EMAIL - the GCP SA account to use via impersonation; if provided
-#                       and IAM roles are set correctly then resource creation,
-#                       destruction, and checking will be through this account.
 
-ifneq ("${HARNESS_PROJECT_ID}", "")
-	PROJECT_VAR_ARG := -var 'project_id=${HARNESS_PROJECT_ID}'
-else
-	PROJECT_VAR_ARG :=
-endif
-ifneq ("${HARNESS_TF_SA_EMAIL}", "")
-	TF_SA_EMAIL_VAR_ARG := -var 'tf_sa_email=${HARNESS_TF_SA_EMAIL}'
-else
-	TF_SA_EMAIL_VAR_ARG :=
-endif
-
-.PHONY: test
+# kitchen, kitchen-terraform, and shared profiles do not use the correct inputs
+# if a bare `kitchen verify` is executed (first suite Terraform output becomes
+# input for all other suites). To work around this, invoke each suite independently
+# to ensure the inputs are set from the correct Terraform workspace.
+.PHONY: verify
 verify: test/setup/harness.tfvars
-	kitchen verify
+	kitchen list --bare | xargs -n 1 kitchen verify
+
+# Converge all suites, wait 10 mins then try to verify. If this fails use the verify
+# target to repeat.
+.PHONY: all
+all: test/setup/harness.tfvars
+	kitchen converge
+	echo "Sleeping for 10 mins"
+	sleep 600
+	kitchen list --bare | xargs -n 1 kitchen verify
 
 .PHONY: converge
 converge: test/setup/harness.tfvars
@@ -34,13 +32,13 @@ setup: test/setup/harness.tfvars
 test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 	cd test/setup && \
 		terraform init -input=false && \
-		terraform apply -input=false -auto-approve -target random_pet.prefix $(PROJECT_VAR_ARG) $(TF_SA_EMAIL_VAR_ARG) && \
-		terraform apply -input=false -auto-approve $(PROJECT_VAR_ARG) $(TF_SA_EMAIL_VAR_ARG) && \
+		terraform apply -input=false -auto-approve -target random_pet.prefix && \
+		terraform apply -input=false -auto-approve && \
 		terraform output > $(@F)
 
 .PHONY: teardown
 teardown:
 	kitchen destroy
 	cd test/setup && \
-		terraform destroy -auto-approve $(PROJECT_VAR_ARG) $(TF_SA_EMAIL_VAR_ARG) && \
+		terraform destroy -auto-approve && \
 		rm -f harness.tfvars

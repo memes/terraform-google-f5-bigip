@@ -237,3 +237,43 @@ module "beta-nat" {
     },
   ]
 }
+
+resource "google_compute_firewall" "admin_alpha" {
+  project                 = var.project_id
+  name                    = format("%s-alpha-allow-admin-access", random_pet.prefix.id)
+  network                 = module.alpha.network_self_link
+  description             = format("Allow external admin access on alpha (%s)", random_pet.prefix.id)
+  direction               = "INGRESS"
+  source_ranges           = var.admin_source_cidrs
+  target_service_accounts = [module.sa.emails["bigip"]]
+  allow {
+    protocol = "tcp"
+    ports = [
+      22,
+      8443,
+    ]
+  }
+  allow {
+    protocol = "icmp"
+  }
+}
+
+resource "google_compute_firewall" "admin_beta" {
+  project                 = var.project_id
+  name                    = format("%s-beta-allow-admin-access", random_pet.prefix.id)
+  network                 = module.beta.network_self_link
+  description             = format("Allow external admin access on beta (%s)", random_pet.prefix.id)
+  direction               = "INGRESS"
+  source_ranges           = var.admin_source_cidrs
+  target_service_accounts = [module.sa.emails["bigip"]]
+  allow {
+    protocol = "tcp"
+    ports = [
+      22,
+      443,
+    ]
+  }
+  allow {
+    protocol = "icmp"
+  }
+}
