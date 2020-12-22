@@ -1,4 +1,5 @@
-# spell-checker: ignore tfvars inspec nics bigip payg preemptible extramb
+# yamllint disable-line rule:line-length
+# spell-checker: ignore tfvars inspec nics yamllint bigip payg byol preemptible extramb
 ---
 driver:
   name: terraform
@@ -122,8 +123,10 @@ suites:
         # allow overriding from -var.
         override_admin_password_secret_manager_key: admin-password
         secret_implementor: metadata
+        # spellchecker: disable
         # yamllint disable-line rule:line-length
         metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
         min_cpu_platform: Intel Cascade Lake
