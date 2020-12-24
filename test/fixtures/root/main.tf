@@ -1,5 +1,5 @@
 terraform {
-  required_version = "> 0.12"
+  required_version = "~> 0.12.28, < 0.13"
 }
 
 # Randomise the zones to be used by modules

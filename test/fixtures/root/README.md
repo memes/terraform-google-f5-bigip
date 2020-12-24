@@ -9,7 +9,7 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 
 | Name | Version |
 |------|---------|
-| terraform | > 0.12 |
+| terraform | ~> 0.12.28, < 0.13 |
 | google | ~> 3.48 |
 | google | ~> 3.48 |
 | google-beta | ~> 3.48 |
