@@ -9,7 +9,9 @@ name: pre-commit
 on:
   pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
+      - compatibility/terraform_0.12
 
 jobs:
   pre-commit:
