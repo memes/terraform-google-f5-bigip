@@ -6,7 +6,7 @@
 # The set of keys that may be added by module
 MODULE_METADATA_KEYS = %w[serial-port-enable install_cloud_libs
                           admin_password_key as3_payload do_payload ssh-keys user-data shutdown-script
-                          startup-script default_gateway secret_implementor].freeze
+                          startup-script secret_implementor].freeze
 
 # rubocop:disable Metrics/BlockLength
 control 'gce_attributes' do
@@ -146,7 +146,6 @@ control 'gce_metadata' do
                                '"https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm"'\
                              ']').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   # rubocop:enable Layout/LineLength
-  default_gateway = input('input_default_gateway', value: '$EXT_GATEWAY').gsub(/\\\$/, '$')
   use_cloud_init = input('input_use_cloud_init', value: 'false').to_s.downcase == 'true'
   secret_implementor = input('input_secret_implementor', value: 'google_secret_manager')
 
@@ -173,12 +172,6 @@ control 'gce_metadata' do
             expect(metadata_h[key]).to cmp install_cloud_libs.join(' ')
           when 'admin_password_key'
             expect(metadata_h[key]).to cmp admin_password_secret_manager_key
-          when 'default_gateway'
-            if default_gateway.empty?
-              expect(metadata_h[key]).to be_nil
-            else
-              expect(metadata_h[key]).to cmp default_gateway
-            end
           when 'as3_payload', 'do_payload', 'shutdown-script'
             expect(metadata_h[key]).not_to be_empty
           when 'ssh-keys'
