@@ -9,3 +9,12 @@ inputs:
   - name: output_self_links
     type: array
     required: true
+  - name: input_num_nics
+    type: string
+    required: true
+  - name: input_use_cloud_init
+    type: string
+    required: false
+  - name: input_custom_script
+    type: string
+    required: false

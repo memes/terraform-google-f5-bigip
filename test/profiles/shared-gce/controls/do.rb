@@ -14,8 +14,6 @@ control 'generated_base_do' do
   self_links = input('output_self_links')
   do_payloads = input('input_do_payloads', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   allow_phone_home = input('input_allow_phone_home', value: 'true').to_s.downcase == 'true'
-  # TODO: @memes
-  # default_gateway = input('input_default_gateway', value: '$EXT_GATEWAY').gsub(/\\\$/, '$')
   extramb = input('input_extramb', value: '1000').to_i
   dns_servers = input('input_dns_servers', value: '["169.254.169.254"]')
                 .gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
@@ -96,6 +94,7 @@ control 'generated_networking_do' do
   reserve_addresses = input('input_reserve_addresses', value: 'false').to_s.downcase == 'true'
   provision_external_public_ip = input('input_provision_external_public_ip', value: 'true').to_s.downcase == 'true'
   provision_internal_public_ip = input('input_provision_internal_public_ip', value: 'false').to_s.downcase == 'true'
+  default_gateway = input('input_default_gateway', value: '')
 
   only_if('instance does not use generated DO for networking config') do
     do_payloads.empty? && num_nics > 1
@@ -119,12 +118,13 @@ control 'generated_networking_do' do
           expect(common).not_to be_empty
         end
         it 'default gateway' do
+          expected_default_gateway = default_gateway.empty? ? 'replace' : default_gateway
           default_gatway = common['default']
           expect(default_gatway).not_to be_nil
           expect(default_gatway).not_to be_empty
           expect(default_gatway).to include(
             'class' => 'Route',
-            'gw' => 'replace',
+            'gw' => expected_default_gateway,
             'network' => 'default',
             'mtu' => 'replace'
           )
