@@ -284,3 +284,18 @@ The default of 1000 is a recommended minimum for BIG-IP instances on GCP; settin
 too low can cause issues when applying large DO or AS3 payloads.
 EOD
 }
+
+variable "default_gateway" {
+  type    = string
+  default = ""
+  validation {
+    condition     = var.default_gateway == "" || can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.default_gateway))
+    error_message = "The default_geatway value must be empty or a valid IPv4 address."
+  }
+  description = <<EOD
+Set this to the value to use as the default gateway for BIG-IP instances. This
+must be a valid IP address or an empty string. If left blank (default), the
+generated Declarative Onboarding JSON will use the gateway associated with nic0
+at run-time.
+EOD
+}

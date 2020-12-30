@@ -31,6 +31,7 @@ module "do_payloads" {
   internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   internal_subnetwork_vip_cidrs   = var.internal_subnetwork_vip_cidrs
   extramb                         = var.extramb
+  default_gateway                 = var.default_gateway
 }
 
 # Generate metadata for each instance
@@ -41,7 +42,6 @@ module "metadata" {
   enable_serial_console             = var.enable_serial_console
   ssh_keys                          = var.ssh_keys
   metadata                          = var.metadata
-  default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   secret_implementor                = var.secret_implementor
   custom_script                     = var.custom_script

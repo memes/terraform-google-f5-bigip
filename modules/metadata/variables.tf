@@ -54,22 +54,6 @@ Onboarding, and Telemetry Streaming extensions.
 EOD
 }
 
-variable "default_gateway" {
-  type        = string
-  default     = "$EXT_GATEWAY"
-  description = <<EOD
-Set this to the value to use as the default gateway for BIG-IP instances. This
-could be an IP address, a shell command, or environment variable to use at
-run-time. Set to blank to delete the default gateway without an explicit
-replacement.
-
-Default value is '$EXT_GATEWAY' which will match the run-time upstream gateway
-for nic0.
-
-NOTE: this string will be inserted into the boot script as-is.
-EOD
-}
-
 variable "use_cloud_init" {
   type        = bool
   default     = false
