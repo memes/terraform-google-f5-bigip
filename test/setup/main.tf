@@ -49,11 +49,8 @@ locals {
 
 # Alpha - allows internet egress if the instance(s) have public IPs on nic0
 module "alpha" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.6.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-alpha", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
@@ -71,11 +68,8 @@ module "alpha" {
 # Beta - a NAT gateway will be provisioned to support egress for control-plane
 # download and installation of libraries, reaching Google APIs, etc.
 module "beta" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-beta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
@@ -92,11 +86,8 @@ module "beta" {
 
 # Gamma - default routes are deleted
 module "gamma" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-gamma", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
@@ -113,11 +104,8 @@ module "gamma" {
 
 # Delta - default routes are deleted
 module "delta" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-delta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
@@ -134,11 +122,8 @@ module "delta" {
 
 # Epsilon - default routes are deleted
 module "epsilon" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-epsilon", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
@@ -155,11 +140,8 @@ module "epsilon" {
 
 # Zeta - default routes are deleted
 module "zeta" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-zeta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
@@ -176,11 +158,8 @@ module "zeta" {
 
 # Eta - default routes are deleted
 module "eta" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-eta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
@@ -197,11 +176,8 @@ module "eta" {
 
 # Theta - default routes are deleted
 module "theta" {
-  /* TODO: @memes - update when Google publishes my PR
   source                                 = "terraform-google-modules/network/google"
-  version                                = "2.5.0"
-  */
-  source                                 = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=bb31529"
+  version                                = "3.0.0"
   project_id                             = var.project_id
   network_name                           = format("%s-theta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
