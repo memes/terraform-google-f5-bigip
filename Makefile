@@ -1,14 +1,6 @@
 # Test harness runner
 #
 
-# kitchen, kitchen-terraform, and shared profiles do not use the correct inputs
-# if a bare `kitchen verify` is executed (first suite Terraform output becomes
-# input for all other suites). To work around this, invoke each suite independently
-# to ensure the inputs are set from the correct Terraform workspace.
-.PHONY: verify
-verify: test/setup/harness.tfvars
-	kitchen list --bare | xargs -n 1 kitchen verify
-
 # Converge all suites, wait 10 mins then try to verify. If this fails use the verify
 # target to repeat.
 .PHONY: all
@@ -16,6 +8,14 @@ all: test/setup/harness.tfvars
 	kitchen converge
 	echo "Sleeping for 10 mins"
 	sleep 600
+	kitchen list --bare | xargs -n 1 kitchen verify
+
+# kitchen, kitchen-terraform, and shared profiles do not use the correct inputs
+# if a bare `kitchen verify` is executed (first suite Terraform output becomes
+# input for all other suites). To work around this, invoke each suite independently
+# to ensure the inputs are set from the correct Terraform workspace.
+.PHONY: verify
+verify: test/setup/harness.tfvars
 	kitchen list --bare | xargs -n 1 kitchen verify
 
 .PHONY: converge
