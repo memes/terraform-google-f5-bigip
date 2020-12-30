@@ -40,12 +40,6 @@ if [ "${NIC_COUNT:-0}" -gt 1 ]; then
     fi
 fi
 
-# Add a default route - this may faigive a warning message if there isn't a
-# matching nic - with fallback to NIC0 gateway
-# shellcheck disable=SC2154
-info "Setting default gateway to ${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
-tmsh create net route default gw "${DEFAULT_GATEWAY:-${EXT_GATEWAY}}"
-
 # Update common settings
 info "Removing DHCP provided ntp servers from management"
 # shellcheck disable=SC1083

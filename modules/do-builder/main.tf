@@ -46,7 +46,7 @@ locals {
           }
         ]
       ) : []
-      default_gw_address = "replace"
+      default_gw_address = coalesce(var.default_gateway, "replace")
       additional_config  = length(var.additional_configs) > 0 ? element(var.additional_configs, i) : ""
     }
   )]
