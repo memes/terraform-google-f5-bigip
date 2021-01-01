@@ -19,6 +19,14 @@ public reservations if `provision_[TYPE]_public_ip` is set to true.
 EOD
 }
 
+variable "override_admin_password_secret_manager_key" {
+  type        = string
+  default     = ""
+  description = <<EOD
+Override the Secret Manager key for BIG-IP admin password.
+EOD
+}
+
 #
 # These inputs will be set from test/setup/harness.tfvars
 #
@@ -83,10 +91,24 @@ The Secret Manager key for BIG-IP admin password.
 EOD
 }
 
+variable "alpha_net" {
+  type        = string
+  description = <<EOD
+Self-link of alpha network.
+EOD
+}
+
 variable "alpha_subnet" {
   type        = string
   description = <<EOD
 Self-link of alpha subnet.
+EOD
+}
+
+variable "beta_net" {
+  type        = string
+  description = <<EOD
+Self-link of beta network.
 EOD
 }
 
@@ -97,10 +119,24 @@ Self-link of beta subnet.
 EOD
 }
 
+variable "gamma_net" {
+  type        = string
+  description = <<EOD
+Self-link of gamma network.
+EOD
+}
+
 variable "gamma_subnet" {
   type        = string
   description = <<EOD
 Self-link of gamma subnet.
+EOD
+}
+
+variable "delta_net" {
+  type        = string
+  description = <<EOD
+Self-link of delta network.
 EOD
 }
 
@@ -111,10 +147,24 @@ Self-link of delta subnet.
 EOD
 }
 
+variable "epsilon_net" {
+  type        = string
+  description = <<EOD
+Self-link of epsilon network.
+EOD
+}
+
 variable "epsilon_subnet" {
   type        = string
   description = <<EOD
 Self-link of epsilon subnet.
+EOD
+}
+
+variable "zeta_net" {
+  type        = string
+  description = <<EOD
+Self-link of zeta network.
 EOD
 }
 
@@ -125,10 +175,24 @@ Self-link of zeta subnet.
 EOD
 }
 
+variable "eta_net" {
+  type        = string
+  description = <<EOD
+Self-link of eta network.
+EOD
+}
+
 variable "eta_subnet" {
   type        = string
   description = <<EOD
 Self-link of eta subnet.
+EOD
+}
+
+variable "theta_net" {
+  type        = string
+  description = <<EOD
+Self-link of theta network.
 EOD
 }
 
@@ -509,13 +573,5 @@ variable "extramb" {
 The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.
 The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting
 too low can cause issues when applying large DO or AS3 payloads.
-EOD
-}
-
-variable "override_admin_password_secret_manager_key" {
-  type        = string
-  default     = ""
-  description = <<EOD
-Override the Secret Manager key for BIG-IP admin password.
 EOD
 }

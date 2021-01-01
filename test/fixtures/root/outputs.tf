@@ -45,10 +45,24 @@ The Secret Manager key for BIG-IP admin password.
 EOD
 }
 
+output "alpha_net" {
+  value       = var.alpha_net
+  description = <<EOD
+The self-link of alpha network.
+EOD
+}
+
 output "alpha_subnet" {
   value       = var.alpha_subnet
   description = <<EOD
 The self-link of alpha subnet.
+EOD
+}
+
+output "beta_net" {
+  value       = var.beta_net
+  description = <<EOD
+The self-link of beta network.
 EOD
 }
 
@@ -59,10 +73,24 @@ The self-link of beta subnet.
 EOD
 }
 
+output "gamma_net" {
+  value       = var.gamma_net
+  description = <<EOD
+The self-link of gamma network.
+EOD
+}
+
 output "gamma_subnet" {
   value       = var.gamma_subnet
   description = <<EOD
 The self-link of gamma subnet.
+EOD
+}
+
+output "delta_net" {
+  value       = var.delta_net
+  description = <<EOD
+The self-link of delta network.
 EOD
 }
 
@@ -73,10 +101,24 @@ The self-link of delta subnet.
 EOD
 }
 
+output "epsilon_net" {
+  value       = var.epsilon_net
+  description = <<EOD
+The self-link of epsilon network.
+EOD
+}
+
 output "epsilon_subnet" {
   value       = var.epsilon_subnet
   description = <<EOD
 The self-link of epsilon subnet.
+EOD
+}
+
+output "zeta_net" {
+  value       = var.zeta_net
+  description = <<EOD
+The self-link of zeta network.
 EOD
 }
 
@@ -87,10 +129,24 @@ The self-link of zeta subnet.
 EOD
 }
 
+output "eta_net" {
+  value       = var.eta_net
+  description = <<EOD
+The self-link of eta network.
+EOD
+}
+
 output "eta_subnet" {
   value       = var.eta_subnet
   description = <<EOD
 The self-link of eta subnet.
+EOD
+}
+
+output "theta_net" {
+  value       = var.theta_net
+  description = <<EOD
+The self-link of theta network.
 EOD
 }
 

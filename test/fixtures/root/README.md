@@ -28,13 +28,16 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 |------|-------------|------|---------|:--------:|
 | admin\_password\_secret\_manager\_key | The Secret Manager key for BIG-IP admin password. | `string` | n/a | yes |
 | allow\_phone\_home | Allow the BIG-IP VMs to send high-level device use information to help F5<br>optimize development resources. If set to false the information is not sent. | `bool` | `true` | no |
+| alpha\_net | Self-link of alpha network. | `string` | n/a | yes |
 | alpha\_subnet | Self-link of alpha subnet. | `string` | n/a | yes |
 | as3\_payloads | An optional, but recommended, list of AS3 JSON files that can be used to setup<br>the BIG-IP instances. If left empty (default), the module will use a simple<br>no-op AS3 declaration. | `list(string)` | `[]` | no |
 | automatic\_restart | Determines if the BIG-IP VMs should be automatically restarted if terminated by<br>GCE. | `bool` | `true` | no |
+| beta\_net | Self-link of beta network. | `string` | n/a | yes |
 | beta\_subnet | Self-link of beta subnet. | `string` | n/a | yes |
 | custom\_script | An optional, custom shell script that will be executed during BIG-IP<br>initialisation, after BIG-IP networking is auto-configured, admin password is set from Secret<br>Manager (if possible), etc. Declarative Onboarding offers a better approach,<br>where suitable (see `do_payload`).<br><br>NOTE: this value should contain the script contents, not a file path. | `string` | `""` | no |
 | default\_gateway | Set this to the value to use as the default gateway for BIG-IP instances. This<br>must be a valid IP address or an empty string. If left blank (default), the<br>generated Declarative Onboarding JSON will use the gateway associated with nic0<br>at run-time. | `string` | `""` | no |
 | delete\_disk\_on\_destroy | Set this flag to false if you want the boot disk associated with the launched VMs<br>to survive when instances are destroyed. | `bool` | `true` | no |
+| delta\_net | Self-link of delta network. | `string` | n/a | yes |
 | delta\_subnet | Self-link of delta subnet. | `string` | n/a | yes |
 | disk\_size\_gb | Use this flag to set the boot volume size in GB. | `number` | `null` | no |
 | disk\_type | The boot disk type to use with instances; can be 'pd-ssd' (default), or<br>'pd-standard'. | `string` | `"pd-ssd"` | no |
@@ -42,10 +45,13 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | do\_payloads | The Declarative Onboarding contents to apply to the instances. Required. This<br>module has migrated to use of Declarative Onboarding for module activation,<br>licensing, NTP, DNS, and other basic configurations. Sample payloads are in the<br>examples folder.<br><br>Note: if left empty, the module will use a simple JSON that sets NTP and DNS,<br>and enables LTM. | `list(string)` | `[]` | no |
 | domain\_name | An optional domain name to append to generated instance names to fully-qualify<br>them. | `string` | `""` | no |
 | enable\_serial\_console | Set to true to enable serial port console on the VMs. Default value is false. | `bool` | `false` | no |
+| epsilon\_net | Self-link of epsilon network. | `string` | n/a | yes |
 | epsilon\_subnet | Self-link of epsilon subnet. | `string` | n/a | yes |
+| eta\_net | Self-link of eta network. | `string` | n/a | yes |
 | eta\_subnet | Self-link of eta subnet. | `string` | n/a | yes |
 | external\_subnetwork\_tier | The network tier to set for external subnetwork; must be one of 'PREMIUM'<br>(default) or 'STANDARD'. | `string` | `"PREMIUM"` | no |
 | extramb | The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.<br>The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting<br>too low can cause issues when applying large DO or AS3 payloads. | `number` | `1000` | no |
+| gamma\_net | Self-link of gamma network. | `string` | n/a | yes |
 | gamma\_subnet | Self-link of gamma subnet. | `string` | n/a | yes |
 | image | The self-link URI for a BIG-IP image to use as a base for the VM cluster. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418"` | no |
 | install\_cloud\_libs | An optional list of cloud library URLs that will be downloaded and installed on<br>the BIG-IP VM during initial boot. The contents of each download will be compared<br>to the verifyHash file, and failure will cause the boot scripts to fail. Default<br>list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative<br>Onboarding, and Telemetry Streaming extensions. | `list(string)` | <pre>[<br>  "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",<br>  "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",<br>  "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",<br>  "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",<br>  "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm"<br>]</pre> | no |
@@ -77,9 +83,11 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | tags | An optional list of *network tags* to add to the instance template. | `list(string)` | `[]` | no |
 | tf\_sa\_email | The fully-qualified email address of the Terraform service account to use for<br>resource creation via account impersonation. If left blank, the default, then<br>the invoker's account will be used.<br><br>E.g. if you have permissions to impersonate:<br><br>tf\_sa\_email = "terraform@PROJECT\_ID.iam.gserviceaccount.com" | `string` | `""` | no |
 | tf\_sa\_token\_lifetime\_secs | The expiration duration for the service account token, in seconds. This value<br>should be high enough to prevent token timeout issues during resource creation,<br>but short enough that the token is useless replayed later. Default value is 600<br>(10 mins). | `number` | `600` | no |
+| theta\_net | Self-link of theta network. | `string` | n/a | yes |
 | theta\_subnet | Self-link of theta subnet. | `string` | n/a | yes |
 | timezone | The Olson timezone string from /usr/share/zoneinfo for BIG-IP instances if custom<br>DO files are not provided. The default is 'UTC'. See the TZ column here<br>(https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for legal values.<br>For example, 'US/Eastern'. | `string` | `"UTC"` | no |
 | use\_cloud\_init | If this value is set to true, cloud-init will be used as the initial<br>configuration approach. | `bool` | `false` | no |
+| zeta\_net | Self-link of zeta network. | `string` | n/a | yes |
 | zeta\_subnet | Self-link of zeta subnet. | `string` | n/a | yes |
 
 ## Outputs
@@ -87,14 +95,20 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | Name | Description |
 |------|-------------|
 | admin\_password\_secret\_manager\_key | The Secret Manager key for BIG-IP admin password. |
+| alpha\_net | The self-link of alpha network. |
 | alpha\_subnet | The self-link of alpha subnet. |
+| beta\_net | The self-link of beta network. |
 | beta\_subnet | The self-link of beta subnet. |
+| delta\_net | The self-link of delta network. |
 | delta\_subnet | The self-link of delta subnet. |
+| epsilon\_net | The self-link of epsilon network. |
 | epsilon\_subnet | The self-link of epsilon subnet. |
+| eta\_net | The self-link of eta network. |
 | eta\_subnet | The self-link of eta subnet. |
 | external\_addresses | A list of the IP addresses and alias CIDRs assigned to instances on the external<br>NIC. |
 | external\_public\_ips | A list of the public IP addresses assigned to instances on the external NIC. |
 | external\_vips | A list of IP CIDRs assigned to instances on the external NIC, which usually<br>corresponds to the VIPs defined on each instance. |
+| gamma\_net | The self-link of gamma network. |
 | gamma\_subnet | The self-link of gamma subnet. |
 | instance\_addresses | A map of instance name to assigned IP addresses and alias CIDRs. |
 | internal\_addresses | A list of the IP addresses and alias CIDRs assigned to instances on the internal<br>NICs, if present. |
@@ -108,7 +122,9 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | region | The compute region that will be used for BIG-IP resources. |
 | self\_links | A list of self-links of the BIG-IP instances. |
 | service\_account | The service account to use with the BIG-IP instances. |
+| theta\_net | The self-link of theta network. |
 | theta\_subnet | The self-link of theta subnet. |
+| zeta\_net | The self-link of zeta network. |
 | zeta\_subnet | The self-link of zeta subnet. |
 | zone\_instances | A map of compute zones from var.zones input variable to instance self-links. If<br>no instances are deployed to a zone, the mapping will be to an empty list. |
 | zones | The compute zones that will be used for BIG-IP instances. |
