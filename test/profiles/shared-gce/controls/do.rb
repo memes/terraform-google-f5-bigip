@@ -225,6 +225,7 @@ control 'generated_networking_do' do
 end
 # rubocop:enable Metrics/BlockLength
 
+# rubocop:todo Metrics/BlockLength
 control 'provided_do' do
   title 'Verify provided DO files in metadata'
 
@@ -256,3 +257,4 @@ control 'provided_do' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

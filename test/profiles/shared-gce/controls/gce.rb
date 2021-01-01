@@ -6,7 +6,7 @@
 # The set of keys that may be added by module
 MODULE_METADATA_KEYS = %w[serial-port-enable install_cloud_libs
                           admin_password_key as3_payload do_payload ssh-keys user-data shutdown-script
-                          startup-script secret_implementor].freeze
+                          startup-script secret_implementor cfe_payload].freeze
 
 # rubocop:disable Metrics/BlockLength
 control 'gce_attributes' do
@@ -26,11 +26,11 @@ control 'gce_attributes' do
   delete_disk_on_destroy = input('input_delete_disk_on_destroy', value: 'true').to_s.downcase == 'true'
   # TODO: @memes - disabling unused inputs until initialize_params is working
   # rubocop:todo Layout/LineLength
-  image = input('input_image',
-                value: 'projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418')
+  # image = input('input_image',
+  #               value: 'projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418')
   # rubocop:enable Layout/LineLength
-  disk_type = input('input_disk_type', value: 'pd-ssd')
-  disk_size_gb = input('input_disk_size_gb', value: '')
+  # disk_type = input('input_disk_type', value: 'pd-ssd')
+  # disk_size_gb = input('input_disk_size_gb', value: '')
 
   # Do the number of instances match expectations?
   describe 'number of instances' do
@@ -96,6 +96,7 @@ control 'gce_attributes' do
 end
 # rubocop:enable Metrics/BlockLength
 
+# rubocop:todo Metrics/BlockLength
 control 'gce_labels' do
   title 'Verify BIG-IP GCE attributes'
 
@@ -104,6 +105,19 @@ control 'gce_labels' do
     { k => v }
   end.reduce(:merge)
   self_links = input('output_self_links')
+
+  # Is there a CFE label expected? Make sure it is in the expected label set.
+  cfe_label_key = input('output_cfe_label_key')
+  cfe_label_value = input('input_cfe_label_value')
+  unless cfe_label_key.empty? || cfe_label_value.empty?
+    if labels.nil?
+      labels = {
+        cfe_label_key => cfe_label_value
+      }
+    else
+      labels[cfe_label_key.to_s] = cfe_label_value
+    end
+  end
 
   self_links.each do |url|
     params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
@@ -125,7 +139,16 @@ control 'gce_labels' do
     end
   end
 end
-# rubocop:disable Metrics/BlockLength
+
+STANDARD_CLOUD_LIBS = %w[
+  https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz
+  https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz
+  https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm
+  https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm
+  https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm
+  https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.6.1/f5-cloud-failover-1.6.1-1.noarch.rpm
+].freeze
+
 control 'gce_metadata' do
   title 'Verify BIG-IP GCE metadata'
 
@@ -137,15 +160,7 @@ control 'gce_metadata' do
   end.reduce(:merge)
   ssh_keys = input('input_ssh_keys', value: '')
   enable_serial_console = input('input_enable_serial_console', value: 'false').to_s.downcase == 'true'
-  # rubocop:disable Layout/LineLength
-  install_cloud_libs = input('input_install_cloud_libs', value: '['\
-                               '"https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",'\
-                               '"https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",'\
-                               '"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",'\
-                               '"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",'\
-                               '"https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm"'\
-                             ']').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
-  # rubocop:enable Layout/LineLength
+  install_cloud_libs = input('input_install_cloud_libs', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   use_cloud_init = input('input_use_cloud_init', value: 'false').to_s.downcase == 'true'
   secret_implementor = input('input_secret_implementor', value: 'google_secret_manager')
 
@@ -169,10 +184,17 @@ control 'gce_metadata' do
           when 'serial-port-enable'
             expect(metadata_h[key]).to cmp enable_serial_console.to_s
           when 'install_cloud_libs'
-            expect(metadata_h[key]).to cmp install_cloud_libs.join(' ')
+            meta_cloud_libs = metadata_h[key].nil? ? [] : metadata_h[key].split(' ')
+            if install_cloud_libs.nil? || install_cloud_libs.empty?
+              meta_cloud_libs.each do |lib|
+                expect(lib).to be_in STANDARD_CLOUD_LIBS
+              end
+            else
+              expect(meta_cloud_libs).to cmp install_cloud_libs
+            end
           when 'admin_password_key'
             expect(metadata_h[key]).to cmp admin_password_secret_manager_key
-          when 'as3_payload', 'do_payload', 'shutdown-script'
+          when 'as3_payload', 'do_payload', 'shutdown-script', 'cfe_payload'
             expect(metadata_h[key]).not_to be_empty
           when 'ssh-keys'
             if ssh_keys.nil? || ssh_keys.empty?
@@ -200,6 +222,7 @@ control 'gce_metadata' do
             end
           else
             # all other entries should match the user-supplied metadata values
+            expect(metadata_h[key]).not_to be_nil
             expect(metadata_h[key]).to cmp metadata[key]
           end
         end

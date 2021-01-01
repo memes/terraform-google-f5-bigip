@@ -1,5 +1,5 @@
 # Declares a shared inspec profile that can reused by specific test suites
-# spell-checker: ignore inspec nics preemptible extramb
+# spell-checker: ignore inspec nics preemptible extramb dataplane
 ---
 name: shared-gce
 title: Shared BIG-IP verifier through inspec-gce based controls
@@ -115,6 +115,9 @@ inputs:
   - name: input_modules
     type: string
     required: false
+  - name: input_cfe_payload
+    type: string
+    required: false
   - name: output_project_id
     type: string
     required: true
@@ -139,27 +142,66 @@ inputs:
   - name: output_admin_password_secret_manager_key
     type: string
     required: true
+  - name: output_alpha_net
+    type: string
+    required: true
   - name: output_alpha_subnet
     type: string
     required: true
+  - name: output_beta_net
+    type: string
+    required: false
   - name: output_beta_subnet
+    type: string
+    required: false
+  - name: output_gamma_net
     type: string
     required: false
   - name: output_gamma_subnet
     type: string
     required: false
+  - name: output_delta_net
+    type: string
+    required: false
   - name: output_delta_subnet
+    type: string
+    required: false
+  - name: output_epsilon_net
     type: string
     required: false
   - name: output_epsilon_subnet
     type: string
     required: false
+  - name: output_zeta_net
+    type: string
+    required: false
   - name: output_zeta_subnet
+    type: string
+    required: false
+  - name: output_eta_net
     type: string
     required: false
   - name: output_eta_subnet
     type: string
     required: false
+  - name: output_theta_net
+    type: string
+    required: false
   - name: output_theta_subnet
+    type: string
+    required: false
+  - name: output_management_fw_self_link
+    type: string
+    require: false
+  - name: output_dataplane_fw_self_link
+    type: string
+    require: false
+  - name: output_role_id
+    type: string
+    require: false
+  - name: output_cfe_label_key
+    type: string
+    required: false
+  - name: input_cfe_label_value
     type: string
     required: false
