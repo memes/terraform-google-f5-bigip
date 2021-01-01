@@ -167,3 +167,5 @@ fileignoreconfig:
   checksum: e68771eac36ea0304880753fa53d9e9ecab1aeeeb3a571bd3e956bf5ef4f4729
 - filename: test/fixtures/cfe/README.md
   checksum: 6f5b9c62bfdcd397006dbcd219cb99f7e1f19e32dd105b8f16dffe9b1d973906
+- filename: test/profiles/shared-gce/controls/gce.rb
+  checksum: 8254c89c190a45f190768ae6e3498edf134d99903061d4226307276f76e21948
