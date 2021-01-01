@@ -159,3 +159,7 @@ fileignoreconfig:
   checksum: 50de0d12b6f0206e6fa0596f3712685a3795fe071d8662bcc1b6346137d6c825
 - filename: test/profiles/shared-gce/controls/gce.rb
   checksum: 7b5a89716b62eb49cab0fa4f317d82ab558dbd6d07e6614e523198363362a798
+- filename: test/fixtures/ha/main.tf
+  checksum: f29f6823b3d053bc61fc8226893198439f84fd0e69049b12af283dc4b950a2e4
+- filename: test/fixtures/ha/README.md
+  checksum: 1bfc590e2c7544f2ffd0b9f214049c68c10d9122a0d48458a4820e914a4a2587
