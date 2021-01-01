@@ -1,11 +1,25 @@
 # frozen_string_literal: true
 
 control 'suite' do
-  title 'root-4nic-minimal'
+  title 'cfe-4nic-minimal'
 
   prefix = input('output_prefix')
   self_links = input('output_self_links')
   zones = input('output_zones')
+  cfe_label_key = input('input_cfe_label_key', value: 'f5_cloud_failover_label')
+  cfe_label_value = input('input_cfe_label_value')
+
+  # Actual label comparison will be performed in shared gce control; this just
+  # ensures the inputs are not empty given that the CFE module fixtures should
+  # all include them.
+  describe 'CFE label inputs' do
+    it 'key' do
+      expect(cfe_label_key).not_to be_empty
+    end
+    it 'value' do
+      expect(cfe_label_value).not_to be_empty
+    end
+  end
 
   self_links.each_with_index do |url, index|
     params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
@@ -13,9 +27,9 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-root-4nic-minimal-[01]$/)
+        expect(instance.name).to match(/#{prefix}-cfe-4nic-minimal-[01]$/)
         # rubocop:disable Layout/LineLength
-        expect(instance.hostname).to match(/#{prefix}-root-4nic-minimal-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
+        expect(instance.hostname).to match(/#{prefix}-cfe-4nic-minimal-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
         # rubocop:enable Layout/LineLength
       end
     end
