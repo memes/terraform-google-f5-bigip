@@ -89,7 +89,10 @@ module "configsync_fw" {
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| dataplane\_self\_link | The self-link for the ConfigSync firewall rule added to data-plane network. |
+| management\_self\_link | The self-link for the ConfigSync firewall rule added to management network. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
