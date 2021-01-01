@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'inspec'
-
 control 'suite' do
   title 'root-8nic-full'
 

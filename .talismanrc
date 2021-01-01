@@ -169,3 +169,21 @@ fileignoreconfig:
   checksum: 6f5b9c62bfdcd397006dbcd219cb99f7e1f19e32dd105b8f16dffe9b1d973906
 - filename: test/profiles/shared-gce/controls/gce.rb
   checksum: 8254c89c190a45f190768ae6e3498edf134d99903061d4226307276f76e21948
+- filename: test/integration/cfe-6nic-minimal/controls/suite.rb
+  checksum: 73dfe3b1308b0021fbd88b1feaf8e5b5d85053fe90554414a1cb2164211113f7
+- filename: test/integration/cfe-2nic-minimal/controls/suite.rb
+  checksum: 205c184d088a638681846f649abe51f2801cbb60158d30faebb38e3d2021578a
+- filename: test/integration/cfe-8nic-minimal/controls/suite.rb
+  checksum: 6011aff7fa0d541c56bd410a3eb2425ead1f79e2e60d65e6101cc9b5589505fb
+- filename: test/integration/cfe-4nic-minimal/controls/suite.rb
+  checksum: f1b40a34c7466f7edd863a2d7bc6741c4397226e86c513e7465abfbea180a9c4
+- filename: test/integration/cfe-3nic-minimal/controls/suite.rb
+  checksum: e51d955478cc1e298339d292c788507e770b46152b09f8e15c5293fbf07deb21
+- filename: test/integration/cfe-8nic-full/controls/suite.rb
+  checksum: 5d7aef854ce8094f368a08aeec75442a2f572efdcc31c2eef64c1045d1ac14ac
+- filename: test/integration/cfe-5nic-minimal/controls/suite.rb
+  checksum: 5091965b410ce0ae4c4a0e48e9ee8e79258c37584371f8d96f762df9e1596b8c
+- filename: test/integration/cfe-7nic-minimal/controls/suite.rb
+  checksum: 6b2d6cfc1de75190a4638cdac7668794ed13a1f84495be1555ef4ebb07376a06
+- filename: kitchen.yml
+  checksum: 4498bfceba38387d871106848994e77fd8025c26460ed5455afcfce8dfd74fcc
