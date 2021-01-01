@@ -163,3 +163,7 @@ fileignoreconfig:
   checksum: f29f6823b3d053bc61fc8226893198439f84fd0e69049b12af283dc4b950a2e4
 - filename: test/fixtures/ha/README.md
   checksum: 1bfc590e2c7544f2ffd0b9f214049c68c10d9122a0d48458a4820e914a4a2587
+- filename: test/fixtures/cfe/main.tf
+  checksum: e68771eac36ea0304880753fa53d9e9ecab1aeeeb3a571bd3e956bf5ef4f4729
+- filename: test/fixtures/cfe/README.md
+  checksum: 6f5b9c62bfdcd397006dbcd219cb99f7e1f19e32dd105b8f16dffe9b1d973906
