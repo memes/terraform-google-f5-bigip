@@ -85,7 +85,7 @@ inputs:
   - name: input_allow_phone_home
     type: string
     required: false
-  - name: input_default_gateway"
+  - name: input_default_gateway
     type: string
     required: false
   - name: input_use_cloud_init
