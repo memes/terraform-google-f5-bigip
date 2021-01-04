@@ -65,7 +65,7 @@ control 'generated_base_do' do
               'dns' => include(
                 'class' => 'DNS',
                 'nameServers' => dns_servers
-                #   # TODO: @memes - search domains is dependent on logic
+                # TODO: @memes - search domains is dependent on logic
               ),
               'ntp' => include(
                 'class' => 'NTP',
