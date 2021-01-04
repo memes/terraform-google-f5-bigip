@@ -160,9 +160,12 @@ control 'gce_metadata' do
   end.reduce(:merge)
   ssh_keys = input('input_ssh_keys', value: '')
   enable_serial_console = input('input_enable_serial_console', value: 'false').to_s.downcase == 'true'
-  install_cloud_libs = input('input_install_cloud_libs', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
+  install_cloud_libs = input('input_install_cloud_libs', value: '[]').gsub(/(?:[\[\]]|\\?")/, '')
+                                                                     .gsub(', ', ',').split(',')
   use_cloud_init = input('input_use_cloud_init', value: 'false').to_s.downcase == 'true'
   secret_implementor = input('input_secret_implementor', value: 'google_secret_manager')
+  # Is this a CFE test?
+  cfe_label_key = input('output_cfe_label_key')
 
   self_links.each do |url|
     params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
@@ -194,8 +197,15 @@ control 'gce_metadata' do
             end
           when 'admin_password_key'
             expect(metadata_h[key]).to cmp admin_password_secret_manager_key
-          when 'as3_payload', 'do_payload', 'shutdown-script', 'cfe_payload'
+          when 'as3_payload', 'do_payload', 'shutdown-script'
             expect(metadata_h[key]).not_to be_empty
+          when 'cfe_payload'
+            if cfe_label_key.nil? || cfe_label_key.empty?
+              expect(metadata_h[key]).to be_nil
+            else
+              expect(metadata_h[key]).not_to be_nil
+              expect(metadata_h[key]).not_to be_empty
+            end
           when 'ssh-keys'
             if ssh_keys.nil? || ssh_keys.empty?
               expect(metadata_h[key]).to be_nil
