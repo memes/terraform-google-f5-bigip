@@ -71,4 +71,8 @@ module "ha" {
   install_cloud_libs                = var.install_cloud_libs
   custom_script                     = file("${path.module}/files/cloudFailoverExtension.sh")
   extramb                           = var.extramb
+  ntp_servers                       = var.ntp_servers
+  timezone                          = var.timezone
+  modules                           = var.modules
+  dns_servers                       = var.dns_servers
 }
