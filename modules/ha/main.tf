@@ -50,6 +50,7 @@ module "do_payloads" {
   allow_service = {
     internal = length(var.internal_subnetworks) > 0 ? "default" : "none"
   }
+  default_gateway = var.default_gateway
 }
 
 module "instance" {
@@ -96,7 +97,6 @@ module "instance" {
   # Only apply VIPs to first instance
   internal_subnetwork_vip_cidrs     = [var.internal_subnetwork_vip_cidrs]
   allow_phone_home                  = var.allow_phone_home
-  default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   secret_implementor                = var.secret_implementor
