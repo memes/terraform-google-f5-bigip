@@ -13,7 +13,9 @@ locals {
     {
       setup_utils_sh = base64gzip(file("${path.module}/files/setupUtils.sh")),
       early_setup_sh = base64gzip(templatefile("${path.module}/templates/earlySetup.sh", {
-        extramb = var.extramb
+        # TODO: @memes - should this be user configurable?
+        max_msg_body_size = 134217728,
+        extramb           = var.extramb
       })),
       multi_nic_mgt_swap_sh     = base64gzip(file("${path.module}/files/multiNicMgmtSwap.sh")),
       initial_networking_sh     = base64gzip(file("${path.module}/files/initialNetworking.sh")),
