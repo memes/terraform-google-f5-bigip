@@ -18,6 +18,23 @@ info "Waiting for mcpd to be ready"
 . /usr/lib/bigstart/bigip-ready-functions
 wait_bigip_ready
 
+info "Setting shared message size to ${max_msg_body_size}"
+retry=0
+# shellcheck disable=SC2170
+while [ "$${retry}" -lt 10 ]; do
+    # shellcheck disable=SC2016
+    curl -sf --retry 20 -u "admin:" --max-time 60 \
+        -H "Content-Type: application/json" \
+        -d '{"maxMessageBodySize": ${jsonencode(max_msg_body_size)}}' \
+        "http://localhost:8100/mgmt/shared/server/messaging/settings/8100" && break
+    info "Setting shared message size failed, sleeping before retest: curl exit code $?"
+    sleep 5
+    retry=$((retry+1))
+done
+# shellcheck disable=SC2170
+[ "$${retry}" -ge 10 ] && \
+    info "Failed to set shared message size"
+
 # Provision extra RAM
 info "Provisioning ${extramb}MB of RAM"
 /usr/bin/setdb provision.extramb ${extramb} || \
@@ -25,5 +42,8 @@ info "Provisioning ${extramb}MB of RAM"
 info "Allow restjavad to use extra RAM"
 /usr/bin/setdb restjavad.useextramb true || \
     info "Unable to use extra RAM in restjavad"
+
+info "Saving config"
+tmsh save /sys config
 
 exit 0
