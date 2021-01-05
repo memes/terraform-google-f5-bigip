@@ -207,10 +207,10 @@ control 'gce_metadata' do
               expect(metadata_h[key]).not_to be_empty
             end
           when 'ssh-keys'
-            if ssh_keys.nil? || ssh_keys.empty?
-              expect(metadata_h[key]).to be_nil
-            else
-              expect(metadata_h[key]).to cmp ssh_keys
+            # GCP may add keys, so just check that the specified key(s) are
+            # present
+            if !(ssh_keys.nil? || ssh_keys.empty?)
+              expect(metadata_h[key]).to match /#{ssh_keys}/
             end
           when 'user-data'
             if use_cloud_init
