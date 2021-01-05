@@ -135,7 +135,7 @@ suites:
         min_cpu_platform: Intel Cascade Lake
         automatic_restart: "false"
         preemptible: "true"
-        ssh_keys: admin THIS IS NOT A VALID SSH KEY
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
         enable_serial_console: "true"
         delete_disk_on_destroy: "true"
         disk_type: pd-standard
@@ -249,7 +249,7 @@ suites:
         min_cpu_platform: Intel Cascade Lake
         automatic_restart: "false"
         preemptible: "true"
-        ssh_keys: admin THIS IS NOT A VALID SSH KEY
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
         enable_serial_console: "true"
         delete_disk_on_destroy: "true"
         disk_type: pd-standard
@@ -372,7 +372,7 @@ suites:
         min_cpu_platform: Intel Cascade Lake
         automatic_restart: "false"
         preemptible: "true"
-        ssh_keys: admin THIS IS NOT A VALID SSH KEY
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
         enable_serial_console: "true"
         delete_disk_on_destroy: "true"
         disk_type: pd-standard

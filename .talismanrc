@@ -186,4 +186,4 @@ fileignoreconfig:
 - filename: test/integration/cfe-7nic-minimal/controls/suite.rb
   checksum: 6b2d6cfc1de75190a4638cdac7668794ed13a1f84495be1555ef4ebb07376a06
 - filename: kitchen.yml
-  checksum: 4498bfceba38387d871106848994e77fd8025c26460ed5455afcfce8dfd74fcc
+  checksum: 45981135cfc213721499afcb4dbc0012a5d67f36d792e1cd2703edf86baf6915
