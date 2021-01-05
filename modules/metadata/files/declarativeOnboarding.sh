@@ -25,7 +25,7 @@ while [ ${retry} -lt 10 ]; do
     curl -sf --retry 20 -u "admin:" --max-time 60 \
         -H "Content-Type: application/json" \
         -d '{"maxMessageBodySize":134217728}' \
-        "http://${MGMT_ADDRESS:-localhost}:8100/mgmt/shared/server/messaging/settings/8100" && break
+        "http://localhost:8100/mgmt/shared/server/messaging/settings/8100" && break
     info "Setting shared message size failed, sleeping before retest: curl exit code $?"
     sleep 5
     retry=$((retry+1))
