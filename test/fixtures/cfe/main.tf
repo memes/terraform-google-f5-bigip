@@ -30,6 +30,7 @@ locals {
     var.eta_subnet,
     var.theta_subnet,
   ], 0, var.num_nics - 2) : []
+  cfe_label_key = format("%s-%s", var.prefix, var.cfe_label_key)
 }
 
 module "configsync_fw" {
@@ -50,6 +51,25 @@ module "cfe_role" {
   members     = [format("serviceAccount:%s", var.service_account)]
 }
 
+module "cfe_bucket" {
+  source     = "terraform-google-modules/cloud-storage/google"
+  version    = "1.7.2"
+  project_id = var.project_id
+  prefix     = var.prefix
+  names      = [format(var.instance_name_template, 0)]
+  force_destroy = {
+    "${format(var.instance_name_template, 0)}" = true
+  }
+  location          = "US"
+  set_admin_roles   = false
+  set_creator_roles = false
+  set_viewer_roles  = true
+  viewers           = [format("serviceAccount:%s", var.service_account)]
+  # Label the bucket with the CFE pair, as supplied to CFE module
+  labels = {
+    (local.cfe_label_key) = var.cfe_label_value
+  }
+}
 module "cfe" {
   source                            = "../../../modules/cfe/"
   project_id                        = var.project_id
@@ -105,6 +125,6 @@ module "cfe" {
   search_domains                    = var.search_domains
   install_cloud_libs                = var.install_cloud_libs
   extramb                           = var.extramb
-  cfe_label_key                     = format("%s-%s", var.prefix, var.cfe_label_key)
+  cfe_label_key                     = local.cfe_label_key
   cfe_label_value                   = var.cfe_label_value
 }
