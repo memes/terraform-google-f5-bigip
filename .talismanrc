@@ -166,7 +166,7 @@ fileignoreconfig:
 - filename: test/fixtures/cfe/main.tf
   checksum: 0ce830368013f7e70a02092eebfeecd1aa3e4b81c44b218a49ae8d5f267987d9
 - filename: test/fixtures/cfe/README.md
-  checksum: 6f5b9c62bfdcd397006dbcd219cb99f7e1f19e32dd105b8f16dffe9b1d973906
+  checksum: 932033a57ed8b01b5d97ddd3e47990ce054899e1f9cc380f1f06f7ae4f91e656
 - filename: test/profiles/shared-gce/controls/gce.rb
   checksum: 47ec63ffee497ba0506f14fbd2525ee6197f6511e675dee14891fa024b9c512b
 - filename: test/integration/cfe-6nic-minimal/controls/suite.rb
