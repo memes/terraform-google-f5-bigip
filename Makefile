@@ -1,31 +1,38 @@
 # Test harness runner
 #
+TEST_SLEEP := 600
+SCENARIOS := $(subst test/integration/,,$(dir $(wildcard test/integration/*/.)))
+PHONY_TESTS := $(addprefix test.,$(SCENARIOS))
+PHONY_DESTROYS := $(addprefix destroy.,$(SCENARIOS))
 
-# Converge all suites, wait 10 mins then try to verify. If this fails use the verify
-# target to repeat.
+# Converge all suites, verify, and destroy; first failure will terminate the suite
 .PHONY: all
-all: test/setup/harness.tfvars
-	kitchen converge
-	echo "Sleeping for 10 mins"
-	sleep 600
-	kitchen list --bare | xargs -n 1 kitchen verify
+all: $(PHONY_TESTS)
 
-# kitchen, kitchen-terraform, and shared profiles do not use the correct inputs
-# if a bare `kitchen verify` is executed (first suite Terraform output becomes
-# input for all other suites). To work around this, invoke each suite independently
-# to ensure the inputs are set from the correct Terraform workspace.
-.PHONY: verify
-verify: test/setup/harness.tfvars
-	kitchen list --bare | xargs -n 1 kitchen verify
+# Converge a test scenario, wait 600 secs for it to settle, then verify.
+# E.g. make test.root-1nic-minimal
+.PHONY: test.%
+test.%:  test/setup/harness.tfvars
+	kitchen converge $*
+	echo "Sleeping for $(TEST_SLEEP) seconds"
+	sleep $(TEST_SLEEP)
+	kitchen verify $*
+	kitchen destroy $*
 
-.PHONY: converge
-converge: test/setup/harness.tfvars
-	kitchen converge
+.PHONY: destroy.%
+destroy.%:
+	kitchen destroy $*
 
-# setup target makes sure the shared harness VPCs, service accounts, etc. are
-# ready for use
-.PHONY: setup
-setup: test/setup/harness.tfvars
+# Use this target to manually verify a test scenario. E.g. make verify.root-1nic-minimal
+.PHONY: verify.%
+verify.%: converge.%
+	kitchen verify $*
+
+# Use this targets to manually prepare a test scenario without verifying it.
+# E.g. make converge.root-1nic-minimal
+.PHONY: converge.%
+converge.%: test/setup/harness.tfvars
+	kitchen converge $*
 
 # Two-step apply is hacky but ensures that all relevant state is managed and
 # available to Terraform across invocations
@@ -37,8 +44,7 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 		terraform output > $(@F)
 
 .PHONY: teardown
-teardown:
-	kitchen destroy
+teardown: $(PHONY_DESTROYS)
 	cd test/setup && \
 		terraform destroy -auto-approve && \
 		rm -f harness.tfvars
