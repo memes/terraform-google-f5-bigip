@@ -27,8 +27,8 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-cfe-8nic-full-[12]$/)
-        expect(instance.hostname).to match(/#{prefix}-cfe-8nic-full-[12]\.#{domain_name}/)
+        expect(instance.name).to match(/#{prefix}-c8full-[12]$/)
+        expect(instance.hostname).to match(/#{prefix}-c8full-[12]\.#{domain_name}/)
       end
     end
   end
