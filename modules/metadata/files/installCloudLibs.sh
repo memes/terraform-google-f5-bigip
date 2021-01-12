@@ -19,6 +19,8 @@ if [ $# -lt 1 ]; then
     return 0
 fi
 
+[ -f /config/cloud/gce/network.config ] && . /config/cloud/gce/network.config
+
 # Download attempt can fail, especially after reseting network parameters on a
 # 'small' instance, so retry up to 10 times.
 retry_download() {
@@ -43,7 +45,41 @@ retry_download() {
     return 0
 }
 
-[ -f /config/cloud/gce/network.config ] && . /config/cloud/gce/network.config
+# Install RPM with retry logic where appropriate
+retry_install()
+{
+    attempt=0
+    while [ "${attempt:-0}" -lt 10 ]; do
+        info "retry_install: ${attempt}: Installing ${out}"
+        response="$(curl -skf --retry 20 -u "admin:${ADMIN_PASSWORD}" \
+            -H "Content-Type: application/json;charset=UTF-8" \
+            -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
+            --data "{\"operation\":\"INSTALL\",\"packageFilePath\":\"${out}\"}" \
+            -w '\n{"http_status": "%{http_code}"}' \
+            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq -rs add)"
+        retVal=$?
+        status="$(echo "${response}" | jq -r .http_status)"
+        case "${status}" in
+            2*)
+                info "retry_install: ${attempt}: ${out} is installed ${status}"
+                echo "${response}" | jq -r '.id'
+                return 0
+                ;;
+            4*|5*)
+                error "retry_install: ${attempt}: failed to install ${out} returned status: ${status}: ${response}"
+                return ${retVal}
+                ;;
+            *)
+                info "retry_install: ${attempt}: installing ${out} returned status ${status}: ${response}; sleeping before retry"
+                ;;
+        esac
+        sleep 10
+        attempt=$((attempt+1))
+    done
+    [ "${attempt}" -ge 10 ] && \
+        error "retry_install: ${attempt}: Failed to install ${out}; giving up"
+    return ${retVal}
+}
 
 mkdir -p /config/cloud/gce/node_modules/@f5devcentral
 
@@ -104,12 +140,7 @@ for url in "$@"; do
                 ;;
             *.rpm)
                 if [ -n "${ADMIN_PASSWORD}" ]; then
-                    info "Installing ${out}"
-                    id="$(curl -skf --retry 20 -u "admin:${ADMIN_PASSWORD}" \
-                            -H "Content-Type: application/json;charset=UTF-8" \
-                            -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-                            --data "{\"operation\":\"INSTALL\",\"packageFilePath\":\"${out}\"}" \
-                            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq -r '.id')" || \
+                    id="$(retry_install "${out}")" || \
                         error "Failed to install ${out} with exit code: $?"
                     task_ids="${task_ids}${task_ids:+" "}${id}"
                     to_delete="${to_delete}${to_delete:+" "}'${out}'"
@@ -141,8 +172,16 @@ while [ -n "${task_ids}" ]; do
                     info "Package ${package} is installed"
                     ;;
             FAILED)
-                    info "Package ${package} failed to install with error: $(echo "${response}" | jq -r '.errorMessage')"
-                    errors="${errors}{id}"
+                    msg="$(echo "${response}" | jq -r '.errorMessage')"
+                    case "${msg}" in
+                        *already*)
+                            info "Package ${package} is already installed"
+                            ;;
+                        *)
+                            info "Package ${package} failed to install with error: ${msg}"
+                            errors="${errors}{id}"
+                            ;;
+                    esac
                     ;;
             *)
                     info "Package ${package} has status ${status}"
