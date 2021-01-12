@@ -46,7 +46,7 @@ suites:
         num_nics: "1"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-1nic-minimal-%d"
+        instance_name_template: "r1min-%d"
   - name: root-2nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -54,7 +54,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-2nic-minimal-%d"
+        instance_name_template: "r2min-%d"
   - name: root-3nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -62,7 +62,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-3nic-minimal-%d"
+        instance_name_template: "r3min-%d"
   - name: root-4nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -70,7 +70,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-4nic-minimal-%d"
+        instance_name_template: "r4min-%d"
         machine_type: n1-standard-8
   - name: root-5nic-minimal
     driver:
@@ -79,7 +79,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-5nic-minimal-%d"
+        instance_name_template: "r5min-%d"
         machine_type: n1-standard-8
   - name: root-6nic-minimal
     driver:
@@ -88,7 +88,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-6nic-minimal-%d"
+        instance_name_template: "r6min-%d"
         machine_type: n1-standard-8
   - name: root-7nic-minimal
     driver:
@@ -97,7 +97,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-7nic-minimal-%d"
+        instance_name_template: "r7min-%d"
         machine_type: n1-standard-8
   - name: root-8nic-minimal
     driver:
@@ -106,7 +106,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "root-8nic-minimal-%d"
+        instance_name_template: "r8min-%d"
         machine_type: n1-standard-8
   - name: root-8nic-full
     driver:
@@ -115,7 +115,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "root-8nic-full-%d"
+        instance_name_template: "r8full-%d"
         # yamllint disable-line rule:line-length
         image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
@@ -151,10 +151,10 @@ suites:
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"0.pool.ntp.org\"]'
+        ntp_servers: '[\"metadata.google.internal\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"8.8.8.8\"]'
+        dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
@@ -168,7 +168,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-2nic-minimal-%d"
+        instance_name_template: "h2min-%d"
   - name: ha-3nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -176,7 +176,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-3nic-minimal-%d"
+        instance_name_template: "h3min-%d"
   - name: ha-4nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -184,7 +184,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-4nic-minimal-%d"
+        instance_name_template: "h4min-%d"
         machine_type: n1-standard-8
   - name: ha-5nic-minimal
     driver:
@@ -193,7 +193,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-5nic-minimal-%d"
+        instance_name_template: "h5min-%d"
         machine_type: n1-standard-8
   - name: ha-6nic-minimal
     driver:
@@ -202,7 +202,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-6nic-minimal-%d"
+        instance_name_template: "h6min-%d"
         machine_type: n1-standard-8
   - name: ha-7nic-minimal
     driver:
@@ -211,7 +211,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-7nic-minimal-%d"
+        instance_name_template: "h7min-%d"
         machine_type: n1-standard-8
   - name: ha-8nic-minimal
     driver:
@@ -220,7 +220,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-8nic-minimal-%d"
+        instance_name_template: "h8min-%d"
         machine_type: n1-standard-8
   - name: ha-8nic-full
     driver:
@@ -229,7 +229,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "ha-8nic-full-%d"
+        instance_name_template: "h8full-%d"
         # yamllint disable-line rule:line-length
         image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
@@ -265,10 +265,10 @@ suites:
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"0.pool.ntp.org\"]'
+        ntp_servers: '[\"metadata.google.internal\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"8.8.8.8\"]'
+        dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
@@ -282,7 +282,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-2nic-minimal-%d"
+        instance_name_template: "c2min-%d"
         cfe_label_value: "cfe-2nic-minimal"
   - name: cfe-3nic-minimal
     driver:
@@ -291,7 +291,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-3nic-minimal-%d"
+        instance_name_template: "c3min-%d"
         cfe_label_value: "cfe-3nic-minimal"
   - name: cfe-4nic-minimal
     driver:
@@ -300,7 +300,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-4nic-minimal-%d"
+        instance_name_template: "c4min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-4nic-minimal"
   - name: cfe-5nic-minimal
@@ -310,7 +310,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-5nic-minimal-%d"
+        instance_name_template: "c5min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-5nic-minimal"
   - name: cfe-6nic-minimal
@@ -320,7 +320,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-6nic-minimal-%d"
+        instance_name_template: "c6min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-6nic-minimal"
   - name: cfe-7nic-minimal
@@ -330,7 +330,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-7nic-minimal-%d"
+        instance_name_template: "c7min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-7nic-minimal"
   - name: cfe-8nic-minimal
@@ -340,7 +340,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-8nic-minimal-%d"
+        instance_name_template: "c8min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-8nic-minimal"
   - name: cfe-8nic-full
@@ -350,7 +350,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "cfe-8nic-full-%d"
+        instance_name_template: "c8full-%d"
         # yamllint disable-line rule:line-length
         image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
@@ -387,10 +387,10 @@ suites:
         allow_phone_home: "false"
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
-        ntp_servers: '[\"0.pool.ntp.org\"]'
+        ntp_servers: '[\"metadata.google.internal\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"8.8.8.8\"]'
+        dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.6.1/f5-cloud-failover-1.6.1-1.noarch.rpm\"]'

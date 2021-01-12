@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 control 'suite' do
-  title 'ha-6nic-minimal'
+  title 'h6min'
 
   prefix = input('output_prefix')
   self_links = input('output_self_links')
@@ -13,9 +13,9 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-ha-6nic-minimal-[01]$/)
+        expect(instance.name).to match(/#{prefix}-h6min-[01]$/)
         # rubocop:disable Layout/LineLength
-        expect(instance.hostname).to match(/#{prefix}-ha-6nic-minimal-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
+        expect(instance.hostname).to match(/#{prefix}-h6min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
         # rubocop:enable Layout/LineLength
       end
     end
