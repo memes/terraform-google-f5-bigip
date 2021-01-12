@@ -20,6 +20,7 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
+        args: ['--args=--sort-by-required']
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.7.1.1
     hooks:
