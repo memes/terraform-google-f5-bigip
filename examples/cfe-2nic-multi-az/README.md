@@ -95,13 +95,13 @@ service_account        = "bigip@my-project-id.iam.gserviceaccount.com"
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
 | external\_network | The fully-qualified network self-link for the *external* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
 | external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 | management\_network | The fully-qualified network self-link for the *management* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
 | management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
-| num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | zones | The list of compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
+| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
+| num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
 
 ## Outputs
 

@@ -100,7 +100,6 @@ No provider.
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
 | external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
 | external\_vips | A list of list of CIDRs to apply to each instance as an Alias IP (VIP). | `list(list(string))` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 | instance\_name\_template | A format string that will be used when naming instance, that should include a<br>format token for including ordinal number. E.g. 'bigip-%d', such that %d will<br>be replaced with the ordinal of each instance. | `string` | n/a | yes |
 | internal\_subnets | The list of fully-qualified subnetwork self-links to attach to the BIG-IP VM<br>\*internal\* interfaces. | `list(string)` | n/a | yes |
 | internal\_vips | A list of list of list of CIDRs to apply to each instance as an Alias IP (VIP). | `list(list(list(string)))` | n/a | yes |
@@ -109,6 +108,7 @@ No provider.
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
+| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 
 ## Outputs
 
