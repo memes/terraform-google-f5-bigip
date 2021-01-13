@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 control 'suite' do
-  title 'c8min'
+  title 'cfe-8nic-minimal'
 
   prefix = input('output_prefix')
   self_links = input('output_self_links')
