@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 control 'suite' do
-  title 'r4min'
+  title 'root-4nic-minimal'
 
   prefix = input('output_prefix')
   self_links = input('output_self_links')
