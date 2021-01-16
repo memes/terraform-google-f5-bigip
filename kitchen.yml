@@ -158,7 +158,7 @@ suites:
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
-        extramb: "1000"
+        extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
   - name: ha-2nic-minimal
@@ -272,7 +272,7 @@ suites:
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
-        extramb: "1000"
+        extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
   - name: cfe-2nic-minimal
@@ -394,6 +394,6 @@ suites:
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.6.1/f5-cloud-failover-1.6.1-1.noarch.rpm\"]'
-        extramb: "1000"
+        extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'

@@ -566,10 +566,11 @@ EOD
 
 variable "extramb" {
   type        = number
-  default     = 1000
+  default     = 2048
   description = <<EOD
-The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.
-The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting
-too low can cause issues when applying large DO or AS3 payloads.
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
+must be an integer between 0 and 2560. The default of 2048 is recommended for
+BIG-IP instances on GCP; setting too low can cause issues when applying DO or
+AS3 payloads.
 EOD
 }
