@@ -23,6 +23,25 @@ scenarios as set in kitchen.yml.
 | google.executor | ~> 3.48 ~> 3.48 |
 | random | n/a |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| cfe | ../../../modules/cfe/ |  |
+| cfe_bucket | terraform-google-modules/cloud-storage/google | 1.7.2 |
+| cfe_role | ../../../modules/cfe-role/ |  |
+| configsync_fw | ../../../modules/configsync-fw/ |  |
+
+## Resources
+
+| Name |
+|------|
+| [google_client_config](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/data-sources/client_config) |
+| [google_compute_address](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/resources/compute_address) |
+| [google_compute_zones](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/data-sources/compute_zones) |
+| [google_service_account_access_token](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/data-sources/service_account_access_token) |
+| [random_shuffle](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/shuffle) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -65,7 +84,7 @@ scenarios as set in kitchen.yml.
 | domain\_name | An optional domain name to append to generated instance names to fully-qualify<br>them. | `string` | `""` | no |
 | enable\_serial\_console | Set to true to enable serial port console on the VMs. Default value is false. | `bool` | `false` | no |
 | external\_subnetwork\_tier | The network tier to set for external subnetwork; must be one of 'PREMIUM'<br>(default) or 'STANDARD'. | `string` | `"PREMIUM"` | no |
-| extramb | The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.<br>The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting<br>too low can cause issues when applying large DO or AS3 payloads. | `number` | `1000` | no |
+| extramb | The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;<br>must be an integer between 0 and 2560. The default of 2048 is recommended for<br>BIG-IP instances on GCP; setting too low can cause issues when applying DO or<br>AS3 payloads. | `number` | `2048` | no |
 | image | The self-link URI for a BIG-IP image to use as a base for the VM cluster. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418"` | no |
 | install\_cloud\_libs | An optional list of cloud library URLs that will be downloaded and installed on<br>the BIG-IP VM during initial boot. The contents of each download will be compared<br>to the verifyHash file, and failure will cause the boot scripts to fail. Default<br>list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative<br>Onboarding, CFE, and Telemetry Streaming extensions. | `list(string)` | <pre>[<br>  "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",<br>  "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",<br>  "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",<br>  "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.6.1/f5-cloud-failover-1.6.1-1.noarch.rpm"<br>]</pre> | no |
 | instance\_name\_template | A format string that will be used when naming instances. | `string` | `"bigip-%d"` | no |
@@ -135,5 +154,4 @@ scenarios as set in kitchen.yml.
 | zeta\_subnet | The self-link of zeta subnet. |
 | zone\_instances | A map of compute zones from var.zones input variable to instance self-links. If<br>no instances are deployed to a zone, the mapping will be to an empty list. |
 | zones | The compute zones that will be used for BIG-IP instances. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

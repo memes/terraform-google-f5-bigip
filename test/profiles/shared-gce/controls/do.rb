@@ -14,7 +14,7 @@ control 'generated_base_do' do
   self_links = input('output_self_links')
   do_payloads = input('input_do_payloads', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   allow_phone_home = input('input_allow_phone_home', value: 'true').to_s.downcase == 'true'
-  extramb = input('input_extramb', value: '1000').to_i
+  extramb = input('input_extramb', value: '2048').to_i
   dns_servers = input('input_dns_servers', value: '["169.254.169.254"]')
                 .gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   # TODO: @memes
