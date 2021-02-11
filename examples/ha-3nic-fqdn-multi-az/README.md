@@ -86,6 +86,19 @@ domain_name            = "example.com"
 |------|---------|
 | google | n/a |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| ha | ../../modules/ha/ |  |
+| ha_fw | memes/f5-bigip/google//modules/configsync-fw | 2.0.2 |
+
+## Resources
+
+| Name |
+|------|
+| [google_compute_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -93,10 +106,10 @@ domain_name            = "example.com"
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
 | domain\_name | The domain name to use when setting FQDN of instances. | `string` | n/a | yes |
 | external\_network | The fully-qualified network self-link for the *external* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
-| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
+| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
 | instance\_name\_template | A format string that will be used when naming instance, that should include a<br>format token for including ordinal number. E.g. 'bigip-%d', such that %d will<br>be replaced with the ordinal of each instance. | `string` | n/a | yes |
 | management\_network | The fully-qualified network self-link for the *management* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
-| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
+| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | zones | A list of compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
@@ -108,6 +121,5 @@ domain_name            = "example.com"
 | Name | Description |
 |------|-------------|
 | instance\_self\_links | Self-link of the BIG-IP instances. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

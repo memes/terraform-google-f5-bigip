@@ -78,6 +78,18 @@ module "cfe_role" {
 |------|---------|
 | random | n/a |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| cfe_role | terraform-google-modules/iam/google//modules/custom_role_iam | 6.4.0 |
+
+## Resources
+
+| Name |
+|------|
+| [random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -93,6 +105,5 @@ module "cfe_role" {
 | Name | Description |
 |------|-------------|
 | qualified\_role\_id | The qualified role-id for the custom CFE role. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

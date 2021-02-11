@@ -53,6 +53,16 @@ members    = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
 
 No provider.
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| cfe_role | ../../modules/cfe-role/ |  |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -66,6 +76,5 @@ No provider.
 | Name | Description |
 |------|-------------|
 | qualified\_role\_id | The qualified role-id for the custom CFE role. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
