@@ -36,8 +36,7 @@
       "${k}": "${v}",
 %{ endfor ~}
       "class": "Provision"
-    },
-%{ for iface in interfaces ~}
+    }%{ for iface in interfaces ~},
     "${iface.name}": {
       "class": "VLAN",
       "tag": ${iface.tag},
@@ -84,15 +83,13 @@
       "gw": "replace",
       "network": "replace",
       "mtu": ${jsonencode(lookup(iface, "mtu", "replace"))}
-    },
-%{ endfor ~}
+    }%{ endfor ~}%{ if length(interfaces) > 0 ~},
     "default": {
         "class": "Route",
         "gw": "${default_gw_address}",
         "network": "default",
         "mtu": ${jsonencode(length(interfaces) > 1 ? lookup(interfaces[0], "mtu", "replace") : "replace")}
-    }%{ if additional_config != "" ~},
-    ${additional_config}
-    %{ endif ~}
+    }%{ endif ~}%{ if additional_config != "" ~},
+    ${additional_config}%{ endif ~}
   }
 }
