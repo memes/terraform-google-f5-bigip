@@ -32,6 +32,14 @@ consumed by higher-order BIG-IP deployment modules.
 
 No provider.
 
+## Modules
+
+No Modules.
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -56,6 +64,5 @@ No provider.
 | Name | Description |
 |------|-------------|
 | metadata | The list of metadata maps to apply to instances. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

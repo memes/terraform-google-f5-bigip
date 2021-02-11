@@ -127,6 +127,19 @@ For guidelines and steps to diagnose deployment and run-time issues see
 |------|---------|
 | google | >= 3.48 |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| do_payloads | ./modules/do-builder/ |  |
+| metadata | ./modules/metadata/ |  |
+
+## Resources
+
+| Name |
+|------|
+| [google_compute_instance](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/resources/compute_instance) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -144,7 +157,7 @@ For guidelines and steps to diagnose deployment and run-time issues see
 | default\_gateway | Set this to the value to use as the default gateway for BIG-IP instances. This<br>must be a valid IP address or an empty string. If left blank (default), the<br>generated Declarative Onboarding JSON will use the gateway associated with nic0<br>at run-time. | `string` | `""` | no |
 | delete\_disk\_on\_destroy | Set this flag to false if you want the boot disk associated with the launched VMs<br>to survive when instances are destroyed. The default value of true will ensure the<br>boot disk is destroyed when the instance is destroyed. | `bool` | `true` | no |
 | disk\_size\_gb | Use this flag to set the boot volume size in GB. If left at the default value<br>the boot disk will have the same size as specified in 'bigip\_image'. | `number` | `null` | no |
-| disk\_type | The boot disk type to use with instances; can be 'pd-ssd' (default), or<br>'pd-standard'.<br>\*Note:\* Choosing 'pd-standard' will reduce operating cost, but at the expense of<br>network performance. | `string` | `"pd-ssd"` | no |
+| disk\_type | The boot disk type to use with instances; can be 'pd-ssd' (default), or<br>'pd-standard'.<br>*Note:* Choosing 'pd-standard' will reduce operating cost, but at the expense of<br>network performance. | `string` | `"pd-ssd"` | no |
 | dns\_servers | An optional list of DNS servers for BIG-IP instances to use if custom DO payloads<br>are not provided. The default is ["169.254.169.254"] to use GCE metadata server. | `list(string)` | <pre>[<br>  "169.254.169.254"<br>]</pre> | no |
 | do\_payloads | The Declarative Onboarding contents to apply to the instances. Required. This<br>module has migrated to use of Declarative Onboarding for module activation,<br>licensing, NTP, DNS, and other basic configurations. Sample payloads are in the<br>examples folder.<br><br>Note: if left empty, the module will use a simple JSON that sets NTP and DNS,<br>and enables LTM. | `list(string)` | `[]` | no |
 | domain\_name | An optional domain name to append to generated instance names to fully-qualify<br>them. If an empty string (default), then the instances will be qualified as-per<br>Google Cloud internal naming conventions ".ZONE.c.PROJECT\_ID.internal". | `string` | `""` | no |
@@ -163,7 +176,7 @@ For guidelines and steps to diagnose deployment and run-time issues see
 | internal\_subnetwork\_vip\_cidrs | An optional list of CIDR lists to assign to BIG-IP instances as VIPs on their<br>internal interface. E.g. to assign two CIDR blocks as VIPs on the first<br>instance, and a single IP address as a VIP on the second instance:-<br><br>internal\_subnetwork\_vip\_cidrs = [<br>  # Will be assigned to first instance<br>  [<br>    ["10.1.0.0/16"], # first internal nic<br>    ["10.2.0.0/24"], # second internal nic<br>  ],<br>  # Will be assigned to second instance<br>  [<br>    ["192.168.0.1/32"], # first internal nic<br>  ]<br>] | `list(list(list(string)))` | `[]` | no |
 | internal\_subnetworks | An optional list of fully-qualified subnet self-links that will be assigned as<br>internal traffic on NICs eth[2-8]. | `list(string)` | `[]` | no |
 | labels | An optional map of *labels* to add to the instance template. | `map(string)` | `{}` | no |
-| machine\_type | The machine type to use for BIG-IP VMs; this may be a standard GCE machine type,<br>or a customised VM ('custom-VCPUS-MEM\_IN\_MB'). Default value is 'n1-standard-4'.<br>\*Note:\* machine\_type is highly-correlated with network bandwidth and performance;<br>an N2 or N2D machine type will give better performance but has limited availability. | `string` | `"n1-standard-4"` | no |
+| machine\_type | The machine type to use for BIG-IP VMs; this may be a standard GCE machine type,<br>or a customised VM ('custom-VCPUS-MEM\_IN\_MB'). Default value is 'n1-standard-4'.<br>*Note:* machine\_type is highly-correlated with network bandwidth and performance;<br>an N2 or N2D machine type will give better performance but has limited availability. | `string` | `"n1-standard-4"` | no |
 | management\_subnetwork | An optional fully-qualified self-link of the subnet that will be used for<br>management access (2+ NIC deployment). | `string` | `null` | no |
 | management\_subnetwork\_network\_ips | An optional list of private IP addresses to assign to BIG-IP instances on their<br>management interface. The list may be empty, or contain empty strings, to<br>selectively applies addresses to instances. | `list(string)` | `[]` | no |
 | management\_subnetwork\_public\_ips | An optional list of public IP addresses to assign to BIG-IP instances on their<br>management interface. The list may be empty, or contain empty strings, to<br>selectively applies addresses to instances.<br><br>Note: these values are only applied if `provision_management_public_ip` is 'true'<br>and will be ignored if that value is false. | `list(string)` | `[]` | no |
@@ -199,7 +212,6 @@ For guidelines and steps to diagnose deployment and run-time issues see
 | management\_public\_ips | A list of the public IP addresses assigned to instances on the management NIC,<br>if present. |
 | self\_links | A list of self-links of the BIG-IP instances. |
 | zone\_instances | A map of compute zones from var.zones input variable to instance self-links. If<br>no instances are deployed to a zone, the mapping will be to an empty list.<br><br>E.g. if `var.zones = ["us-east1-a", "us-east1-b", "us-east1-c"]` and<br>`var.num_instances = 2` then the output will be:<br>{<br>  us-east1-a = [self-link-instance0]<br>  us-east1-b = [self-link-instance1]<br>  us-east1-c = []<br>} |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
 
