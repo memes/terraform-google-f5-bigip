@@ -53,19 +53,28 @@ members    = ["serviceAccount:bigip@my-project-id.iam.gserviceaccount.com"]
 
 No provider.
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| cfe_role | ../../modules/cfe-role/ |  |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | id | An identifier to use for the new role; default is an empty string which will<br>generate a unique identifier. If a value is provided, it must be unique at the<br>organization or project level depending on value of target\_type respectively.<br>E.g. multiple projects can all have a 'bigip\_cfe' role defined,<br>but an organization level role must be uniquely named. | `string` | `""` | no |
 | members | An optional list of accounts that will be assigned the custom role. Default is<br>an empty list. | `list(string)` | `[]` | no |
-| project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | qualified\_role\_id | The qualified role-id for the custom CFE role. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
