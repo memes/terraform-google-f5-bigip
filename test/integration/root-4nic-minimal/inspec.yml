@@ -1,0 +1,20 @@
+# This suite will standup a pair of standalone BIG-IP instances with 4 network
+# interfaces, using a minimal set of Terraform inputs.
+# spell-checker: ignore bigip
+---
+name: root-4nic-minimal
+depends:
+  - name: shared-gce
+    path: ../../profiles/shared-gce
+  - name: shared-local
+    path: ../../profiles/shared-local
+inputs:
+  - name: output_prefix
+    type: string
+    required: true
+  - name: output_zones
+    type: array
+    required: true
+  - name: output_self_links
+    type: array
+    required: true
