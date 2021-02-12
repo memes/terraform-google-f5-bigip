@@ -675,9 +675,9 @@ EOD
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.17.0/f5-telemetry-1.17.0-4.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
@@ -690,14 +690,15 @@ EOD
 
 variable "extramb" {
   type    = number
-  default = 1000
+  default = 2048
   validation {
     condition     = var.extramb >= 0 && floor(var.extramb) == var.extramb
     error_message = "The extramb variable must be an integer >= 0."
   }
   description = <<EOD
-The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes.
-The default of 1000 is a recommended minimum for BIG-IP instances on GCP; setting
-too low can cause issues when applying large DO or AS3 payloads.
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
+must be an integer between 0 and 2560. The default of 2048 is recommended for
+BIG-IP instances on GCP; setting too low can cause issues when applying large DO
+or AS3 payloads.
 EOD
 }

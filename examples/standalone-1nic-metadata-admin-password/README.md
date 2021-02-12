@@ -75,6 +75,16 @@ metadata = {
 
 No provider.
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| instance | ../../ |  |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -93,6 +103,5 @@ No provider.
 | Name | Description |
 |------|-------------|
 | instance\_self\_link | Self-link of the BIG-IP instance. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

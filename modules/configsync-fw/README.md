@@ -75,6 +75,16 @@ module "configsync_fw" {
 |------|---------|
 | google | >= 3.48 |
 
+## Modules
+
+No Modules.
+
+## Resources
+
+| Name |
+|------|
+| [google_compute_firewall](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/resources/compute_firewall) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -88,10 +98,6 @@ module "configsync_fw" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| dataplane\_self\_link | The self-link for the ConfigSync firewall rule added to data-plane network. |
-| management\_self\_link | The self-link for the ConfigSync firewall rule added to management network. |
-
+No output.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

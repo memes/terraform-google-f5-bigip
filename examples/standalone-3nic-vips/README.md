@@ -75,15 +75,25 @@ external_vips      = [
 
 No provider.
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| instance | ../../ |  |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
-| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
+| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
 | external\_vips | A list of list of CIDRs to apply to each instance as an Alias IP (VIP). | `list(list(string))` | n/a | yes |
-| internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*internal\*<br>interface. | `string` | n/a | yes |
-| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
+| internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *internal*<br>interface. | `string` | n/a | yes |
+| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
 | num\_instances | The number of BIG-IP instances to create. | `number` | n/a | yes |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
@@ -95,6 +105,5 @@ No provider.
 | Name | Description |
 |------|-------------|
 | instance\_self\_links | Self-link of the BIG-IP instances. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
