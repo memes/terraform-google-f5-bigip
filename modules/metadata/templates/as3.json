@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/v3.24.0/schema/3.24.0/as3-schema.json",
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/v3.25.0/schema/3.25.0/as3-schema.json",
   "action": "deploy",
   "class": "AS3",
   "declaration": {
@@ -7,7 +7,7 @@
     "id": "onboard",
     "label": "simple",
     "remark": "simple AS3 placeholder",
-    "schemaVersion": "3.24.0"
+    "schemaVersion": "3.25.0"
   },
   "persist": true
 }
