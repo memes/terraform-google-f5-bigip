@@ -21,6 +21,31 @@ published modules.
 | google.executor | ~> 3.48 ~> 3.48 |
 | random | n/a |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| alpha | terraform-google-modules/network/google | 3.0.0 |
+| beta | terraform-google-modules/network/google | 3.0.0 |
+| beta-nat | terraform-google-modules/cloud-nat/google | ~> 1.3.0 |
+| delta | terraform-google-modules/network/google | 3.0.0 |
+| epsilon | terraform-google-modules/network/google | 3.0.0 |
+| eta | terraform-google-modules/network/google | 3.0.0 |
+| gamma | terraform-google-modules/network/google | 3.0.0 |
+| password | memes/secret-manager/google//modules/random | 1.0.2 |
+| sa | terraform-google-modules/service-accounts/google | 3.0.1 |
+| theta | terraform-google-modules/network/google | 3.0.0 |
+| zeta | terraform-google-modules/network/google | 3.0.0 |
+
+## Resources
+
+| Name |
+|------|
+| [google_client_config](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/data-sources/client_config) |
+| [google_compute_firewall](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/resources/compute_firewall) |
+| [google_service_account_access_token](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/data-sources/service_account_access_token) |
+| [random_pet](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -57,5 +82,4 @@ published modules.
 | theta\_subnet | Self-link of the theta subnet. |
 | zeta\_net | Self-link of the zeta network. |
 | zeta\_subnet | Self-link of the zeta subnet. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
