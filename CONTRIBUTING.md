@@ -23,5 +23,13 @@ integrate the tool before pushing changes to GitHub.
    ```shell
    pre-commit install
    ```
+
 The hook will ensure that `pre-commit` will be run against all staged changes
 during `git commit`.
+
+## Testing
+
+This project uses
+[kitchen-terraform](https://newcontext-oss.github.io/kitchen-terraform/) to
+validate that BIG-IP VMs are instantiated correctly. Any PRs must pass this test
+suite before they will be merged.

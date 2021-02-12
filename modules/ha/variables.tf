@@ -75,15 +75,6 @@ Google Cloud internal naming conventions ".ZONE.c.PROJECT_ID.internal".
 EOD
 }
 
-variable "description" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional description that will be applied to the instances. Default value is
-an empty string, which will be replaced by a generated description at run-time.
-EOD
-}
-
 variable "metadata" {
   type        = map(string)
   default     = {}
@@ -165,18 +156,6 @@ variable "ssh_keys" {
   description = <<EOD
 An optional set of SSH public keys, concatenated into a single string. The keys
 will be added to instance metadata. Default is an empty string.
-
-See also `enable_os_login`.
-EOD
-}
-
-variable "enable_os_login" {
-  type        = bool
-  default     = false
-  description = <<EOD
-Set to true to enable OS Login on the VMs. Default value is false as BIG-IP does
-not support in OS Login mode currently.
-NOTE: this value will override an 'enable-oslogin' key in `metadata` map.
 EOD
 }
 
@@ -278,8 +257,8 @@ variable "external_subnetwork_network_ips" {
     error_message = "Each external_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-An optional list of IP addresses to assign to BIG-IP instances on their external
-interface.
+An optional list of private IP addresses to assign to BIG-IP instances on their
+external interface.
 EOD
 }
 
@@ -298,6 +277,23 @@ external_subnetwork_vip_cidrs = [
   "10.1.0.0/16",
   "10.2.0.0/24",
 ]
+EOD
+}
+
+variable "external_subnetwork_public_ips" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.external_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.external_subnetwork_public_ips)
+    error_message = "Each external_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of public IP addresses to assign to BIG-IP instances on their
+external interface. The list may be empty, or contain empty strings, to selectively
+applies addresses to instances.
+
+Note: these values are only applied if `provision_external_public_ip` is 'true'
+and will be ignored if that value is false.
 EOD
 }
 
@@ -346,7 +342,7 @@ variable "management_subnetwork_network_ips" {
     error_message = "Each management_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-A list of IP addresses to assign to BIG-IP instances on their management
+A list of private IP addresses to assign to BIG-IP instances on their management
 interface. Required if there are 2+ NICs defined for instances.
 EOD
 }
@@ -366,6 +362,23 @@ management_subnetwork_vip_cidrs = [
   "10.1.0.0/16",
   "10.2.0.0/24",
 ]
+EOD
+}
+
+variable "management_subnetwork_public_ips" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.management_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.management_subnetwork_public_ips)
+    error_message = "Each management_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of public IP addresses to assign to BIG-IP instances on their
+management interface. The list may be empty, or contain empty strings, to
+selectively applies addresses to instances.
+
+Note: these values are only applied if `provision_management_public_ip` is 'true'
+and will be ignored if that value is false.
 EOD
 }
 
@@ -418,8 +431,8 @@ variable "internal_subnetwork_network_ips" {
     error_message = "Each internal_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-A list of lists of IP addresses to assign to BIG-IP instances on their internal
-interfaces. Required if the instances have 3+ networks defined.
+A list of lists of private IP addresses to assign to BIG-IP instances on their
+internal interfaces. Required if the instances have 3+ networks defined.
 
 E.g. to assign addresses to two internal networks:-
 
@@ -457,12 +470,35 @@ internal_subnetwork_vip_cidrs = [
 EOD
 }
 
-variable "allow_usage_analytics" {
-  type        = bool
-  default     = true
+variable "internal_subnetwork_public_ips" {
+  type    = list(list(string))
+  default = []
+  validation {
+    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_public_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
+    error_message = "Each internal_subnetwork_public_ips value must be a valid IPv4 address."
+  }
   description = <<EOD
-Allow the BIG-IP VMs to send anonymous statistics to F5 to help us determine how
-to improve our solutions (default). If set to false no statistics will be sent.
+An optional list of lists of public IP addresses to assign to BIG-IP instances
+on their internal interface. The list may be empty, or contain empty strings, to
+selectively applies addresses to instances.
+
+Note: these values are only applied if `provision_internal_public_ip` is 'true'
+and will be ignored if that value is false.
+
+E.g. to assign addresses to two internal networks:
+
+internal_subnetwork_network_ips = [
+  # Will be assigned to first instance
+  [
+    "x.x.x.x", # first internal nic
+    "y.y.y.y", # second internal nic
+  ],
+  # Will be assigned to second instance
+  [
+    ...
+  ],
+  ...
+]
 EOD
 }
 
@@ -475,30 +511,18 @@ optimize development resources. If set to false the information is not sent.
 EOD
 }
 
-variable "license_type" {
-  type        = string
-  default     = "byol"
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
-EOD
-}
-
 variable "default_gateway" {
-  type        = string
-  default     = "$EXT_GATEWAY"
+  type    = string
+  default = ""
+  validation {
+    condition     = var.default_gateway == "" || can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.default_gateway))
+    error_message = "The default_geatway value must be empty or a valid IPv4 address."
+  }
   description = <<EOD
 Set this to the value to use as the default gateway for BIG-IP instances. This
-could be an IP address or environment variable to use at run-time. If left blank,
-the onboarding script will use the gateway for nic0.
-
-Default value is '$EXT_GATEWAY' which will match the run-time upstream gateway
-for nic0.
-
-NOTE: this string will be inserted into the boot script as-is; it can be an IPv4
-address, or a shell variable that is known to exist during network configuration
-script execution.
+must be a valid IP address or an empty string. If left blank (default), the
+generated Declarative Onboarding JSON will use the gateway associated with nic0
+at run-time.
 EOD
 }
 
@@ -651,11 +675,9 @@ EOD
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.17.0/f5-telemetry-1.17.0-4.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
@@ -663,5 +685,20 @@ the BIG-IP VM during initial boot. The contents of each download will be compare
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
 list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
 Onboarding, and Telemetry Streaming extensions.
+EOD
+}
+
+variable "extramb" {
+  type    = number
+  default = 2048
+  validation {
+    condition     = var.extramb >= 0 && var.extramb <= 2560 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0 and <= 2560."
+  }
+  description = <<EOD
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
+must be an integer between 0 and 2560. The default of 2048 is recommended for
+BIG-IP instances on GCP; setting too low can cause issues when applying large DO
+or AS3 payloads.
 EOD
 }

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.17.0/src/schema/1.17.0/base.schema.json",
-  "schemaVersion": "1.17.0",
+  "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.18.0/src/schema/1.18.0/base.schema.json",
+  "schemaVersion": "1.18.0",
   "class": "Device",
   "async": true,
   "label": "auto-onboard",
@@ -12,6 +12,14 @@
       "hostname": "${format("%.64s", hostname)}",
 %{ endif ~}
       "autoPhonehome": ${jsonencode(allow_phone_home)}
+    },
+    "dbVars": {
+      "class": "DbVariables",
+      "ui.advisory.enabled": true,
+      "ui.advisory.color": "green",
+      "ui.advisory.text": "/Common/hostname",
+      "provision.extramb": "${extramb}",
+      "config.allow.rfc3927": "enable"
     },
     "dns": {
       "class": "DNS",
@@ -28,8 +36,7 @@
       "${k}": "${v}",
 %{ endfor ~}
       "class": "Provision"
-    },
-%{ for iface in interfaces ~}
+    }%{ for iface in interfaces ~},
     "${iface.name}": {
       "class": "VLAN",
       "tag": ${iface.tag},
@@ -76,15 +83,13 @@
       "gw": "replace",
       "network": "replace",
       "mtu": ${jsonencode(lookup(iface, "mtu", "replace"))}
-    },
-%{ endfor ~}
+    }%{ endfor ~}%{ if length(interfaces) > 0 ~},
     "default": {
         "class": "Route",
         "gw": "${default_gw_address}",
         "network": "default",
         "mtu": ${jsonencode(length(interfaces) > 1 ? lookup(interfaces[0], "mtu", "replace") : "replace")}
-    }%{ if additional_config != "" ~},
-    ${additional_config}
-    %{ endif ~}
+    }%{ endif ~}%{ if additional_config != "" ~},
+    ${additional_config}%{ endif ~}
   }
 }

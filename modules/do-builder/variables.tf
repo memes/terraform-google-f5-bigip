@@ -94,8 +94,8 @@ variable "external_subnetwork_network_ips" {
     error_message = "Each external_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-A list of IP addresses that will be assigned to BIG-IP instances on their external
-interface. The list may be empty, or contain empty strings, to selectively
+A list of private IP addresses that will be assigned to BIG-IP instances on their
+external interface. The list may be empty, or contain empty strings, to selectively
 applies addresses to instances.
 EOD
 }
@@ -123,6 +123,23 @@ external_subnetwork_vip_cidrs = [
 EOD
 }
 
+variable "external_subnetwork_public_ips" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = length(join("", [for ip in var.external_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.external_subnetwork_public_ips)
+    error_message = "Each external_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of public IP addresses to assign to BIG-IP instances on their
+external interface. The list may be empty, or contain empty strings, to selectively
+applies addresses to instances.
+
+Note: these values are only applied if `provision_external_public_ip` is 'true'
+and will be ignored if that value is false.
+EOD
+}
+
 variable "provision_internal_public_ip" {
   type        = bool
   description = <<EOD
@@ -139,9 +156,9 @@ variable "internal_subnetwork_network_ips" {
     error_message = "Each internal_subnetwork_network_ips value must be a valid IPv4 address."
   }
   description = <<EOD
-A list of lists of IP addresses to assign to BIG-IP instances on their internal
-interface. The list may be empty, or contain empty strings, to selectively apply
-addresses to instances. E.g. to assign addresses to two
+A list of lists of private IP addresses to assign to BIG-IP instances on their
+internal interface. The list may be empty, or contain empty strings, to
+selectively apply addresses to instances. E.g. to assign addresses to two
 internal networks:-
 
 internal_subnetwork_network_ips = [
@@ -185,6 +202,38 @@ internal_subnetwork_vip_cidrs = [
 EOD
 }
 
+variable "internal_subnetwork_public_ips" {
+  type    = list(list(string))
+  default = []
+  validation {
+    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_public_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
+    error_message = "Each internal_subnetwork_public_ips value must be a valid IPv4 address."
+  }
+  description = <<EOD
+An optional list of lists of public IP addresses to assign to BIG-IP instances
+on their internal interface. The list may be empty, or contain empty strings, to
+selectively applies addresses to instances.
+
+Note: these values are only applied if `provision_internal_public_ip` is 'true'
+and will be ignored if that value is false.
+
+E.g. to assign addresses to two internal networks:
+
+internal_subnetwork_network_ips = [
+  # Will be assigned to first instance
+  [
+    "x.x.x.x", # first internal nic
+    "y.y.y.y", # second internal nic
+  ],
+  # Will be assigned to second instance
+  [
+    ...
+  ],
+  ...
+]
+EOD
+}
+
 variable "allow_service" {
   type        = map(string)
   default     = {}
@@ -219,5 +268,35 @@ additional_configs = [
   }",
   ...
 ]
+EOD
+}
+
+variable "extramb" {
+  type    = number
+  default = 2048
+  validation {
+    condition     = var.extramb >= 0 && var.extramb <= 2560 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0 and <= 2560."
+  }
+  description = <<EOD
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
+must be an integer between 0 and 2560. The default of 2048 is recommended for
+BIG-IP instances on GCP; setting too low can cause issues when applying large DO
+or AS3 payloads.
+EOD
+}
+
+variable "default_gateway" {
+  type    = string
+  default = ""
+  validation {
+    condition     = var.default_gateway == "" || can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.default_gateway))
+    error_message = "The default_geatway value must be empty or a valid IPv4 address."
+  }
+  description = <<EOD
+Set this to the value to use as the default gateway for BIG-IP instances. This
+must be a valid IP address or an empty string. If left blank (default), the
+generated Declarative Onboarding JSON will use the gateway associated with nic0
+at run-time.
 EOD
 }

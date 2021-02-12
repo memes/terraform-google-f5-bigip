@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12.29, < 0.13"
+  required_version = "~> 0.12.28, < 0.13"
 }
 
 module "instance" {
@@ -22,6 +22,5 @@ module "instance" {
   management_subnetwork             = var.management_subnet
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
 }

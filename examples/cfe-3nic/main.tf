@@ -6,7 +6,7 @@
 
 # Only supported on Terraform 0.12
 terraform {
-  required_version = "~> 0.12.29, < 0.13"
+  required_version = "~> 0.12.28, < 0.13"
 }
 
 # Create a custom CFE role for BIG-IP service account
@@ -23,8 +23,11 @@ module "cfe_role" {
 
 # Create a firewall rule to allow BIG-IP ConfigSync and failover
 module "cfe_fw" {
-  source                = "memes/f5-bigip/google//modules/configsync-fw"
-  version               = "1.3.2"
+  /* TODO: @memes
+  source                            = "memes/f5-bigip/google//modules/configsync-fw"
+  version                           = "1.3.2"
+  */
+  source                = "../../modules/configsync-fw/"
   project_id            = var.project_id
   bigip_service_account = var.service_account
   dataplane_network     = var.internal_network
@@ -117,7 +120,6 @@ module "cfe" {
   internal_subnetwork_network_ips   = [for r in google_compute_address.int : [r.address]]
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
   cfe_label_key                     = "f5_cloud_failover_label"
   cfe_label_value                   = "cfe-example"
