@@ -1,35 +1,61 @@
 # Test harness runner
-#
-TEST_SLEEP := 600
-SCENARIOS := $(subst test/integration/,,$(dir $(wildcard test/integration/*/.)))
-PHONY_TESTS := $(addprefix test.,$(SCENARIOS))
-PHONY_DESTROYS := $(addprefix destroy.,$(SCENARIOS))
+
+SCENARIOS := $(subst /,,$(subst test/integration/,,$(dir $(wildcard test/integration/*/.))))
 
 # Converge all suites, verify, and destroy; first failure will terminate the suite
+# NOTE: this will converge ALL scenarios before verification, which could cause
+# quota issues. See `serialised` target to execute each suite in turn without
+# spinning up too many instances at once.
 .PHONY: all
-all: $(PHONY_TESTS)
+all: converge $(addprefix verify.,$(SCENARIOS))
+	kitchen destroy
 
-# Converge a test scenario, wait 600 secs for it to settle, then verify.
+.PHONY: converge
+converge: test/setup/harness.tfvars
+	kitchen converge
+
+# 'Quick' version of the all target that skips the controls that need BIG-IP to
+# settle. Not a full test but confirms GCE properties, etc. Useful during module
+# development and refactoring.
+.PHONY: quick
+quick: converge $(addprefix qverify.,$(SCENARIOS))
+	kitchen destroy
+
+# Execute `kitchen test` against each scenario (as represented by a directory in
+# test/integration) individually. E.g. converge/verify/destroy scenario #1,
+# converge/verify/destroy scenario #2, etc.
+# NOTE: This approach will be slower than the default `all` target as
+# onboarding_delay will be observed for each scenario individually.
+.PHONY: serialised
+serialised: $(addprefix test.,$(SCENARIOS))
+
+# Targets below here provide a way to run a kitchen test/destroy/verify run for
+# an individual scenario knowing that the foundational harness will be created
+# as needed. Just prefix scenario with the kitchen `command.`. Use q-variants
+# to skip tests that require full-onboarding to complete.
 # E.g. make test.root-1nic-minimal
+#      make qtest.cfe-8nic-full
+
+.PHONY: qtest.%
+qtest.%:  test/setup/harness.tfvars
+	KITCHEN_SKIP_ONBOARD_DELAY=1 kitchen test $*
+
 .PHONY: test.%
-test.%:  test/setup/harness.tfvars
-	kitchen converge $*
-	echo "Sleeping for $(TEST_SLEEP) seconds"
-	sleep $(TEST_SLEEP)
-	kitchen verify $*
-	kitchen destroy $*
+test.%: test/setup/harness.tfvars
+	kitchen test $*
 
 .PHONY: destroy.%
-destroy.%:
+destroy.%: test/setup/harness.tfvars
 	kitchen destroy $*
 
-# Use this target to manually verify a test scenario. E.g. make verify.root-1nic-minimal
+.PHONY: qverify.%
+qverify.%: test/setup/harness.tfvars
+	KITCHEN_SKIP_ONBOARD_DELAY=1 kitchen verify $*
+
 .PHONY: verify.%
-verify.%: converge.%
+verify.%: test/setup/harness.tfvars
 	kitchen verify $*
 
-# Use this targets to manually prepare a test scenario without verifying it.
-# E.g. make converge.root-1nic-minimal
 .PHONY: converge.%
 converge.%: test/setup/harness.tfvars
 	kitchen converge $*
@@ -43,8 +69,10 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 		terraform apply -input=false -auto-approve && \
 		terraform output > $(@F)
 
+
 .PHONY: teardown
-teardown: $(PHONY_DESTROYS)
+teardown:
+	kitchen destroy
 	cd test/setup && \
 		terraform destroy -auto-approve && \
 		rm -f harness.tfvars

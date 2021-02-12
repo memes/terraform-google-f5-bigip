@@ -29,10 +29,11 @@ verifier:
         - generated_base_do
         - generated_networking_do
         - provided_do
+        - single_nic_networking_do
         # spellchecker: ignore dataplane controlplane
         - fw_dataplane
         - fw_controlplane
-        - custom_role
+        - cfe_custom_role
     - name: local
       backend: local
       controls:
@@ -157,7 +158,7 @@ suites:
         dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
-        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
         extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
@@ -271,7 +272,7 @@ suites:
         dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
-        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\"]'
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
         extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
@@ -393,7 +394,7 @@ suites:
         dns_servers: '[\"metadata.google.internal\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
-        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.6.1/f5-cloud-failover-1.6.1-1.noarch.rpm\"]'
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.7.1/f5-cloud-failover-1.7.1-1.noarch.rpm\"]'
         extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
