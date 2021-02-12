@@ -7,16 +7,6 @@ metadata.
 EOD
 }
 
-variable "enable_os_login" {
-  type        = bool
-  default     = false
-  description = <<EOD
-Set to true to enable OS Login on the VMs. Default value is false. If disabled
-you must ensure that SSH keys are set explicitly for this instance (see
-`ssh_keys` or set in project metadata.
-EOD
-}
-
 variable "enable_serial_console" {
   type        = bool
   default     = false
@@ -31,8 +21,6 @@ variable "ssh_keys" {
   description = <<EOD
 An optional set of SSH public keys, concatenated into a single string. The keys
 will be added to instance metadata. Default is an empty string.
-
-See also `enable_os_login`.
 EOD
 }
 
@@ -48,46 +36,12 @@ can be an official F5 image from GCP Marketplace, or a customised image.
 EOD
 }
 
-variable "allow_usage_analytics" {
-  type        = bool
-  default     = true
-  description = <<EOD
-Allow the BIG-IP VMs to send anonymous statistics to F5 to help us determine how
-to improve our solutions (default). If set to false no statistics will be sent.
-EOD
-}
-
-variable "region" {
-  type        = string
-  default     = ""
-  description = <<EOD
-An optional region attribute to include in usage analytics. Default value is an
-empty string.
-EOD
-}
-
-variable "license_type" {
-  type    = string
-  default = "byol"
-  validation {
-    condition     = contains(list("byol", "payg"), var.license_type)
-    error_message = "The license_type variable must be one of 'byol', or 'payg'."
-  }
-  description = <<EOD
-A BIG-IP license type to use with the BIG-IP instance. Must be one of "byol" or
-"payg", with "byol" as the default. If set to "payg", the image must be a PAYG
-image from F5's official project or the instance will fail to onboard correctly.
-EOD
-}
-
 variable "install_cloud_libs" {
   type = list(string)
   default = [
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs/v4.23.1/f5-cloud-libs.tar.gz",
-    "https://cdn.f5.com/product/cloudsolutions/f5-cloud-libs-gce/v2.7.0/f5-cloud-libs-gce.tar.gz",
-    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.24.0/f5-appsvcs-3.24.0-5.noarch.rpm",
-    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.17.0/f5-declarative-onboarding-1.17.0-3.noarch.rpm",
-    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.16.0/f5-telemetry-1.16.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm",
+    "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm",
+    "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.17.0/f5-telemetry-1.17.0-4.noarch.rpm",
   ]
   description = <<EOD
 An optional list of cloud library URLs that will be downloaded and installed on
@@ -95,22 +49,6 @@ the BIG-IP VM during initial boot. The contents of each download will be compare
 to the verifyHash file, and failure will cause the boot scripts to fail. Default
 list will install F5 Cloud Libraries (w/GCE extension), AS3, Declarative
 Onboarding, and Telemetry Streaming extensions.
-EOD
-}
-
-variable "default_gateway" {
-  type        = string
-  default     = "$EXT_GATEWAY"
-  description = <<EOD
-Set this to the value to use as the default gateway for BIG-IP instances. This
-could be an IP address, a shell command, or environment variable to use at
-run-time. Set to blank to delete the default gateway without an explicit
-replacement.
-
-Default value is '$EXT_GATEWAY' which will match the run-time upstream gateway
-for nic0.
-
-NOTE: this string will be inserted into the boot script as-is.
 EOD
 }
 
@@ -205,5 +143,20 @@ variable "num_instances" {
   default     = 1
   description = <<EOD
 The number of BIG-IP metadata sets to provision. Default value is 1.
+EOD
+}
+
+variable "extramb" {
+  type    = number
+  default = 2048
+  validation {
+    condition     = var.extramb >= 0 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0."
+  }
+  description = <<EOD
+The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
+must be an integer between 0 and 2560. The default of 2048 is recommended for
+BIG-IP instances on GCP; setting too low can cause issues when applying large DO
+or AS3 payloads.
 EOD
 }

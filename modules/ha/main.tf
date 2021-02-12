@@ -38,15 +38,19 @@ module "do_payloads" {
   nic_count                       = 1 + length(compact(concat([var.management_subnetwork], var.internal_subnetworks)))
   provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
   external_subnetwork_vip_cidrs   = [var.external_subnetwork_vip_cidrs]
   provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   internal_subnetwork_vip_cidrs   = [var.internal_subnetwork_vip_cidrs]
   additional_configs              = local.ha_do_snippets
   # Enable default service on internal interface if present
   allow_service = {
     internal = length(var.internal_subnetworks) > 0 ? "default" : "none"
   }
+  default_gateway = var.default_gateway
+  extramb         = var.extramb
 }
 
 module "instance" {
@@ -57,7 +61,6 @@ module "instance" {
   instance_name_template          = var.instance_name_template
   instance_ordinal_offset         = var.instance_ordinal_offset
   domain_name                     = var.domain_name
-  description                     = var.description
   metadata                        = var.metadata
   labels                          = var.labels
   tags                            = var.tags
@@ -67,7 +70,6 @@ module "instance" {
   automatic_restart               = var.automatic_restart
   preemptible                     = var.preemptible
   ssh_keys                        = var.ssh_keys
-  enable_os_login                 = var.enable_os_login
   enable_serial_console           = var.enable_serial_console
   image                           = var.image
   delete_disk_on_destroy          = var.delete_disk_on_destroy
@@ -77,24 +79,24 @@ module "instance" {
   provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_tier        = var.external_subnetwork_tier
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
   # Only apply VIPs to first instance
   external_subnetwork_vip_cidrs     = [var.external_subnetwork_vip_cidrs]
   management_subnetwork             = var.management_subnetwork
   provision_management_public_ip    = var.provision_management_public_ip
   management_subnetwork_tier        = var.management_subnetwork_tier
   management_subnetwork_network_ips = var.management_subnetwork_network_ips
+  management_subnetwork_public_ips  = var.management_subnetwork_public_ips
   # Only apply VIPs to first instance
   management_subnetwork_vip_cidrs = [var.management_subnetwork_vip_cidrs]
   internal_subnetworks            = var.internal_subnetworks
   provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_tier        = var.internal_subnetwork_tier
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   # Only apply VIPs to first instance
   internal_subnetwork_vip_cidrs     = [var.internal_subnetwork_vip_cidrs]
-  allow_usage_analytics             = var.allow_usage_analytics
   allow_phone_home                  = var.allow_phone_home
-  license_type                      = var.license_type
-  default_gateway                   = var.default_gateway
   use_cloud_init                    = var.use_cloud_init
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   secret_implementor                = var.secret_implementor

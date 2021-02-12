@@ -20,7 +20,6 @@ if [ -z "${1}" ]; then
     exit 0
 fi
 
-
 ADMIN_PASSWORD="$(get_secret admin_password_key)"
 [ -z "${ADMIN_PASSWORD}" ] && \
     error "Couldn't retrieve admin password from Secrets Manager"
@@ -50,7 +49,7 @@ jq -nrf "${raw}" > "${payload}" || \
     error "Unable to process raw file as JSON: $?"
 rm -f "${raw}" || info "Unable to delete ${raw}"
 
-info "Applying AS3 payload"
+info "Applying AS3 payload from ${payload}"
 response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json;charset=UTF-8" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
@@ -60,7 +59,6 @@ response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
 id="$(echo "${response}" | jq -r '.id // ""')"
 [ -n "${id}" ] || \
     error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message')"
-rm -f "${payload}" || info "Unable to delete ${payload}"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -88,4 +86,5 @@ while true; do
     info "Sleeping before rechecking AS3 tasks"
     sleep 5
 done
+rm -f "${payload}" || info "Unable to delete ${payload}"
 exit 0

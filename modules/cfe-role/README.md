@@ -78,13 +78,25 @@ module "cfe_role" {
 |------|---------|
 | random | n/a |
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| cfe_role | terraform-google-modules/iam/google//modules/custom_role_iam | 6.4.0 |
+
+## Resources
+
+| Name |
+|------|
+| [random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| target\_id | Sets the target for role creation; must be either an organization ID (target\_type = 'org'),<br>or project ID (target\_type = 'project'). | `string` | n/a | yes |
 | id | An identifier to use for the new role; default is an empty string which will<br>generate a unique identifier. If a value is provided, it must be unique at the<br>organization or project level depending on value of target\_type respectively.<br>E.g. multiple projects can all have a 'bigip\_cfe' role defined,<br>but an organization level role must be uniquely named. | `string` | `""` | no |
 | members | An optional list of accounts that will be assigned the custom role. Default is<br>an empty list. | `list(string)` | `[]` | no |
-| target\_id | Sets the target for role creation; must be either an organization ID (target\_type = 'org'),<br>or project ID (target\_type = 'project'). | `string` | n/a | yes |
 | target\_type | Determines if the CFE role is to be created for the whole organization ('org')<br>or at a 'project' level. Default is 'project'. | `string` | `"project"` | no |
 | title | The human-readable title to assign to the custom CFE role. Default is 'Custom BIG-IP CFE role'. | `string` | `"Custom BIG-IP CFE role"` | no |
 
@@ -93,6 +105,5 @@ module "cfe_role" {
 | Name | Description |
 |------|-------------|
 | qualified\_role\_id | The qualified role-id for the custom CFE role. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

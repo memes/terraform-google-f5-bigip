@@ -4,13 +4,13 @@ fileignoreconfig:
 - filename: main.tf
   checksum: a8f06a0c3f582e6a1e7abe3bef3fee01b7eb45f1c511d5a0160b6bc7fdc2af90
 - filename: README.md
-  checksum: c87f7cf44e88eb25fdf669a8f19f96ae2b5917fdf9791902b7511622f08aed9e
+  checksum: e5d356c0d7eb120a66901c220bead0fbdaf823e90a01515884cda184f99adcd2
 - filename: modules/cfe/README.md
-  checksum: ec3eeb1effc331ca298371c89d49879f111499a848ed426990b54e2ec5b1779e
+  checksum: 600a13055a14a7f26e55ee71421b59c2d68f1194138ae0cf39cf1554df3c91ba
 - filename: modules/ha/README.md
-  checksum: cd9cd2b77b796ff865f46ff5b32b7f09a860b56eddc93032aee9adbfc7fd9a55
+  checksum: afd9d71232e22dfd591dd67c7062355c534c5caec1b10f3aaac08ea883266f9f
 - filename: modules/metadata/README.md
-  checksum: 600b2b82cad3ccd9ae31f3c62d5e55be4bc70c631ef15e6e60286a006043a957
+  checksum: 4b72b7f4c9af54c3f47b3f982c99e17ad05611bab7706805f2a2e302464bf0b9
 - filename: examples/standalone-1nic/terraform.tfvars.example
   checksum: d187aa6016a979ada6d5419134f8fa10c9ec8730cda1f410a24c4515624d1fa6
 - filename: examples/ha-2nic/terraform.tfvars.example
@@ -100,7 +100,7 @@ fileignoreconfig:
 - filename: examples/ha-2nic-1-based-fqdn/README.md
   checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596
 - filename: modules/metadata/files/verifyHash
-  checksum: 2243b2b058240581d7a415f9dc6d749ad0f49a2ee07c04059c31e6c9daaf99a1
+  checksum: 570d8d07b4daae3b5b6194e9b672e498ca7a4270e24eb0c33122ead967b236ac
 - filename: modules/ha/variables.tf
   checksum: 432d545472d167c893afd070b8f3705d408c3171d4061565832648c74d84256d
 - filename: modules/metadata/files/setupUtils.sh
@@ -116,7 +116,7 @@ fileignoreconfig:
 - filename: modules/ha/main.tf
   checksum: 266f262179b525dfbebb38f4ba2acdc23d570ad8f1158c211861befdc4c6aae1
 - filename: modules/metadata/main.tf
-  checksum: 81f40efbefbc5ac32eebffe10b7c8f435ed2de5a0c158c7973dbe90a1c829637
+  checksum: d70177d8e33d85c1a663a57e939bde208a44bb6982889f3b110fa6c58d222f71
 - filename: examples/standalone-1nic-metadata-admin-password/terraform.tfvars.example
   checksum: f08971dcde91419ce9d62eb6fc41b225941a1a340d5c403c246d73ccc35902b0
 - filename: examples/standalone-1nic-metadata-admin-password/main.tf
@@ -145,3 +145,9 @@ fileignoreconfig:
   checksum: 415ef31f6efc981b70ab9e084b721c2924375531e0884a319a7d0f5505bce53a
 - filename: examples/standalone-4nic-vips/README.md
   checksum: 6b8c718b128bda34f53b4d46ffe2f75b6331545eaeec91b026e0d6841723649b
+- filename: examples/standalone-3nic-public-ips/terraform.tfvars.example
+  checksum: c65f4b9242c325ee18745f5a928c480c40a8f570eaaf49aef4e72dc61d2bcac1
+- filename: examples/standalone-3nic-public-ips/main.tf
+  checksum: 94316e66d2bdd1a32338c1143500d6c64b8c72d1e36ef77a641ea70259032fba
+- filename: examples/standalone-3nic-public-ips/README.md
+  checksum: 272f8a39593efffd7b87c121d14f751d6b34e567c98fea3846ecb115ed8d57b2

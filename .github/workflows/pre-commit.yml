@@ -9,7 +9,9 @@ name: pre-commit
 on:
   pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
+      - compatibility/terraform_0.12
 
 jobs:
   pre-commit:
@@ -18,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install terraform-docs
         run: |
-          sudo curl -sLo /usr/local/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.10.1/terraform-docs-v0.10.1-linux-amd64
+          sudo curl -sLo /usr/local/bin/terraform-docs https://github.com/segmentio/terraform-docs/releases/download/v0.11.0/terraform-docs-v0.11.0-linux-amd64
           sudo chmod 0755 /usr/local/bin/terraform-docs
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.0

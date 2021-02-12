@@ -11,7 +11,12 @@ locals {
   custom_script = coalesce(var.custom_script, file("${path.module}/files/customConfig.sh"))
   startup = templatefile(var.use_cloud_init ? "${path.module}/templates/cloud_config.yml" : "${path.module}/templates/startup_script.sh",
     {
-      setup_utils_sh            = base64gzip(file("${path.module}/files/setupUtils.sh")),
+      setup_utils_sh = base64gzip(file("${path.module}/files/setupUtils.sh")),
+      early_setup_sh = base64gzip(templatefile("${path.module}/templates/earlySetup.sh", {
+        # TODO: @memes - should this be user configurable?
+        max_msg_body_size = 134217728,
+        extramb           = var.extramb
+      })),
       multi_nic_mgt_swap_sh     = base64gzip(file("${path.module}/files/multiNicMgmtSwap.sh")),
       initial_networking_sh     = base64gzip(file("${path.module}/files/initialNetworking.sh")),
       verify_hash_tcl           = base64gzip(file("${path.module}/files/verifyHash")),
@@ -38,17 +43,14 @@ locals {
   }
   metadata = [for i in range(0, var.num_instances) : merge(var.metadata,
     {
-      enable-oslogin     = upper(var.enable_os_login)
       serial-port-enable = upper(var.enable_serial_console)
       shutdown-script = templatefile("${path.module}/templates/shutdown_script.sh",
         {}
       )
-      default_gateway       = var.default_gateway
-      install_cloud_libs    = join(" ", var.install_cloud_libs)
-      allow_usage_analytics = upper(var.allow_usage_analytics)
-      admin_password_key    = var.admin_password_secret_manager_key
-      as3_payload           = base64gzip(element(local.as3_payloads, i))
-      do_payload            = base64gzip(element(var.do_payloads, i))
+      install_cloud_libs = join(" ", var.install_cloud_libs)
+      admin_password_key = var.admin_password_secret_manager_key
+      as3_payload        = base64gzip(element(local.as3_payloads, i))
+      do_payload         = base64gzip(element(var.do_payloads, i))
     },
     var.ssh_keys != "" ? local.ssh_keys : local.empty,
     var.use_cloud_init ? local.cloud_init : local.startup_script,

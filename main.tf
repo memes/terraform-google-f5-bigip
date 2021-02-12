@@ -23,25 +23,24 @@ module "do_payloads" {
   nic_count                       = 1 + length(compact(concat([var.management_subnetwork], var.internal_subnetworks)))
   provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
+  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
   external_subnetwork_vip_cidrs   = var.external_subnetwork_vip_cidrs
   provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
+  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
   internal_subnetwork_vip_cidrs   = var.internal_subnetwork_vip_cidrs
+  extramb                         = var.extramb
+  default_gateway                 = var.default_gateway
 }
 
 # Generate metadata for each instance
 module "metadata" {
   source                            = "./modules/metadata/"
   num_instances                     = var.num_instances
-  region                            = replace(element(var.zones, 0), "/-[a-z]$/", "")
-  license_type                      = var.license_type
   image                             = var.image
-  enable_os_login                   = var.enable_os_login
   enable_serial_console             = var.enable_serial_console
-  allow_usage_analytics             = var.allow_usage_analytics
   ssh_keys                          = var.ssh_keys
   metadata                          = var.metadata
-  default_gateway                   = var.default_gateway
   admin_password_secret_manager_key = var.admin_password_secret_manager_key
   secret_implementor                = var.secret_implementor
   custom_script                     = var.custom_script
@@ -50,6 +49,7 @@ module "metadata" {
   do_payloads                       = coalescelist(var.do_payloads, module.do_payloads.do_payloads)
   as3_payloads                      = var.as3_payloads
   install_cloud_libs                = var.install_cloud_libs
+  extramb                           = var.extramb
 }
 
 resource "google_compute_instance" "bigip" {
@@ -99,6 +99,7 @@ resource "google_compute_instance" "bigip" {
       for_each = compact(var.provision_external_public_ip ? ["1"] : [])
       content {
         network_tier = var.external_subnetwork_tier
+        nat_ip       = length(var.external_subnetwork_public_ips) > count.index ? element(var.external_subnetwork_public_ips, count.index) : ""
       }
     }
 
@@ -121,6 +122,7 @@ resource "google_compute_instance" "bigip" {
         for_each = compact(var.provision_management_public_ip ? ["1"] : [])
         content {
           network_tier = var.management_subnetwork_tier
+          nat_ip       = length(var.management_subnetwork_public_ips) > count.index ? element(var.management_subnetwork_public_ips, count.index) : ""
         }
       }
 
@@ -140,17 +142,18 @@ resource "google_compute_instance" "bigip" {
     for_each = { for subnet in var.internal_subnetworks : index(var.internal_subnetworks, subnet) => subnet }
     content {
       subnetwork = network_interface.value
-      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(element(var.internal_subnetwork_network_ips, count.index), network_interface.key) : ""
+      network_ip = length(var.internal_subnetwork_network_ips) > count.index ? element(coalescelist(element(var.internal_subnetwork_network_ips, count.index), [""]), network_interface.key) : ""
 
       dynamic "access_config" {
         for_each = compact(var.provision_internal_public_ip ? ["1"] : [])
         content {
           network_tier = var.internal_subnetwork_tier
+          nat_ip       = length(var.internal_subnetwork_public_ips) > count.index ? element(coalescelist(element(var.internal_subnetwork_public_ips, count.index), [""]), network_interface.key) : ""
         }
       }
 
       dynamic "alias_ip_range" {
-        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(var.internal_subnetwork_vip_cidrs, count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
+        for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, [""]), count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
         content {
           ip_cidr_range = alias_ip_range.value
         }

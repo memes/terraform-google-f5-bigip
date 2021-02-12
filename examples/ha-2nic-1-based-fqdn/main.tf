@@ -60,7 +60,6 @@ module "ha" {
   management_subnetwork_network_ips = [for r in google_compute_address.mgt : r.address]
   image                             = var.image
   allow_phone_home                  = false
-  allow_usage_analytics             = false
   admin_password_secret_manager_key = var.admin_password_key
   instance_name_template            = var.instance_name_template
   instance_ordinal_offset           = var.instance_ordinal_offset

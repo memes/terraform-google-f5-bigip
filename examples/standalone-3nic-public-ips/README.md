@@ -1,4 +1,4 @@
-# Standalone BIG-IP with 3-NIC deployment
+# Standalone BIG-IP with 3-NICs and public IP addresses assigned to each
 
 > You are viewing a **2.x release** of the modules, which supports
 > **Terraform 0.13 and 0.14** only. *For modules compatible with Terraform 0.12,
@@ -8,7 +8,8 @@
 
 This example demonstrates how to use the
 [BIG-IP module](https://registry.terraform.io/modules/memes/f5-bigip/google/latest)
-to deploy a single BIG-IP instance in a 3-NIC configuration.
+to deploy a single BIG-IP instance in a 3-NIC configuration with reserved Public
+IP addresses.
 
 > **NOTE:** This example does not include firewall rules, ingress routes, or any
 > other dependencies needed to for a fully-functional deployment. The intent is
@@ -65,7 +66,9 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 
 ## Providers
 
-No provider.
+| Name | Version |
+|------|---------|
+| google | n/a |
 
 ## Modules
 
@@ -75,7 +78,9 @@ No provider.
 
 ## Resources
 
-No resources.
+| Name |
+|------|
+| [google_compute_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) |
 
 ## Inputs
 

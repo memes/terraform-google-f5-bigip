@@ -30,8 +30,8 @@ on `external` interfaces. VIPs declared this way are implemented as
 * BIG-IP will use service account: `bigip@my-project-id.iam.gserviceaccount.com`
 * BIG-IP admin user password is stored in Secret Manager under the key:
   `bigip-admin-password-key`
-* BIG-IP VIPs on data-plane (external): `"172.16.0.8/30"` on first instance, and
-  `"172.16.0.12/30"` on second instance
+* BIG-IP VIPs on data-plane (external): `"172.16.1.8/30"` on first instance, and
+  `"172.16.1.12/30"` on second instance
 
 <!-- spell-checker: disable -->
 ```hcl
@@ -44,8 +44,8 @@ internal_subnet    = "https://www.googleapis.com/compute/v1/projects/my-project-
 admin_password_key = "bigip-admin-password-key"
 service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 external_vips      = [
-  ["172.16.0.8/30"],  # first instance
-  ["172.16.0.12/30"], # second instance
+  ["172.16.1.8/30"],  # first instance
+  ["172.16.1.12/30"], # second instance
 ]
 ```
 <!-- spell-checker: enable -->
@@ -76,26 +76,35 @@ external_vips      = [
 
 No provider.
 
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| instance | ../../ |  |
+
+## Resources
+
+No resources.
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
-| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*external\*<br>interface. | `string` | n/a | yes |
+| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
 | external\_vips | A list of list of CIDRs to apply to each instance as an Alias IP (VIP). | `list(list(string))` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
-| internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*internal\*<br>interface. | `string` | n/a | yes |
-| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM \*management\*<br>interface. | `string` | n/a | yes |
+| internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *internal*<br>interface. | `string` | n/a | yes |
+| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
 | num\_instances | The number of BIG-IP instances to create. | `number` | n/a | yes |
 | project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
 | service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
 | zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
+| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | instance\_self\_links | Self-link of the BIG-IP instances. |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
