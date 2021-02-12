@@ -698,7 +698,7 @@ variable "extramb" {
   description = <<EOD
 The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
 must be an integer between 0 and 2560. The default of 2048 is recommended for
-BIG-IP instances on GCP; setting too low can cause issues when applying DO or
-AS3 payloads.
+BIG-IP instances on GCP; setting too low can cause issues when applying large DO
+or AS3 payloads.
 EOD
 }
