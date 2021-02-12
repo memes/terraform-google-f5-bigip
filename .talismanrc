@@ -100,7 +100,7 @@ fileignoreconfig:
 - filename: examples/ha-2nic-1-based-fqdn/README.md
   checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596
 - filename: modules/metadata/files/verifyHash
-  checksum: 2243b2b058240581d7a415f9dc6d749ad0f49a2ee07c04059c31e6c9daaf99a1
+  checksum: 570d8d07b4daae3b5b6194e9b672e498ca7a4270e24eb0c33122ead967b236ac
 - filename: modules/ha/variables.tf
   checksum: 432d545472d167c893afd070b8f3705d408c3171d4061565832648c74d84256d
 - filename: modules/metadata/files/setupUtils.sh
