@@ -150,8 +150,8 @@ variable "extramb" {
   type    = number
   default = 2048
   validation {
-    condition     = var.extramb >= 0 && floor(var.extramb) == var.extramb
-    error_message = "The extramb variable must be an integer >= 0."
+    condition     = var.extramb >= 0 && var.extramb <= 2560 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0 and <= 2560."
   }
   description = <<EOD
 The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;

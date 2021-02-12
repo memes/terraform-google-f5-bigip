@@ -1,0 +1,400 @@
+# yamllint disable-line rule:line-length
+# spell-checker: ignore tfvars inspec nics yamllint bigip payg byol preemptible extramb
+---
+driver:
+  name: terraform
+  command_timeout: 300
+  verify_version: false
+  variable_files:
+    - test/setup/harness.tfvars
+
+provisioner:
+  name: terraform
+
+platforms:
+  - name: local
+
+verifier:
+  name: terraform
+  color: true
+  systems:
+    - name: inspec-gcp
+      backend: gcp
+      controls:
+        - suite
+        - gce_attributes
+        - gce_labels
+        - gce_metadata
+        - gce_network_interfaces
+        - generated_base_do
+        - generated_networking_do
+        - provided_do
+        - single_nic_networking_do
+        # spellchecker: ignore dataplane controlplane
+        - fw_dataplane
+        - fw_controlplane
+        - cfe_custom_role
+    - name: local
+      backend: local
+      controls:
+        - serial_log
+
+suites:
+  - name: root-1nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "1"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r1min-%d"
+  - name: root-2nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "2"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r2min-%d"
+  - name: root-3nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "3"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r3min-%d"
+  - name: root-4nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "4"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r4min-%d"
+        machine_type: n1-standard-8
+  - name: root-5nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "5"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r5min-%d"
+        machine_type: n1-standard-8
+  - name: root-6nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "6"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r6min-%d"
+        machine_type: n1-standard-8
+  - name: root-7nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "7"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r7min-%d"
+        machine_type: n1-standard-8
+  - name: root-8nic-minimal
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "8"
+        reserve_addresses: "false"
+        num_instances: "2"
+        instance_name_template: "r8min-%d"
+        machine_type: n1-standard-8
+  - name: root-8nic-full
+    driver:
+      root_module_directory: test/fixtures/root
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "r8full-%d"
+        # yamllint disable-line rule:line-length
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        machine_type: n2-standard-8
+        instance_ordinal_offset: "1"
+        domain_name: example.com
+        # kitchen-terraform always applies -var then -var-file, so admin
+        # password key output from test/setup workspace cannot be overridden
+        # here. An extra input variable has been added to test/fixture/root to
+        # allow overriding from -var.
+        override_admin_password_secret_manager_key: admin-password
+        secret_implementor: metadata
+        # spellchecker: disable
+        # yamllint disable-line rule:line-length
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        # spellchecker: enable
+        labels: '{alpha=\"one\", beta=\"two\"}'
+        tags: '[\"apple\",\"banana\"]'
+        min_cpu_platform: Intel Cascade Lake
+        automatic_restart: "false"
+        preemptible: "true"
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
+        enable_serial_console: "true"
+        delete_disk_on_destroy: "true"
+        disk_type: pd-standard
+        disk_size_gb: "50"
+        provision_external_public_ip: "false"
+        external_subnetwork_tier: STANDARD
+        provision_management_public_ip: "true"
+        management_subnetwork_tier: STANDARD
+        provision_internal_public_ip: "true"
+        internal_subnetwork_tier: STANDARD
+        allow_phone_home: "false"
+        default_gateway: "172.16.0.1"
+        use_cloud_init: "true"
+        custom_script: "exit 0"
+        ntp_servers: '[\"metadata.google.internal\"]'
+        timezone: America/Los_Angeles
+        modules: '{ltm=\"nominal\", asm=\"none\"}'
+        dns_servers: '[\"metadata.google.internal\"]'
+        search_domains: '[\"example.com\"]'
+        # yamllint disable-line rule:line-length
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
+        extramb: "2560"
+        as3_payloads: '[]'
+        do_payloads: '[]'
+  - name: ha-2nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "2"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h2min-%d"
+  - name: ha-3nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "3"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h3min-%d"
+  - name: ha-4nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "4"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h4min-%d"
+        machine_type: n1-standard-8
+  - name: ha-5nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "5"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h5min-%d"
+        machine_type: n1-standard-8
+  - name: ha-6nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "6"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h6min-%d"
+        machine_type: n1-standard-8
+  - name: ha-7nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "7"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h7min-%d"
+        machine_type: n1-standard-8
+  - name: ha-8nic-minimal
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h8min-%d"
+        machine_type: n1-standard-8
+  - name: ha-8nic-full
+    driver:
+      root_module_directory: test/fixtures/ha
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "h8full-%d"
+        # yamllint disable-line rule:line-length
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        machine_type: n2-standard-8
+        instance_ordinal_offset: "1"
+        domain_name: example.com
+        # kitchen-terraform always applies -var then -var-file, so admin
+        # password key output from test/setup workspace cannot be overridden
+        # here. An extra input variable has been added to test/fixture/ha to
+        # allow overriding from -var.
+        override_admin_password_secret_manager_key: admin-password
+        secret_implementor: metadata
+        # spellchecker: disable
+        # yamllint disable-line rule:line-length
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        # spellchecker: enable
+        labels: '{alpha=\"one\", beta=\"two\"}'
+        tags: '[\"apple\",\"banana\"]'
+        min_cpu_platform: Intel Cascade Lake
+        automatic_restart: "false"
+        preemptible: "true"
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
+        enable_serial_console: "true"
+        delete_disk_on_destroy: "true"
+        disk_type: pd-standard
+        disk_size_gb: "50"
+        provision_external_public_ip: "false"
+        external_subnetwork_tier: STANDARD
+        provision_management_public_ip: "true"
+        management_subnetwork_tier: STANDARD
+        provision_internal_public_ip: "true"
+        internal_subnetwork_tier: STANDARD
+        allow_phone_home: "false"
+        default_gateway: "172.16.0.1"
+        use_cloud_init: "true"
+        custom_script: "exit 0"
+        ntp_servers: '[\"metadata.google.internal\"]'
+        timezone: America/Los_Angeles
+        modules: '{ltm=\"nominal\", asm=\"none\"}'
+        dns_servers: '[\"metadata.google.internal\"]'
+        search_domains: '[\"example.com\"]'
+        # yamllint disable-line rule:line-length
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
+        extramb: "2560"
+        as3_payloads: '[]'
+        do_payloads: '[]'
+  - name: cfe-2nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "2"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c2min-%d"
+        cfe_label_value: "cfe-2nic-minimal"
+  - name: cfe-3nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "3"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c3min-%d"
+        cfe_label_value: "cfe-3nic-minimal"
+  - name: cfe-4nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "4"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c4min-%d"
+        machine_type: n1-standard-8
+        cfe_label_value: "cfe-4nic-minimal"
+  - name: cfe-5nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "5"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c5min-%d"
+        machine_type: n1-standard-8
+        cfe_label_value: "cfe-5nic-minimal"
+  - name: cfe-6nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "6"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c6min-%d"
+        machine_type: n1-standard-8
+        cfe_label_value: "cfe-6nic-minimal"
+  - name: cfe-7nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "7"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c7min-%d"
+        machine_type: n1-standard-8
+        cfe_label_value: "cfe-7nic-minimal"
+  - name: cfe-8nic-minimal
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c8min-%d"
+        machine_type: n1-standard-8
+        cfe_label_value: "cfe-8nic-minimal"
+  - name: cfe-8nic-full
+    driver:
+      root_module_directory: test/fixtures/cfe
+      variables:
+        num_nics: "8"
+        reserve_addresses: "true"
+        num_instances: "2"
+        instance_name_template: "c8full-%d"
+        # yamllint disable-line rule:line-length
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        machine_type: n2-standard-8
+        cfe_label_key: "cfe-8nic-fixture"
+        cfe_label_value: "cfe-8nic-full"
+        instance_ordinal_offset: "1"
+        domain_name: example.com
+        # kitchen-terraform always applies -var then -var-file, so admin
+        # password key output from test/setup workspace cannot be overridden
+        # here. An extra input variable has been added to test/fixture/cfe to
+        # allow overriding from -var.
+        override_admin_password_secret_manager_key: admin-password
+        secret_implementor: metadata
+        # spellchecker: disable
+        # yamllint disable-line rule:line-length
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        # spellchecker: enable
+        labels: '{alpha=\"one\", beta=\"two\"}'
+        tags: '[\"apple\",\"banana\"]'
+        min_cpu_platform: Intel Cascade Lake
+        automatic_restart: "false"
+        preemptible: "true"
+        ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
+        enable_serial_console: "true"
+        delete_disk_on_destroy: "true"
+        disk_type: pd-standard
+        disk_size_gb: "50"
+        provision_external_public_ip: "false"
+        external_subnetwork_tier: STANDARD
+        provision_management_public_ip: "true"
+        management_subnetwork_tier: STANDARD
+        provision_internal_public_ip: "true"
+        internal_subnetwork_tier: STANDARD
+        allow_phone_home: "false"
+        default_gateway: "172.16.0.1"
+        use_cloud_init: "true"
+        ntp_servers: '[\"metadata.google.internal\"]'
+        timezone: America/Los_Angeles
+        modules: '{ltm=\"nominal\", asm=\"none\"}'
+        dns_servers: '[\"metadata.google.internal\"]'
+        search_domains: '[\"example.com\"]'
+        # yamllint disable-line rule:line-length
+        install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.7.1/f5-cloud-failover-1.7.1-1.noarch.rpm\"]'
+        extramb: "2560"
+        as3_payloads: '[]'
+        do_payloads: '[]'
