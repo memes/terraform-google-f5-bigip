@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'time'
+require 'inspec'
+
 # rubocop:todo Metrics/BlockLength
 control 'serial_log' do
   title 'Verify BIG-IP onboarding serial output'
@@ -9,13 +12,42 @@ control 'serial_log' do
   use_cloud_init = input('input_use_cloud_init', value: 'false').to_s.downcase == 'true'
   custom_script = input('input_custom_script', value: '')
 
+  only_if('User requested skipping of control') do
+    ENV['KITCHEN_SKIP_ONBOARD_DELAY'].nil?
+  end
+
+  # For VMs with >1 nics, give extra time for the onboarding process to complete
+  onboarding_delay = num_nics < 2 ? 300 : 600
+
   self_links.map do |url|
     params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
     describe params['name'] do
       # rubocop:todo Layout/LineLength
-      cmd = command("gcloud compute instances get-serial-port-output #{params['name']} --zone #{params['zone']} --project #{params['project']}")
+      cmd = command(+"gcloud compute instances describe #{params['name']} --zone #{params['zone']} --project #{params['project']} --format 'value(creationTimestamp)'")
       # rubocop:enable Layout/LineLength
-      it 'serial output exists' do
+      it 'gcloud describe creation timestamp succeeded' do
+        expect(cmd).not_to be_nil
+        expect(cmd.exit_status).to eq 0
+        expect(cmd.stdout).not_to be_empty
+      end
+      # rubocop:todo Layout/LineLength
+      Inspec::Log.info(+"#{params['name']} - Control may appear to stop while waiting for onboarding to complete; onboarding delay is #{onboarding_delay}")
+      # rubocop:enable Layout/LineLength
+      creation_timestamp = Time.iso8601(cmd.stdout)
+      it 'instance creation timestamp is valid' do
+        expect(creation_timestamp).not_to be_nil
+        expect(creation_timestamp).to be < Time.now
+      end
+      delay_secs = (creation_timestamp + onboarding_delay - Time.now).ceil
+      if delay_secs.positive?
+        Inspec::Log.info(+"#{params['name']} - Onboarding delay not met; sleeping for another #{delay_secs}s")
+        sleep(delay_secs)
+      end
+
+      # rubocop:todo Layout/LineLength
+      cmd = command(+"gcloud compute instances get-serial-port-output #{params['name']} --zone #{params['zone']} --project #{params['project']}")
+      # rubocop:enable Layout/LineLength
+      it 'gcloud serial output exists' do
         expect(cmd).not_to be_nil
         expect(cmd.exit_status).to eq 0
       end

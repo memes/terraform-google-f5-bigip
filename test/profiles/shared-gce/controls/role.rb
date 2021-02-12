@@ -30,12 +30,12 @@ EXPECTED_PERMISSIONS = [
   'storage.objects.update'
 ].freeze
 
-control 'custom_role' do
+control 'cfe_custom_role' do
   title 'Verify BIG-IP CFE custom role'
 
   role_id = input('output_role_id')
 
-  only_if('fixture includes custom role') do
+  only_if('fixture includes CFE custom role') do
     !role_id.empty?
   end
 

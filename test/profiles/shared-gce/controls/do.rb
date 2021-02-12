@@ -49,8 +49,8 @@ control 'generated_base_do' do
           # Add class to modules hash so 'include' will validate class is correct too
           modules['class'] = 'Provision'
           expect(payload).to include(
-            '$schema' => 'https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.17.0/src/schema/1.17.0/base.schema.json',
-            'schemaVersion' => '1.17.0',
+            '$schema' => 'https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/v1.18.0/src/schema/1.18.0/base.schema.json',
+            'schemaVersion' => '1.18.0',
             'class' => 'Device',
             'Common' => include(
               'class' => 'Tenant',
@@ -252,6 +252,45 @@ control 'provided_do' do
           expect(payload).not_to be_nil
           expect(payload).not_to be_empty
           expect(payload).to cmp do_payloads[index % do_payloads.length]
+        end
+      end
+    end
+  end
+end
+# rubocop:enable Metrics/BlockLength
+
+# rubocop:disable Metrics/BlockLength
+control 'single_nic_networking_do' do
+  title 'Verify generated DO files for single-nic networking'
+
+  self_links = input('output_self_links')
+  do_payloads = input('input_do_payloads', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
+  num_nics = input('input_num_nics').to_i
+
+  only_if('instance does not use generated DO or is multi-nic') do
+    do_payloads.empty? && num_nics < 2
+  end
+
+  self_links.each_with_index do |url, _index|
+    params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
+    describe params['name'] do
+      describe 'generated DO networking payload' do
+        it 'JSON is valid and does not include networking classes' do
+          value = google_compute_instance(project: params['project'], zone: params['zone'],
+                                          name: params['name']).metadata_value_by_key('do_payload')
+          expect(value).not_to be_nil
+          expect(value).not_to be_empty
+          common = {}
+          expect do
+            payload = JSON.parse(Zlib::GzipReader.new(StringIO.new(Base64.decode64(value))).read)
+            common = payload['Common']
+          end.not_to raise_exception
+          expect(common).not_to be_nil
+          expect(common).not_to be_empty
+          classes = common.map do |_k, v|
+            v['class']
+          end.reject(&:nil?).uniq
+          expect(classes).not_to include('VLAN', 'SelfIp', 'Route')
         end
       end
     end
