@@ -398,3 +398,11 @@ suites:
         extramb: "2560"
         as3_payloads: '[]'
         do_payloads: '[]'
+  - name: examples-standalone-1nic
+    driver:
+      root_module_directory: test/fixtures/examples-standalone-1nic
+      variables:
+        num_instances: "2"
+        # The test suites need to know how many nics to expect; this value is
+        # ignored by Terraform
+        num_nics: "1"
