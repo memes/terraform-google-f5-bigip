@@ -5,6 +5,14 @@ The GCP project identifier where the cluster will be created.
 EOD
 }
 
+variable "num_instances" {
+  type        = number
+  default     = 1
+  description = <<EOD
+The number of BIG-IP instances to provision; default is 1.
+EOD
+}
+
 variable "zone" {
   type        = string
   description = <<EOD

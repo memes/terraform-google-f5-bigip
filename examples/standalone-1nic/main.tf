@@ -13,10 +13,10 @@ module "instance" {
   */
   source                            = "../../"
   project_id                        = var.project_id
+  num_instances                     = var.num_instances
   zones                             = [var.zone]
   service_account                   = var.service_account
   external_subnetwork               = var.subnet
   image                             = var.image
-  allow_phone_home                  = false
   admin_password_secret_manager_key = var.admin_password_key
 }
