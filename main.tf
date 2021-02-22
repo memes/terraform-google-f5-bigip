@@ -22,14 +22,8 @@ module "do_payloads" {
   dns_servers                     = var.dns_servers
   search_domains                  = coalescelist(var.search_domains, compact(flatten(["google.internal", [var.domain_name], [for zone in var.zones : format("%s.c.%s.internal", zone, var.project_id)]])))
   nic_count                       = 1 + length(compact(concat([var.management_subnetwork], var.internal_subnetworks)))
-  provision_external_public_ip    = var.provision_external_public_ip
   external_subnetwork_network_ips = var.external_subnetwork_network_ips
-  external_subnetwork_public_ips  = var.external_subnetwork_public_ips
-  external_subnetwork_vip_cidrs   = var.external_subnetwork_vip_cidrs
-  provision_internal_public_ip    = var.provision_internal_public_ip
   internal_subnetwork_network_ips = var.internal_subnetwork_network_ips
-  internal_subnetwork_public_ips  = var.internal_subnetwork_public_ips
-  internal_subnetwork_vip_cidrs   = var.internal_subnetwork_vip_cidrs
   extramb                         = var.extramb
   default_gateway                 = var.default_gateway
 }

@@ -138,22 +138,17 @@ control 'generated_networking_do' do
         when 0
           expected_name = 'external'
           expected_tag = 4093
-          expect_public = provision_external_public_ip
         when 2
           expected_name = 'internal'
           expected_tag = 4092
-          expect_public = provision_internal_public_ip
         else
           expected_name = "internal#{nic - 2}"
           expected_tag = 4094 - nic
-          expect_public = provision_internal_public_ip
         end
         expected_mtu = 'replace'
         expected_num = "1.#{nic}"
         private_ips = !private_addresses.empty? && private_addresses.length > index ? private_addresses[index] : []
-        public_ips = !public_addresses.empty? && public_addresses.length > index ? public_addresses[index] : []
         expected_address = reserve_addresses && private_ips.length > nic ? private_ips[nic] : nil
-        expected_public_address = reserve_addresses && public_ips.length > nic ? public_ips[nic] : nil
         describe expected_name do
           it 'VLAN' do
             vlan = common[expected_name.to_s]
@@ -203,20 +198,6 @@ control 'generated_networking_do' do
               'network' => 'replace',
               'mtu' => expected_mtu
             )
-          end
-          # Expecting a public SelfIp?
-          if expect_public
-            it 'public self-ip' do
-              self_public = common["#{expected_name}-self-public"]
-              expect(self_public).not_to be_nil
-              expect(self_public).not_to be_empty
-              expect(self_public).to include(
-                'class' => 'SelfIp',
-                'address' => expected_public_address.nil? ? 'replace' : "#{expected_public_address}/32",
-                'vlan' => expected_name.to_s
-                # TODO: @memes - allowService and trafficGroup?
-              )
-            end
           end
         end
       end
