@@ -78,15 +78,6 @@ The number of network interfaces that will be present in the BIG-IP VMs.
 EOD
 }
 
-variable "provision_external_public_ip" {
-  type        = bool
-  description = <<EOD
-If this flag is set to true, a publicly routable IP address WILL be assigned to
-the external interface of instances. If set to false, the BIG-IP
-instances will NOT have a public IP address assigned to the external interface.
-EOD
-}
-
 variable "external_subnetwork_network_ips" {
   type = list(string)
   validation {
@@ -97,55 +88,6 @@ variable "external_subnetwork_network_ips" {
 A list of private IP addresses that will be assigned to BIG-IP instances on their
 external interface. The list may be empty, or contain empty strings, to selectively
 applies addresses to instances.
-EOD
-}
-
-variable "external_subnetwork_vip_cidrs" {
-  type = list(list(string))
-  validation {
-    condition     = length(distinct([for cidr in flatten(var.external_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
-    error_message = "Each external_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
-  }
-  description = <<EOD
-A list of VIP CIDR lists to assign to BIG-IP instances on their
-external interface. E.g. to assign two CIDR blocks as VIPs on the first instance,
-and a single IP address as a VIP on the second instance:-
-
-external_subnetwork_vip_cidrs = [
-  [
-    "10.1.0.0/16",
-    "10.2.0.0/24",
-  ],
-  [
-    "192.168.0.1/32",
-  ]
-]
-EOD
-}
-
-variable "external_subnetwork_public_ips" {
-  type    = list(string)
-  default = []
-  validation {
-    condition     = length(join("", [for ip in var.external_subnetwork_public_ips : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : ""])) == length(var.external_subnetwork_public_ips)
-    error_message = "Each external_subnetwork_public_ips value must be a valid IPv4 address."
-  }
-  description = <<EOD
-An optional list of public IP addresses to assign to BIG-IP instances on their
-external interface. The list may be empty, or contain empty strings, to selectively
-applies addresses to instances.
-
-Note: these values are only applied if `provision_external_public_ip` is 'true'
-and will be ignored if that value is false.
-EOD
-}
-
-variable "provision_internal_public_ip" {
-  type        = bool
-  description = <<EOD
-If this flag is set to true, a publicly routable IP address WILL be assigned to
-the internal interfaces of instances. If set to false, the BIG-IP instances will
-NOT have a public IP address assigned to the internal interfaces.
 EOD
 }
 
@@ -166,64 +108,6 @@ internal_subnetwork_network_ips = [
   [
     "10.0.0.4", # first internal nic
     "10.0.1.4", # second internal nic
-  ],
-  # Will be assigned to second instance
-  [
-    ...
-  ],
-  ...
-]
-EOD
-}
-
-variable "internal_subnetwork_vip_cidrs" {
-  type    = list(list(list(string)))
-  default = []
-  validation {
-    condition     = length(distinct([for cidr in flatten(var.internal_subnetwork_vip_cidrs) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$", cidr)) ? "x" : "y"])) < 2
-    error_message = "Each internal_subnetwork_vip_cidrs value must be a valid IPv4 CIDR."
-  }
-  description = <<EOD
-An optional list of CIDR lists to assign to BIG-IP instances as VIPs on their
-internal interface. E.g. to assign two CIDR blocks as VIPs on the first
-instance, and a single IP address as a VIP on the second instance:-
-
-internal_subnetwork_vip_cidrs = [
-  # Will be assigned to first instance
-  [
-    ["10.1.0.0/16"], # first internal nic
-    ["10.2.0.0/24"], # second internal nic
-  ],
-  # Will be assigned to second instance
-  [
-    ["192.168.0.1/32"], # first internal nic
-  ]
-]
-EOD
-}
-
-variable "internal_subnetwork_public_ips" {
-  type    = list(list(string))
-  default = []
-  validation {
-    condition     = length(distinct([for ip in flatten(var.internal_subnetwork_public_ips) : can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", ip)) ? "x" : "y"])) < 2
-    error_message = "Each internal_subnetwork_public_ips value must be a valid IPv4 address."
-  }
-  description = <<EOD
-An optional list of lists of public IP addresses to assign to BIG-IP instances
-on their internal interface. The list may be empty, or contain empty strings, to
-selectively applies addresses to instances.
-
-Note: these values are only applied if `provision_internal_public_ip` is 'true'
-and will be ignored if that value is false.
-
-E.g. to assign addresses to two internal networks:
-
-internal_subnetwork_network_ips = [
-  # Will be assigned to first instance
-  [
-    "x.x.x.x", # first internal nic
-    "y.y.y.y", # second internal nic
   ],
   # Will be assigned to second instance
   [
@@ -275,8 +159,8 @@ variable "extramb" {
   type    = number
   default = 2048
   validation {
-    condition     = var.extramb >= 0 && floor(var.extramb) == var.extramb
-    error_message = "The extramb variable must be an integer >= 0."
+    condition     = var.extramb >= 0 && var.extramb <= 2560 && floor(var.extramb) == var.extramb
+    error_message = "The extramb variable must be an integer >= 0 and <= 2560."
   }
   description = <<EOD
 The amount of extra RAM (in Mb) to allocate to BIG-IP administrative processes;
