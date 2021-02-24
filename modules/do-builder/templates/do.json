@@ -55,23 +55,6 @@
       "allowService": "${iface.allow_service}",
       "trafficGroup": "${lookup(iface, "traffic_group", "traffic-group-local-only")}"
     },
-%{ if length(lookup(iface, "public", {})) > 0 ~}
-    "${iface.name}-self-public": {
-      "class": "SelfIp",
-      "address": "${iface.public.address}",
-      "vlan": "${iface.name}",
-      "allowService": "${iface.public.allow_service}",
-      "trafficGroup": "${lookup(iface.public, "traffic_group", "traffic-group-local-only")}"
-    },
-%{ endif ~}%{ for vip in iface.vips ~}
-    "${iface.name}-self-${replace(vip, "/[^0-9]/", "-")}": {
-      "class": "SelfIp",
-      "address": "${length(regexall("/[0-9]{1,2}$", vip)) > 0 ? vip : format("%s/32", vip)}",
-      "vlan": "${iface.name}",
-      "allowService": "${iface.allow_service}",
-      "trafficGroup": "${lookup(iface, "vip_traffic_group", "traffic-group-local-only")}"
-    },
-%{ endfor ~}
     "${iface.name}-rt-gw": {
       "class": "Route",
       "target": "${iface.name}",
