@@ -280,6 +280,18 @@ external_subnetwork_vip_cidrs = [
 EOD
 }
 
+variable "external_subnetwork_vip_cidrs_named_range" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional named range to use when assigning CIDRs to *active* BIG-IP instance
+as VIPs on the external interface. E.g. to assign CIDRs from secondary range
+'dmz-bigip':-
+
+external_subnetwork_vip_cidrs_named_range = "dmz-bigip"
+EOD
+}
+
 variable "external_subnetwork_public_ips" {
   type    = list(string)
   default = []
@@ -362,6 +374,18 @@ management_subnetwork_vip_cidrs = [
   "10.1.0.0/16",
   "10.2.0.0/24",
 ]
+EOD
+}
+
+variable "management_subnetwork_vip_cidrs_named_range" {
+  type        = string
+  default     = ""
+  description = <<EOD
+An optional named range to use when assigning CIDRs to *active* BIG-IP instance
+as VIPs on the management interface. E.g. to assign CIDRs from secondary range
+'management-bigip':-
+
+management_subnetwork_vip_cidrs_named_range = "management-bigip"
 EOD
 }
 
@@ -466,6 +490,20 @@ on its internal interface. E.g. to assign two CIDR blocks as VIPs:-
 internal_subnetwork_vip_cidrs = [
   ["10.1.0.0/16"], # assigned to first internal nic
   ["10.2.0.0/24"], # assigned to second internal nic
+]
+EOD
+}
+
+variable "internal_subnetwork_vip_cidrs_named_ranges" {
+  type        = list(string)
+  default     = []
+  description = <<EOD
+An optional named range to use when assigning CIDRs to *active* BIG-IP instance
+as VIPs on their internal interfaces. E.g. to assign CIDRs from
+secondary range 'internal-bigip' on first internal interface:-
+
+internal_subnetwork_vip_cidrs_named_ranges = [
+  "internal-bigip",
 ]
 EOD
 }
