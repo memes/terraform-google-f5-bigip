@@ -85,7 +85,7 @@ domain_name = "example.com"
 | Name | Source | Version |
 |------|--------|---------|
 | ha | ../../modules/ha/ |  |
-| ha_fw | memes/f5-bigip/google//modules/configsync-fw | 2.0.2 |
+| ha_fw | ../../modules/configsync-fw/ |  |
 
 ## Resources
 
