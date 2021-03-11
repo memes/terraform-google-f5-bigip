@@ -112,9 +112,9 @@ fileignoreconfig:
 - filename: modules/metadata/variables.tf
   checksum: 3a6e2dff31f9ef21e8a5acb29d61915f74a04853a44c1c9e7b856323cbcc5f1e
 - filename: modules/cfe/main.tf
-  checksum: 8f524cb55bd5915efed87ce1becbc2a8d5a772d47b70d69f40aae2fff5991bce
+  checksum: cf2124a66c8f8edda9a8d6e53a64ded115efb8ca156fad938139e512458d8154
 - filename: modules/ha/main.tf
-  checksum: 266f262179b525dfbebb38f4ba2acdc23d570ad8f1158c211861befdc4c6aae1
+  checksum: ac8451c0e929e85b04a75670d6fec7da95737ba202d607c0f58bfeb8f66c0c69
 - filename: modules/metadata/main.tf
   checksum: d70177d8e33d85c1a663a57e939bde208a44bb6982889f3b110fa6c58d222f71
 - filename: examples/standalone-1nic-metadata-admin-password/terraform.tfvars.example
