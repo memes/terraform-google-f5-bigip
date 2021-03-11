@@ -97,7 +97,7 @@ domain_name            = "example.com"
 |------|--------|---------|
 | cfe | ../../modules/cfe/ |  |
 | cfe_bucket | terraform-google-modules/cloud-storage/google | 1.7.2 |
-| cfe_fw | memes/f5-bigip/google//modules/configsync-fw | 1.3.2 |
+| cfe_fw | ../../modules/configsync-fw/ |  |
 | cfe_role | ../../modules/cfe-role/ |  |
 
 ## Resources
