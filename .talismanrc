@@ -124,7 +124,7 @@ fileignoreconfig:
 - filename: examples/standalone-1nic-metadata-admin-password/README.md
   checksum: 9f20f0a0baf9c77e37ac9204819055caab0fd182874ca56a7cbe50219432843f
 - filename: CHANGELOG.md
-  checksum: 5acfff3b96fc160efdd175b811f56db293241b64e75c3bbbf87729494dab9fc8
+  checksum: 6e6481be4567d948411454619aa593e34d37fc41825045c16622da83fddde361
 - filename: modules/metadata/files/initialSetup.sh
   checksum: 031c17b1e31c8759fcac8cd999586a91b45098a184e7dfc38056717b89a6d652
 - filename: modules/do-builder/files/do_replace_filter.jq
