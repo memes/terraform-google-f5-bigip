@@ -100,7 +100,8 @@ resource "google_compute_instance" "bigip" {
     dynamic "alias_ip_range" {
       for_each = length(var.external_subnetwork_vip_cidrs) > count.index ? element(var.external_subnetwork_vip_cidrs, count.index) : []
       content {
-        ip_cidr_range = alias_ip_range.value
+        ip_cidr_range         = alias_ip_range.value
+        subnetwork_range_name = var.external_subnetwork_vip_cidrs_named_range
       }
     }
   }
@@ -123,7 +124,8 @@ resource "google_compute_instance" "bigip" {
       dynamic "alias_ip_range" {
         for_each = length(var.management_subnetwork_vip_cidrs) > count.index ? element(var.management_subnetwork_vip_cidrs, count.index) : []
         content {
-          ip_cidr_range = alias_ip_range.value
+          ip_cidr_range         = alias_ip_range.value
+          subnetwork_range_name = var.management_subnetwork_vip_cidrs_named_range
         }
       }
 
@@ -149,7 +151,8 @@ resource "google_compute_instance" "bigip" {
       dynamic "alias_ip_range" {
         for_each = length(var.internal_subnetwork_vip_cidrs) > count.index && length(element(coalescelist(var.internal_subnetwork_vip_cidrs, [""]), count.index)) > network_interface.key ? element(element(var.internal_subnetwork_vip_cidrs, count.index), network_interface.key) : []
         content {
-          ip_cidr_range = alias_ip_range.value
+          ip_cidr_range         = alias_ip_range.value
+          subnetwork_range_name = length(var.internal_subnetwork_vip_cidrs_named_ranges) > network_interface.key ? element(var.internal_subnetwork_vip_cidrs_named_ranges, network_interface.key) : ""
         }
       }
     }
