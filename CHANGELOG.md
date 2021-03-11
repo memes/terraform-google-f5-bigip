@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- spell-checker: ignore markdownlint -->
+<!-- spell-checker: ignore markdownlint nics -->
 <!-- markdownlint-disable MD024 -->
 
 All notable changes to this project will be documented in this file.
@@ -15,19 +15,30 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 ### Added
 
-- Support for Terraform 0.14 (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
+- Support VIP (Alias IP) CIDRs from secondary ranges (issue [#105](https://github.com/memes/terraform-google-f5-bigip/issues/105))
+- Terraform 0.14 is supported (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
 - Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
+- Retry logic when getting a secret from Google Secret Manager (issue [#60](https://github.com/memes/terraform-google-f5-bigip/issues/60))
+- Assign reserved public IP addresses to interfaces (issue [[#57](https://github.com/memes/terraform-google-f5-bigip/issues/57)])
+- Early setup script which enables and assigns extra RAM to restjavad - resolves intermittent issues when applying DO
+  (issues [#73](https://github.com/memes/terraform-google-f5-bigip/issues/73), [#85](https://github.com/memes/terraform-google-f5-bigip/issues/85), [#97](https://github.com/memes/terraform-google-f5-bigip/issues/97))
 
 ### Changed
 
+- Updated Cloud libs to latest as of publishing (issue [#94](https://github.com/memes/terraform-google-f5-bigip/issues/94))
 - Non-management interface configuration is entirely configured through
   Declarative Onboarding JSON (issue [#23](https://github.com/memes/terraform-google-f5-bigip/issues/23)
   and [#26](https://github.com/memes/terraform-google-f5-bigip/issues/26))
 - CFE custom role will automatically generate semi-random identifiers for the role (issue [#61](https://github.com/memes/terraform-google-f5-bigip/issues/61))
+- Fixed support for multiple Alias IP definitions applied to multiple internal nics
 
 ### Removed
 
+- Do not assign Self-IPs to VIPs in generated DO (issue [#100](https://github.com/memes/terraform-google-f5-bigip/issues/100))
 - Terraform lifecycle `create_before_destroy` rule on BIG-IP VM instances (issue [#46](https://github.com/memes/terraform-google-f5-bigip/issues/46))
+- Obsolete and unused variables; `description`, `license_type`, `allow_usage_analytics`,
+  `region` and `enable_os_login` (issue [#27](https://github.com/memes/terraform-google-f5-bigip/issues/27))
+- Unneeded Cloud Libs `f5-cloud-libs.tar.gz` and `f5-cloud-libs-gce.tar.gz`
 
 ## [2.0.2] and [1.3.2] - 2020-11-30
 

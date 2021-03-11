@@ -84,7 +84,7 @@ No Modules.
 
 | Name |
 |------|
-| [google_compute_firewall](https://registry.terraform.io/providers/hashicorp/google/3.48/docs/resources/compute_firewall) |
+| [google_compute_firewall](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) |
 
 ## Inputs
 
