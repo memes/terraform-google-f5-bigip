@@ -126,7 +126,7 @@ suites:
         num_instances: "2"
         instance_name_template: "r8full-%d"
         # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-200mbps-210115160742"
         machine_type: n2-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -246,7 +246,7 @@ suites:
         num_instances: "2"
         instance_name_template: "h8full-%d"
         # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-200mbps-210115160742"
         machine_type: n2-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -374,7 +374,7 @@ suites:
         num_instances: "2"
         instance_name_template: "c8full-%d"
         # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
+        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-200mbps-210115160742"
         machine_type: n2-standard-8
         cfe_label_key: "cfe-8nic-fixture"
         cfe_label_value: "cfe-8nic-full"
