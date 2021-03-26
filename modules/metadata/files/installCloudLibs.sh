@@ -65,10 +65,6 @@ retry_install()
                 echo "${response}" | jq -r '.id'
                 return 0
                 ;;
-            4*|5*)
-                error "retry_install: ${attempt}: failed to install ${out} returned status: ${status}: ${response}"
-                return ${retVal}
-                ;;
             *)
                 info "retry_install: ${attempt}: installing ${out} returned status ${status}: ${response}; sleeping before retry"
                 ;;
