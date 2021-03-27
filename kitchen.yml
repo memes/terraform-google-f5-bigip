@@ -49,6 +49,7 @@ suites:
         num_instances: "2"
         instance_name_template: "r1min-%d"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-2nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -58,6 +59,7 @@ suites:
         num_instances: "2"
         instance_name_template: "r2min-%d"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-3nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -67,6 +69,7 @@ suites:
         num_instances: "2"
         instance_name_template: "r3min-%d"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-4nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -77,6 +80,7 @@ suites:
         instance_name_template: "r4min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-5nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -87,6 +91,7 @@ suites:
         instance_name_template: "r5min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-6nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -97,6 +102,7 @@ suites:
         instance_name_template: "r6min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-7nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -107,6 +113,7 @@ suites:
         instance_name_template: "r7min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-8nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -117,6 +124,7 @@ suites:
         instance_name_template: "r8min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-8nic-full
     driver:
       root_module_directory: test/fixtures/root
@@ -138,7 +146,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
@@ -179,6 +187,7 @@ suites:
         num_instances: "2"
         instance_name_template: "h2min-%d"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-3nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -188,6 +197,7 @@ suites:
         num_instances: "2"
         instance_name_template: "h3min-%d"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-4nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -197,6 +207,7 @@ suites:
         num_instances: "2"
         instance_name_template: "h4min-%d"
         machine_type: n1-standard-8
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-5nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -207,6 +218,7 @@ suites:
         instance_name_template: "h5min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-6nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -217,6 +229,7 @@ suites:
         instance_name_template: "h6min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-7nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -227,6 +240,7 @@ suites:
         instance_name_template: "h7min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-8nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -237,6 +251,7 @@ suites:
         instance_name_template: "h8min-%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-8nic-full
     driver:
       root_module_directory: test/fixtures/ha
@@ -258,7 +273,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
@@ -300,6 +315,7 @@ suites:
         instance_name_template: "c2min-%d"
         cfe_label_value: "cfe-2nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-3nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -310,6 +326,7 @@ suites:
         instance_name_template: "c3min-%d"
         cfe_label_value: "cfe-3nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-4nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -321,6 +338,7 @@ suites:
         machine_type: n1-standard-8
         cfe_label_value: "cfe-4nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-5nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -332,6 +350,7 @@ suites:
         machine_type: n1-standard-8
         cfe_label_value: "cfe-5nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-6nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -343,6 +362,7 @@ suites:
         machine_type: n1-standard-8
         cfe_label_value: "cfe-6nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-7nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -354,6 +374,7 @@ suites:
         machine_type: n1-standard-8
         cfe_label_value: "cfe-7nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-8nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -365,6 +386,7 @@ suites:
         machine_type: n1-standard-8
         cfe_label_value: "cfe-8nic-minimal"
         enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-8nic-full
     driver:
       root_module_directory: test/fixtures/cfe
@@ -388,7 +410,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
