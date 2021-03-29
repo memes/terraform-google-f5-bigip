@@ -59,48 +59,50 @@ else
 fi
 
 attempt=0
+response="$(mktemp -p /var/tmp)"
 while [ "${attempt:-0}" -lt 10 ]; do
     info "${attempt}: Applying Declarative Onboarding payload from ${payload}"
     # Issue #79 - adding a charset to Content-Type when POSTing results in 400 response
     # https://github.com/F5Networks/f5-declarative-onboarding/issues/79
-    response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+    status="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -H "Content-Type: application/json" \
         -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
         -d @"${payload}" \
-        -w '\n{"http_status": "%{http_code}"}' \
-        "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -rs add)"
+        -o "${response}" \
+        -w '{"http_status": "%{http_code}"}' \
+        "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.http_status')"
     retVal=$?
-    status="$(echo "${response}" | jq -r '.http_status')"
-    id="$(echo "${response}" | jq -r '.id')"
+    id="$(jq -r '.id' < "${response}")"
     case "${status}" in
         2*)
             info "${attempt}: Declarative Onboarding applied from ${payload} with ID ${id}"
             break
             ;;
         4*|5*)
-            error "${attempt}: POSTing of Declarative Onboarding failed: ${status}: ${response}"
+            error "${attempt}: POSTing of Declarative Onboarding failed: ${status}: response captured in ${response}"
             ;;
         *)
-            info "${attempt}: POSTing of Declarative Onboarding failed: ${status}: ${response}; sleeping before retry"
+            info "${attempt}: POSTing of Declarative Onboarding failed: ${status}: response captured in ${response}; sleeping before retry"
             ;;
     esac
     sleep 10
     attempt=$((attempt+1))
 done
 [ "${attempt}" -ge 10 ] && \
-    error "${attempt}: Error applying Declarative Onboarding payload from ${payload}: curl exit code ${retVal}"
+    error "${attempt}: Error applying Declarative Onboarding payload from ${payload}, with response in ${response}: curl exit code ${retVal}"
 
 while true; do
-    response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
-                -H "Content-Type: application/json;charset=UTF-8" \
-                -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-                "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}")" || \
+    curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+            -H "Content-Type: application/json;charset=UTF-8" \
+            -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
+            -o "${response}" \
+            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}" || \
         error "Failed to get status for task ${id}: curl exit code: $?"
-    code="$(echo "${response}" | jq -r 'if .result then .result.code else .code end')"
+    code="$(jq -r 'if .result then .result.code else .code end' < "${response}")"
     # Response is often truncated on error and JQ on BIG-IP silently fails if the
     # input is an invalid JSON; grep for a code and use that as fallback
     [ -z "${code}" ] && \
-        code="$(echo "${response}" | grep -o '"code":[0-9]*' | cut -d: -f2)"
+        code="$(grep -o '"code":[0-9]*' "${response}" | cut -d: -f2)"
     case "${code}" in
         200)
                 info "Declarative Onboarding is complete"
@@ -110,7 +112,7 @@ while true; do
                 info "Declarative Onboarding is in process"
                 ;;
         4*|5*)
-                error "Declarative Onboarding payload failed to install with error(s): (partial) response is ${response}"
+                error "Declarative Onboarding payload failed to install with error(s): (partial) response is in ${response}"
                 ;;
         *)
                 info "Declarative Onboarding has code ${code}"
@@ -120,4 +122,5 @@ while true; do
     sleep 5
 done
 rm -f "${payload}" || info "Unable to delete ${payload}"
+rm -f "${response}" || info "Unable to delete ${response}"
 exit 0
