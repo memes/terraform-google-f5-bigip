@@ -5,10 +5,12 @@ name: shared-gce
 title: Shared BIG-IP verifier through inspec-gce based controls
 maintainer: Matthew Emes <m.emes@f5.com>
 license: Apache-2.0
+supports:
+  - platform: gcp
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git
-    tag: v1.8.6
+    tag: v1.8.8
 inputs:
   - name: input_num_nics
     type: string
@@ -122,6 +124,9 @@ inputs:
     type: string
     required: true
   - name: output_prefix
+    type: string
+    required: true
+  - name: output_bigip_version
     type: string
     required: true
   - name: output_zones

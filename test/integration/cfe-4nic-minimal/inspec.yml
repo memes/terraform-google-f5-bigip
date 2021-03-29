@@ -4,12 +4,18 @@
 ---
 name: cfe-4nic-minimal
 depends:
+  - name: inspec-gcp
+    git: https://github.com/inspec/inspec-gcp.git
+    tag: v1.8.8
   - name: shared-gce
     path: ../../profiles/shared-gce
   - name: shared-local
     path: ../../profiles/shared-local
 inputs:
   - name: output_prefix
+    type: string
+    required: true
+  - name: output_bigip_version
     type: string
     required: true
   - name: output_zones

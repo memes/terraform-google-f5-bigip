@@ -4,6 +4,7 @@ control 'suite' do
   title 'root-1nic-minimal'
 
   prefix = input('output_prefix')
+  bigip_version = input('output_bigip_version')
   self_links = input('output_self_links')
   zones = input('output_zones')
 
@@ -13,9 +14,9 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-r1min-[01]$/)
+        expect(instance.name).to match(/#{prefix}-#{bigip_version}-r1min-[01]$/)
         # rubocop:disable Layout/LineLength
-        expect(instance.hostname).to match(/#{prefix}-r1min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
+        expect(instance.hostname).to match(/#{prefix}-#{bigip_version}-r1min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
         # rubocop:enable Layout/LineLength
       end
     end
