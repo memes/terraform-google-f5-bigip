@@ -6,8 +6,27 @@
 error()
 {
     echo "${GCE_LOG_TS:+"$(date +%Y-%m-%dT%H:%M:%S.%03N%z): "}$0: Error: $*" >&2
-    [ -e /dev/ttyS0 ] && \
+    if [ -e /dev/ttyS0 ]; then
         echo "$(date +%Y-%m-%dT%H:%M:%S.%03N%z): $0: Error: $*" >/dev/ttyS0
+    fi
+    # When some components fail to install, connectivity is limited. If
+    # requested (metadata triggered) output some info to serial console.
+    if [ -f /var/run/gce_setup_utils_details_on_error ] && [ -e /dev/ttyS0 ]; then
+        echo "  kernel interfaces: " >/dev/ttyS0
+        ip a s >/dev/ttyS0
+        echo "  kernel routes:" > /dev/ttyS0
+        ip r s >/dev/ttyS0
+        echo "  TMOS interfaces:" >/dev/ttyS0
+        tmsh list /net interface >/dev/ttyS0
+        echo "  TMOS routes:" >/dev/ttyS0
+        tmsh list /net route >/dev/ttyS0
+        echo "  TMOS self:" >/dev/ttyS0
+        tmsh list /net self >/dev/ttyS0
+        echo "  TMOS vlans:" >/dev/ttyS0
+        tmsh list /net vlan >/dev/ttyS0
+        echo "  restnoded.log:" >/dev/ttyS0
+        tail -500 /var/log/restnoded/restnoded.log > /dev/ttyS0
+    fi
     exit 1
 }
 

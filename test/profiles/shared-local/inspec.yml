@@ -5,6 +5,8 @@ name: shared-local
 title: Shared BIG-IP verifier through local controls
 maintainer: Matthew Emes <m.emes@f5.com>
 license: Apache-2.0
+supports:
+  - platform-family: os
 inputs:
   - name: output_self_links
     type: array

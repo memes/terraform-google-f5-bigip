@@ -12,7 +12,35 @@ provisioner:
   name: terraform
 
 platforms:
-  - name: local
+  - name: local-16
+    driver:
+      variables:
+        # yamllint disable-line rule:line-length
+        image: projects/f5-7626-networks-public/global/images/f5-bigip-16-0-1-1-0-0-6-payg-good-25mbps-210129040032
+        bigip_version: v16
+        region: us-west1
+  - name: local-15
+    driver:
+      variables:
+        # yamllint disable-line rule:line-length
+        image: projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-25mbps-210115160742
+        bigip_version: v15
+        region: us-central1
+  - name: local-14
+    driver:
+      variables:
+        # yamllint disable-line rule:line-length
+        image: projects/f5-7626-networks-public/global/images/f5-bigip-14-1-4-0-0-11-payg-good-25mbps-210211220757
+        bigip_version: v14
+        region: us-east1
+  - name: local-13
+    driver:
+      variables:
+        # yamllint disable-line rule:line-length
+        image: projects/f5-7626-networks-public/global/images/f5-bigip-13-1-3-6-0-0-4-payg-good-25mbps-210129042237
+        bigip_version: v13
+        region: us-west2
+
 
 verifier:
   name: terraform
@@ -20,24 +48,8 @@ verifier:
   systems:
     - name: inspec-gcp
       backend: gcp
-      controls:
-        - suite
-        - gce_attributes
-        - gce_labels
-        - gce_metadata
-        - gce_network_interfaces
-        - generated_base_do
-        - generated_networking_do
-        - provided_do
-        - single_nic_networking_do
-        # spellchecker: ignore dataplane controlplane
-        - fw_dataplane
-        - fw_controlplane
-        - cfe_custom_role
     - name: local
       backend: local
-      controls:
-        - serial_log
 
 suites:
   - name: root-1nic-minimal
@@ -48,6 +60,8 @@ suites:
         reserve_addresses: "false"
         num_instances: "2"
         instance_name_template: "r1min-%d"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-2nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -56,6 +70,8 @@ suites:
         reserve_addresses: "false"
         num_instances: "2"
         instance_name_template: "r2min-%d"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-3nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -64,6 +80,8 @@ suites:
         reserve_addresses: "false"
         num_instances: "2"
         instance_name_template: "r3min-%d"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-4nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -73,6 +91,8 @@ suites:
         num_instances: "2"
         instance_name_template: "r4min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-5nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -82,6 +102,8 @@ suites:
         num_instances: "2"
         instance_name_template: "r5min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-6nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -91,6 +113,8 @@ suites:
         num_instances: "2"
         instance_name_template: "r6min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-7nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -100,6 +124,8 @@ suites:
         num_instances: "2"
         instance_name_template: "r7min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-8nic-minimal
     driver:
       root_module_directory: test/fixtures/root
@@ -109,6 +135,8 @@ suites:
         num_instances: "2"
         instance_name_template: "r8min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: root-8nic-full
     driver:
       root_module_directory: test/fixtures/root
@@ -117,8 +145,6 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "r8full-%d"
-        # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -130,7 +156,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
@@ -152,10 +178,10 @@ suites:
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"metadata.google.internal\"]'
+        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"metadata.google.internal\"]'
+        dns_servers: '[\"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
@@ -170,6 +196,8 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "h2min-%d"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-3nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -178,6 +206,8 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "h3min-%d"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-4nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -187,6 +217,7 @@ suites:
         num_instances: "2"
         instance_name_template: "h4min-%d"
         machine_type: n1-standard-8
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-5nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -196,6 +227,8 @@ suites:
         num_instances: "2"
         instance_name_template: "h5min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-6nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -205,6 +238,8 @@ suites:
         num_instances: "2"
         instance_name_template: "h6min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-7nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -214,6 +249,8 @@ suites:
         num_instances: "2"
         instance_name_template: "h7min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-8nic-minimal
     driver:
       root_module_directory: test/fixtures/ha
@@ -223,6 +260,8 @@ suites:
         num_instances: "2"
         instance_name_template: "h8min-%d"
         machine_type: n1-standard-8
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: ha-8nic-full
     driver:
       root_module_directory: test/fixtures/ha
@@ -231,8 +270,6 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "h8full-%d"
-        # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -244,7 +281,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
@@ -266,10 +303,10 @@ suites:
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"metadata.google.internal\"]'
+        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"metadata.google.internal\"]'
+        dns_servers: '[\"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
@@ -285,6 +322,8 @@ suites:
         num_instances: "2"
         instance_name_template: "c2min-%d"
         cfe_label_value: "cfe-2nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-3nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -294,6 +333,8 @@ suites:
         num_instances: "2"
         instance_name_template: "c3min-%d"
         cfe_label_value: "cfe-3nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-4nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -304,6 +345,8 @@ suites:
         instance_name_template: "c4min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-4nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-5nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -314,6 +357,8 @@ suites:
         instance_name_template: "c5min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-5nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-6nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -324,6 +369,8 @@ suites:
         instance_name_template: "c6min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-6nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-7nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -334,6 +381,8 @@ suites:
         instance_name_template: "c7min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-7nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-8nic-minimal
     driver:
       root_module_directory: test/fixtures/cfe
@@ -344,6 +393,8 @@ suites:
         instance_name_template: "c8min-%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-8nic-minimal"
+        enable_serial_console: "true"
+        metadata: '{details_on_error=\"true\"}'
   - name: cfe-8nic-full
     driver:
       root_module_directory: test/fixtures/cfe
@@ -352,8 +403,6 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "c8full-%d"
-        # yamllint disable-line rule:line-length
-        image: "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-200mbps-201110225418"
         machine_type: n2-standard-8
         cfe_label_key: "cfe-8nic-fixture"
         cfe_label_value: "cfe-8nic-full"
@@ -367,7 +416,7 @@ suites:
         secret_implementor: metadata
         # spellchecker: disable
         # yamllint disable-line rule:line-length
-        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\"}'
+        metadata: '{env=\"test\", owner=\"jane\", ssh-keys=\"foo bar baz\", admin-password=\"Foob@r1234\", details_on_error=\"true\"}'
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
@@ -388,10 +437,10 @@ suites:
         allow_phone_home: "false"
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
-        ntp_servers: '[\"metadata.google.internal\"]'
+        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"metadata.google.internal\"]'
+        dns_servers: '[\"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.7.1/f5-cloud-failover-1.7.1-1.noarch.rpm\"]'
