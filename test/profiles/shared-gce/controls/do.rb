@@ -88,12 +88,9 @@ control 'generated_networking_do' do
 
   self_links = input('output_self_links')
   private_addresses = input('output_private_addresses')
-  public_addresses = input('output_public_addresses')
   do_payloads = input('input_do_payloads', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   num_nics = input('input_num_nics').to_i
   reserve_addresses = input('input_reserve_addresses', value: 'false').to_s.downcase == 'true'
-  provision_external_public_ip = input('input_provision_external_public_ip', value: 'true').to_s.downcase == 'true'
-  provision_internal_public_ip = input('input_provision_internal_public_ip', value: 'false').to_s.downcase == 'true'
   default_gateway = input('input_default_gateway', value: '')
 
   only_if('instance does not use generated DO for networking config') do
