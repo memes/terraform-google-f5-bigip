@@ -78,7 +78,7 @@ while [ "${attempt:-0}" -lt 10 ]; do
             info "${attempt}: Declarative Onboarding applied from ${payload} with ID ${id}"
             break
             ;;
-        4*|5*)
+        4*)
             error "${attempt}: POSTing of Declarative Onboarding failed: ${status}: response captured in ${response}"
             ;;
         *)
@@ -119,7 +119,7 @@ while true; do
                 ;;
     esac
     info "Sleeping before rechecking Declarative Onboarding tasks"
-    sleep 5
+    sleep 10
 done
 rm -f "${payload}" || info "Unable to delete ${payload}"
 rm -f "${response}" || info "Unable to delete ${response}"
