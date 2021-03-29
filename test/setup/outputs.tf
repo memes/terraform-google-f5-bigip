@@ -20,13 +20,6 @@ The prefix that will be applied to generated resources in this test run.
 EOD
 }
 
-output "region" {
-  value       = var.region
-  description = <<EOD
-The compute region to use for testing resources.
-EOD
-}
-
 output "service_account" {
   value       = module.sa.emails["bigip"]
   description = <<EOD
@@ -48,10 +41,10 @@ Self-link of the alpha network.
 EOD
 }
 
-output "alpha_subnet" {
-  value       = element(module.alpha.subnets_self_links, 0)
+output "alpha_subnets" {
+  value       = { for k, v in module.alpha.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the alpha subnet.
+Map of region:subnet self-link for alpha subnets.
 EOD
 }
 
@@ -62,10 +55,10 @@ Self-link of the beta network.
 EOD
 }
 
-output "beta_subnet" {
-  value       = element(module.beta.subnets_self_links, 0)
+output "beta_subnets" {
+  value       = { for k, v in module.beta.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the beta subnet.
+Map of region:subnet self-link for beta subnets.
 EOD
 }
 
@@ -76,10 +69,10 @@ Self-link of the gamma network.
 EOD
 }
 
-output "gamma_subnet" {
-  value       = element(module.gamma.subnets_self_links, 0)
+output "gamma_subnets" {
+  value       = { for k, v in module.gamma.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the gamma subnet.
+Map of region:subnet self-link for gamma subnets.
 EOD
 }
 
@@ -90,10 +83,10 @@ Self-link of the delta network.
 EOD
 }
 
-output "delta_subnet" {
-  value       = element(module.delta.subnets_self_links, 0)
+output "delta_subnets" {
+  value       = { for k, v in module.delta.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the delta subnet.
+Map of region:subnet self-link for delta subnets.
 EOD
 }
 
@@ -104,10 +97,10 @@ Self-link of the epsilon network.
 EOD
 }
 
-output "epsilon_subnet" {
-  value       = element(module.epsilon.subnets_self_links, 0)
+output "epsilon_subnets" {
+  value       = { for k, v in module.epsilon.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the epsilon subnet.
+Map of region:subnet self-link for epsilon subnets.
 EOD
 }
 
@@ -118,10 +111,10 @@ Self-link of the zeta network.
 EOD
 }
 
-output "zeta_subnet" {
-  value       = element(module.zeta.subnets_self_links, 0)
+output "zeta_subnets" {
+  value       = { for k, v in module.zeta.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the zeta subnet.
+Map of region:subnet self-link for zeta subnets.
 EOD
 }
 
@@ -132,10 +125,10 @@ Self-link of the eta network.
 EOD
 }
 
-output "eta_subnet" {
-  value       = element(module.eta.subnets_self_links, 0)
+output "eta_subnets" {
+  value       = { for k, v in module.eta.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the eta subnet.
+Map of region:subnet self-link for eta subnets.
 EOD
 }
 
@@ -146,9 +139,9 @@ Self-link of the theta network.
 EOD
 }
 
-output "theta_subnet" {
-  value       = element(module.theta.subnets_self_links, 0)
+output "theta_subnets" {
+  value       = { for k, v in module.theta.subnets : v.region => v.self_link }
   description = <<EOD
-Self-link of the theta subnet.
+Map of region:subnet self-link for theta subnets.
 EOD
 }

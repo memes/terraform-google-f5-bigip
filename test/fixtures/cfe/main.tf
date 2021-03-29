@@ -12,25 +12,26 @@ data "google_compute_zones" "available" {
 resource "random_shuffle" "zones" {
   input = data.google_compute_zones.available.names
   keepers = {
-    prefix = var.prefix
-    region = var.region
+    prefix        = var.prefix
+    bigip_version = var.bigip_version
+    region        = var.region
   }
 }
 
 locals {
   # External is always alpha
-  external_subnetwork = var.alpha_subnet
+  external_subnetwork = var.alpha_subnets[var.region]
   # Management is set only if num_nics > 1
-  management_subnetwork = var.num_nics > 1 ? var.beta_subnet : ""
+  management_subnetwork = var.num_nics > 1 ? var.beta_subnets[var.region] : ""
   internal_subnetworks = var.num_nics > 2 ? slice([
-    var.gamma_subnet,
-    var.delta_subnet,
-    var.epsilon_subnet,
-    var.zeta_subnet,
-    var.eta_subnet,
-    var.theta_subnet,
+    var.gamma_subnets[var.region],
+    var.delta_subnets[var.region],
+    var.epsilon_subnets[var.region],
+    var.zeta_subnets[var.region],
+    var.eta_subnets[var.region],
+    var.theta_subnets[var.region],
   ], 0, var.num_nics - 2) : []
-  cfe_label_key = format("%s-%s", var.prefix, var.cfe_label_key)
+  cfe_label_key = format("%s-%s-%s", var.prefix, var.bigip_version, var.cfe_label_key)
 }
 
 module "configsync_fw" {
@@ -39,15 +40,15 @@ module "configsync_fw" {
   bigip_service_account    = var.service_account
   dataplane_network        = var.num_nics > 2 ? var.gamma_net : var.alpha_net
   management_network       = var.beta_net
-  dataplane_firewall_name  = format("%.64s", format(format("%s-%s-data", var.prefix, var.instance_name_template), 0))
-  management_firewall_name = format("%.64s", format(format("%s-%s-mgt", var.prefix, var.instance_name_template), 0))
+  dataplane_firewall_name  = format("%.64s", format(format("%s-%s-%s-data", var.prefix, var.bigip_version, var.instance_name_template), 0))
+  management_firewall_name = format("%.64s", format(format("%s-%s-%s-mgt", var.prefix, var.bigip_version, var.instance_name_template), 0))
 }
 
 module "cfe_role" {
   source      = "../../../modules/cfe-role/"
   target_type = "project"
   target_id   = var.project_id
-  id          = format("%.64s", replace(format(format("%s-%s", var.prefix, var.instance_name_template), 0), "/[^a-z0-9_.]/", "_"))
+  id          = format("%.64s", replace(format(format("%s-%s-%s", var.prefix, var.bigip_version, var.instance_name_template), 0), "/[^a-z0-9_.]/", "_"))
   members     = [format("serviceAccount:%s", var.service_account)]
 }
 
@@ -55,7 +56,7 @@ module "cfe_bucket" {
   source     = "terraform-google-modules/cloud-storage/google"
   version    = "1.7.2"
   project_id = var.project_id
-  prefix     = var.prefix
+  prefix     = format("%s-%s-%s", var.prefix, var.bigip_version)
   names      = [format(var.instance_name_template, 0)]
   force_destroy = {
     "${format(var.instance_name_template, 0)}" = true
@@ -75,7 +76,7 @@ module "cfe" {
   project_id                        = var.project_id
   zones                             = random_shuffle.zones.result
   num_instances                     = var.num_instances
-  instance_name_template            = format("%s-%s", var.prefix, var.instance_name_template)
+  instance_name_template            = format("%s-%s-%s", var.prefix, var.bigip_version, var.instance_name_template)
   instance_ordinal_offset           = var.instance_ordinal_offset
   domain_name                       = var.domain_name
   metadata                          = var.metadata

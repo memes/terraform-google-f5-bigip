@@ -164,7 +164,7 @@ fileignoreconfig:
 - filename: test/fixtures/ha/README.md
   checksum: af7afc2a4633ba861991b75e305a391a1ece188ba84a437e94970edaa861744c
 - filename: test/fixtures/cfe/main.tf
-  checksum: 0ce830368013f7e70a02092eebfeecd1aa3e4b81c44b218a49ae8d5f267987d9
+  checksum: 5f66be0eccae320c815a584b6c5fb67a6a4154ab90da4904ee0d8bbefd59e25f
 - filename: test/fixtures/cfe/README.md
   checksum: c7ec0580259d3449c6c9bb48969be6cd54b0efc5097ce08841949ac74bcbe67d
 - filename: test/profiles/shared-gce/controls/gce.rb
@@ -187,3 +187,5 @@ fileignoreconfig:
   checksum: 6b2d6cfc1de75190a4638cdac7668794ed13a1f84495be1555ef4ebb07376a06
 - filename: kitchen.yml
   checksum: 563b0a1100d6640a6d53196fab92465f1c26b276633ee509e297da180df2f893
+- filename: test/setup/README.md
+  checksum: cc1cba5692f71b41307dfc798ca21bdad5832e129ecff8d352391e1d0544d84c

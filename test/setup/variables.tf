@@ -30,11 +30,12 @@ The GCP project identifier to use for testing.
 EOD
 }
 
-variable "region" {
-  type        = string
-  default     = "us-west1"
+variable "regions" {
+  type        = list(string)
+  default     = ["us-west1", "us-central1", "us-east1", "us-west2"]
   description = <<EOD
-The region to deploy test resources. Default is 'us-west1'.
+The regions to deploy test resources. Default is ["us-west1", "us-central1",
+"us-east1", "us-west2"].
 EOD
 }
 

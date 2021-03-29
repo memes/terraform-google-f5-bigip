@@ -59,17 +59,18 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_password_secret_manager_key"></a> [admin\_password\_secret\_manager\_key](#input\_admin\_password\_secret\_manager\_key) | The Secret Manager key for BIG-IP admin password. | `string` | n/a | yes |
 | <a name="input_alpha_net"></a> [alpha\_net](#input\_alpha\_net) | Self-link of alpha network. | `string` | n/a | yes |
-| <a name="input_alpha_subnet"></a> [alpha\_subnet](#input\_alpha\_subnet) | Self-link of alpha subnet. | `string` | n/a | yes |
+| <a name="input_alpha_subnets"></a> [alpha\_subnets](#input\_alpha\_subnets) | Map of region:subnet self-link for alpha subnets. | `map(string)` | n/a | yes |
 | <a name="input_beta_net"></a> [beta\_net](#input\_beta\_net) | Self-link of beta network. | `string` | n/a | yes |
-| <a name="input_beta_subnet"></a> [beta\_subnet](#input\_beta\_subnet) | Self-link of beta subnet. | `string` | n/a | yes |
+| <a name="input_beta_subnets"></a> [beta\_subnets](#input\_beta\_subnets) | Map of region:subnet self-link for beta subnets. | `map(string)` | n/a | yes |
+| <a name="input_bigip_version"></a> [bigip\_version](#input\_bigip\_version) | The BIG-IP version under test; this will be prepended to the instance-name. | `string` | n/a | yes |
 | <a name="input_delta_net"></a> [delta\_net](#input\_delta\_net) | Self-link of delta network. | `string` | n/a | yes |
-| <a name="input_delta_subnet"></a> [delta\_subnet](#input\_delta\_subnet) | Self-link of delta subnet. | `string` | n/a | yes |
+| <a name="input_delta_subnets"></a> [delta\_subnets](#input\_delta\_subnets) | Map of region:subnet self-link for delta subnets. | `map(string)` | n/a | yes |
 | <a name="input_epsilon_net"></a> [epsilon\_net](#input\_epsilon\_net) | Self-link of epsilon network. | `string` | n/a | yes |
-| <a name="input_epsilon_subnet"></a> [epsilon\_subnet](#input\_epsilon\_subnet) | Self-link of epsilon subnet. | `string` | n/a | yes |
+| <a name="input_epsilon_subnets"></a> [epsilon\_subnets](#input\_epsilon\_subnets) | Map of region:subnet self-link for epsilon subnets. | `map(string)` | n/a | yes |
 | <a name="input_eta_net"></a> [eta\_net](#input\_eta\_net) | Self-link of eta network. | `string` | n/a | yes |
-| <a name="input_eta_subnet"></a> [eta\_subnet](#input\_eta\_subnet) | Self-link of eta subnet. | `string` | n/a | yes |
+| <a name="input_eta_subnets"></a> [eta\_subnets](#input\_eta\_subnets) | Map of region:subnet self-link for eta subnets. | `map(string)` | n/a | yes |
 | <a name="input_gamma_net"></a> [gamma\_net](#input\_gamma\_net) | Self-link of gamma network. | `string` | n/a | yes |
-| <a name="input_gamma_subnet"></a> [gamma\_subnet](#input\_gamma\_subnet) | Self-link of gamma subnet. | `string` | n/a | yes |
+| <a name="input_gamma_subnets"></a> [gamma\_subnets](#input\_gamma\_subnets) | Map of region:subnet self-link for gamma subnets. | `map(string)` | n/a | yes |
 | <a name="input_num_nics"></a> [num\_nics](#input\_num\_nics) | The number of network interfaces to provision in BIG-IP test instances. | `number` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The prefix to apply to GCP resources created in this test run. | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
@@ -77,9 +78,9 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | <a name="input_reserve_addresses"></a> [reserve\_addresses](#input\_reserve\_addresses) | Toggle the use of address reservation in scenario; if true then a set of addresses<br>will be reserved on networks and supplied to BIG-IP module. This will include<br>public reservations if `provision_[TYPE]_public_ip` is set to true. | `bool` | n/a | yes |
 | <a name="input_service_account"></a> [service\_account](#input\_service\_account) | The service account to use with BIG-IP. | `string` | n/a | yes |
 | <a name="input_theta_net"></a> [theta\_net](#input\_theta\_net) | Self-link of theta network. | `string` | n/a | yes |
-| <a name="input_theta_subnet"></a> [theta\_subnet](#input\_theta\_subnet) | Self-link of theta subnet. | `string` | n/a | yes |
+| <a name="input_theta_subnets"></a> [theta\_subnets](#input\_theta\_subnets) | Map of region:subnet self-link for theta subnets. | `map(string)` | n/a | yes |
 | <a name="input_zeta_net"></a> [zeta\_net](#input\_zeta\_net) | Self-link of zeta network. | `string` | n/a | yes |
-| <a name="input_zeta_subnet"></a> [zeta\_subnet](#input\_zeta\_subnet) | Self-link of zeta subnet. | `string` | n/a | yes |
+| <a name="input_zeta_subnets"></a> [zeta\_subnets](#input\_zeta\_subnets) | Map of region:subnet self-link for zeta subnets. | `map(string)` | n/a | yes |
 | <a name="input_allow_phone_home"></a> [allow\_phone\_home](#input\_allow\_phone\_home) | Allow the BIG-IP VMs to send high-level device use information to help F5<br>optimize development resources. If set to false the information is not sent. | `bool` | `true` | no |
 | <a name="input_as3_payloads"></a> [as3\_payloads](#input\_as3\_payloads) | An optional, but recommended, list of AS3 JSON files that can be used to setup<br>the BIG-IP instances. If left empty (default), the module will use a simple<br>no-op AS3 declaration. | `list(string)` | `[]` | no |
 | <a name="input_automatic_restart"></a> [automatic\_restart](#input\_automatic\_restart) | Determines if the BIG-IP VMs should be automatically restarted if terminated by<br>GCE. | `bool` | `true` | no |
@@ -130,6 +131,7 @@ in `variables.tf` but can be overridden by scenarios as set in kitchen.yml.
 | <a name="output_alpha_subnet"></a> [alpha\_subnet](#output\_alpha\_subnet) | The self-link of alpha subnet. |
 | <a name="output_beta_net"></a> [beta\_net](#output\_beta\_net) | The self-link of beta network. |
 | <a name="output_beta_subnet"></a> [beta\_subnet](#output\_beta\_subnet) | The self-link of beta subnet. |
+| <a name="output_bigip_version"></a> [bigip\_version](#output\_bigip\_version) | The BIG-IP version under test; this will be prepended to the instance-name. |
 | <a name="output_delta_net"></a> [delta\_net](#output\_delta\_net) | The self-link of delta network. |
 | <a name="output_delta_subnet"></a> [delta\_subnet](#output\_delta\_subnet) | The self-link of delta subnet. |
 | <a name="output_epsilon_net"></a> [epsilon\_net](#output\_epsilon\_net) | The self-link of epsilon network. |
