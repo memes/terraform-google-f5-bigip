@@ -17,7 +17,9 @@
       "class": "DbVariables",
       "ui.advisory.enabled": true,
       "ui.advisory.color": "green",
-      "ui.advisory.text": "/Common/hostname",
+%{ if length(hostname) > 0 ~}
+      "ui.advisory.text": "${hostname}",
+%{ endif ~}
       "provision.extramb": "${extramb}",
       "config.allow.rfc3927": "enable"
     },
