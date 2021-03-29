@@ -322,7 +322,7 @@ EOD
 
 variable "image" {
   type        = string
-  default     = "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418"
+  default     = "projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-25mbps-210115160742"
   description = <<EOD
 The self-link URI for a BIG-IP image to use as a base for the VM cluster.
 EOD
