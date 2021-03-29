@@ -66,46 +66,47 @@ service_account    = "bigip@my-project-id.iam.gserviceaccount.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.28, < 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 0.12.28, < 0.13 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| ha | ../../modules/ha/ |  |
-| ha_fw | ../../modules/configsync-fw/ |  |
+| <a name="module_ha"></a> [ha](#module\_ha) | ../../modules/ha/ |  |
+| <a name="module_ha_fw"></a> [ha\_fw](#module\_ha\_fw) | ../../modules/configsync-fw/ |  |
 
 ## Resources
 
-| Name |
-|------|
-| [google_compute_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) |
+| Name | Type |
+|------|------|
+| [google_compute_address.ext](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
+| [google_compute_address.mgt](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
-| external\_network | The fully-qualified network self-link for the *external* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
-| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
-| management\_network | The fully-qualified network self-link for the *management* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
-| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
-| project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
-| service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
-| zone | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
-| num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
+| <a name="input_admin_password_key"></a> [admin\_password\_key](#input\_admin\_password\_key) | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
+| <a name="input_external_network"></a> [external\_network](#input\_external\_network) | The fully-qualified network self-link for the *external* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
+| <a name="input_external_subnet"></a> [external\_subnet](#input\_external\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
+| <a name="input_management_network"></a> [management\_network](#input\_management\_network) | The fully-qualified network self-link for the *management* network to which HA<br>firewall rules will be deployed. | `string` | n/a | yes |
+| <a name="input_management_subnet"></a> [management\_subnet](#input\_management\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
+| <a name="input_service_account"></a> [service\_account](#input\_service\_account) | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
+| <a name="input_zone"></a> [zone](#input\_zone) | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
+| <a name="input_image"></a> [image](#input\_image) | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-5gbps-210115160742"` | no |
+| <a name="input_num_instances"></a> [num\_instances](#input\_num\_instances) | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| instance\_self\_links | Self-link of the BIG-IP instances. |
+| <a name="output_instance_self_links"></a> [instance\_self\_links](#output\_instance\_self\_links) | Self-link of the BIG-IP instances. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
