@@ -42,10 +42,6 @@ module "password" {
   special_char_set = "@#%&*()-_=+[]<>:?"
 }
 
-locals {
-  short_region = replace(var.region, "/^[^-]+-([^0-9-]+)[0-9]$/", "$1")
-}
-
 # Explicitly create each VPC as this will work on all supported Terraform versions
 
 # Alpha - allows internet egress if the instance(s) have public IPs on nic0
@@ -56,11 +52,11 @@ module "alpha" {
   network_name                           = format("%s-alpha", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1500
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("alpha-%s", local.short_region)
-      subnet_ip             = "172.16.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "alpha")
+      subnet_ip             = cidrsubnet("172.16.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -75,11 +71,11 @@ module "beta" {
   network_name                           = format("%s-beta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1460
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("beta-%s", local.short_region)
-      subnet_ip             = "172.17.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "beta")
+      subnet_ip             = cidrsubnet("172.17.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -93,11 +89,11 @@ module "gamma" {
   network_name                           = format("%s-gamma", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1500
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("gamma-%s", local.short_region)
-      subnet_ip             = "172.18.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "gamma")
+      subnet_ip             = cidrsubnet("172.18.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -111,11 +107,11 @@ module "delta" {
   network_name                           = format("%s-delta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1490
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("delta-%s", local.short_region)
-      subnet_ip             = "172.19.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "delta")
+      subnet_ip             = cidrsubnet("172.19.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -129,11 +125,11 @@ module "epsilon" {
   network_name                           = format("%s-epsilon", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1480
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("epsilon-%s", local.short_region)
-      subnet_ip             = "172.20.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "epsilon")
+      subnet_ip             = cidrsubnet("172.20.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -147,11 +143,11 @@ module "zeta" {
   network_name                           = format("%s-zeta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1470
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("zeta-%s", local.short_region)
-      subnet_ip             = "172.21.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "zeta")
+      subnet_ip             = cidrsubnet("172.21.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -165,11 +161,11 @@ module "eta" {
   network_name                           = format("%s-eta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1460
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("eta-%s", local.short_region)
-      subnet_ip             = "172.22.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "eta")
+      subnet_ip             = cidrsubnet("172.22.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
@@ -183,36 +179,30 @@ module "theta" {
   network_name                           = format("%s-theta", random_pet.prefix.id)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1465
-  subnets = [
+  subnets = [for region in var.regions :
     {
-      subnet_name           = format("theta-%s", local.short_region)
-      subnet_ip             = "172.23.0.0/16"
-      subnet_region         = var.region
+      subnet_name           = replace(region, "/^[^-]+/", "theta")
+      subnet_ip             = cidrsubnet("172.23.0.0/16", 8, index(var.regions, region))
+      subnet_region         = region
       subnet_private_access = false
     }
   ]
 }
 
-# Create a NAT gateway on the beta network - this allows the BIG-IP instances
-# to download F5 libraries, use Secret Manager, etc, on management interface
-# which is the only interface configured until DO is applied.
+# Create a NAT gateway for each region on the beta network - this allows the
+# BIG-IP instances to download F5 libraries, use Secret Manager, etc, on
+# management interface which is the only interface configured until DO is applied.
 module "beta-nat" {
+  for_each                           = toset(var.regions)
   source                             = "terraform-google-modules/cloud-nat/google"
   version                            = "~> 1.3.0"
   project_id                         = var.project_id
-  region                             = var.region
-  name                               = format("%s-beta", random_pet.prefix.id)
-  router                             = format("%s-beta", random_pet.prefix.id)
+  region                             = each.value
+  name                               = format("%s-%s", random_pet.prefix.id, replace(each.value, "/^[^-]+/", "beta"))
+  router                             = format("%s-%s", random_pet.prefix.id, replace(each.value, "/^[^-]+/", "beta"))
   create_router                      = true
-  source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
   network                            = module.beta.network_self_link
-  subnetworks = [
-    {
-      name                     = element(module.beta.subnets_self_links, 0)
-      source_ip_ranges_to_nat  = ["ALL_IP_RANGES"]
-      secondary_ip_range_names = []
-    },
-  ]
 }
 
 resource "google_compute_firewall" "admin_alpha" {

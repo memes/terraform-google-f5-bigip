@@ -27,6 +27,20 @@ Override the Secret Manager key for BIG-IP admin password.
 EOD
 }
 
+variable "bigip_version" {
+  type        = string
+  description = <<EOD
+The BIG-IP version under test; this will be prepended to the instance-name.
+EOD
+}
+
+variable "region" {
+  type        = string
+  description = <<EOD
+The compute region which will host the BIG-IP VMs.
+EOD
+}
+
 #
 # These inputs will be set from test/setup/harness.tfvars
 #
@@ -70,13 +84,6 @@ The prefix to apply to GCP resources created in this test run.
 EOD
 }
 
-variable "region" {
-  type        = string
-  description = <<EOD
-The compute region which will host the BIG-IP VMs.
-EOD
-}
-
 variable "service_account" {
   type        = string
   description = <<EOD
@@ -98,10 +105,10 @@ Self-link of alpha network.
 EOD
 }
 
-variable "alpha_subnet" {
-  type        = string
+variable "alpha_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of alpha subnet.
+Map of region:subnet self-link for alpha subnets.
 EOD
 }
 
@@ -112,10 +119,10 @@ Self-link of beta network.
 EOD
 }
 
-variable "beta_subnet" {
-  type        = string
+variable "beta_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of beta subnet.
+Map of region:subnet self-link for beta subnets.
 EOD
 }
 
@@ -126,10 +133,10 @@ Self-link of gamma network.
 EOD
 }
 
-variable "gamma_subnet" {
-  type        = string
+variable "gamma_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of gamma subnet.
+Map of region:subnet self-link for gamma subnets.
 EOD
 }
 
@@ -140,10 +147,10 @@ Self-link of delta network.
 EOD
 }
 
-variable "delta_subnet" {
-  type        = string
+variable "delta_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of delta subnet.
+Map of region:subnet self-link for delta subnets.
 EOD
 }
 
@@ -154,10 +161,10 @@ Self-link of epsilon network.
 EOD
 }
 
-variable "epsilon_subnet" {
-  type        = string
+variable "epsilon_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of epsilon subnet.
+Map of region:subnet self-link for epsilon subnets.
 EOD
 }
 
@@ -168,10 +175,10 @@ Self-link of zeta network.
 EOD
 }
 
-variable "zeta_subnet" {
-  type        = string
+variable "zeta_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of zeta subnet.
+Map of region:subnet self-link for zeta subnets.
 EOD
 }
 
@@ -182,10 +189,10 @@ Self-link of eta network.
 EOD
 }
 
-variable "eta_subnet" {
-  type        = string
+variable "eta_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of eta subnet.
+Map of region:subnet self-link for eta subnets.
 EOD
 }
 
@@ -196,10 +203,10 @@ Self-link of theta network.
 EOD
 }
 
-variable "theta_subnet" {
-  type        = string
+variable "theta_subnets" {
+  type        = map(string)
   description = <<EOD
-Self-link of theta subnet.
+Map of region:subnet self-link for theta subnets.
 EOD
 }
 

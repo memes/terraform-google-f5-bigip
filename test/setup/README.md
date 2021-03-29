@@ -53,7 +53,7 @@ published modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier to use for testing. | `string` | n/a | yes |
 | <a name="input_admin_source_cidrs"></a> [admin\_source\_cidrs](#input\_admin\_source\_cidrs) | The list of source CIDRs that will be added to firewall rules to allow admin<br>access to BIG-IPs (SSH and GUI) on alpha and beta subnetworks. Only useful if<br>instance has a public IP address. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
-| <a name="input_region"></a> [region](#input\_region) | The region to deploy test resources. Default is 'us-west1'. | `string` | `"us-west1"` | no |
+| <a name="input_regions"></a> [regions](#input\_regions) | The regions to deploy test resources. Default is ["us-west1", "us-central1",<br>"us-east1", "us-west2"]. | `list(string)` | <pre>[<br>  "us-west1",<br>  "us-central1",<br>  "us-east1",<br>  "us-west2"<br>]</pre> | no |
 | <a name="input_tf_sa_email"></a> [tf\_sa\_email](#input\_tf\_sa\_email) | The fully-qualified email address of the Terraform service account to use for<br>resource creation via account impersonation. If left blank, the default, then<br>the invoker's account will be used.<br><br>E.g. if you have permissions to impersonate:<br><br>tf\_sa\_email = "terraform@PROJECT\_ID.iam.gserviceaccount.com" | `string` | `""` | no |
 | <a name="input_tf_sa_token_lifetime_secs"></a> [tf\_sa\_token\_lifetime\_secs](#input\_tf\_sa\_token\_lifetime\_secs) | The expiration duration for the service account token, in seconds. This value<br>should be high enough to prevent token timeout issues during resource creation,<br>but short enough that the token is useless replayed later. Default value is 600<br>(10 mins). | `number` | `600` | no |
 
@@ -63,24 +63,23 @@ published modules.
 |------|-------------|
 | <a name="output_admin_password_secret_manager_key"></a> [admin\_password\_secret\_manager\_key](#output\_admin\_password\_secret\_manager\_key) | The project-local secret id containing the generated BIG-IP admin password. |
 | <a name="output_alpha_net"></a> [alpha\_net](#output\_alpha\_net) | Self-link of the alpha network. |
-| <a name="output_alpha_subnet"></a> [alpha\_subnet](#output\_alpha\_subnet) | Self-link of the alpha subnet. |
+| <a name="output_alpha_subnets"></a> [alpha\_subnets](#output\_alpha\_subnets) | Map of region:subnet self-link for alpha subnets. |
 | <a name="output_beta_net"></a> [beta\_net](#output\_beta\_net) | Self-link of the beta network. |
-| <a name="output_beta_subnet"></a> [beta\_subnet](#output\_beta\_subnet) | Self-link of the beta subnet. |
+| <a name="output_beta_subnets"></a> [beta\_subnets](#output\_beta\_subnets) | Map of region:subnet self-link for beta subnets. |
 | <a name="output_delta_net"></a> [delta\_net](#output\_delta\_net) | Self-link of the delta network. |
-| <a name="output_delta_subnet"></a> [delta\_subnet](#output\_delta\_subnet) | Self-link of the delta subnet. |
+| <a name="output_delta_subnets"></a> [delta\_subnets](#output\_delta\_subnets) | Map of region:subnet self-link for delta subnets. |
 | <a name="output_epsilon_net"></a> [epsilon\_net](#output\_epsilon\_net) | Self-link of the epsilon network. |
-| <a name="output_epsilon_subnet"></a> [epsilon\_subnet](#output\_epsilon\_subnet) | Self-link of the epsilon subnet. |
+| <a name="output_epsilon_subnets"></a> [epsilon\_subnets](#output\_epsilon\_subnets) | Map of region:subnet self-link for epsilon subnets. |
 | <a name="output_eta_net"></a> [eta\_net](#output\_eta\_net) | Self-link of the eta network. |
-| <a name="output_eta_subnet"></a> [eta\_subnet](#output\_eta\_subnet) | Self-link of the eta subnet. |
+| <a name="output_eta_subnets"></a> [eta\_subnets](#output\_eta\_subnets) | Map of region:subnet self-link for eta subnets. |
 | <a name="output_gamma_net"></a> [gamma\_net](#output\_gamma\_net) | Self-link of the gamma network. |
-| <a name="output_gamma_subnet"></a> [gamma\_subnet](#output\_gamma\_subnet) | Self-link of the gamma subnet. |
+| <a name="output_gamma_subnets"></a> [gamma\_subnets](#output\_gamma\_subnets) | Map of region:subnet self-link for gamma subnets. |
 | <a name="output_prefix"></a> [prefix](#output\_prefix) | The prefix that will be applied to generated resources in this test run. |
 | <a name="output_project_id"></a> [project\_id](#output\_project\_id) | The GCP project identifier to use for testing. |
-| <a name="output_region"></a> [region](#output\_region) | The compute region to use for testing resources. |
 | <a name="output_service_account"></a> [service\_account](#output\_service\_account) | The fully-qualified service account email to use with BIG-IP instances. |
 | <a name="output_tf_sa_email"></a> [tf\_sa\_email](#output\_tf\_sa\_email) | The service account to use with account impersonation when creating resources or<br>invoking gcloud commands. May be empty. |
 | <a name="output_theta_net"></a> [theta\_net](#output\_theta\_net) | Self-link of the theta network. |
-| <a name="output_theta_subnet"></a> [theta\_subnet](#output\_theta\_subnet) | Self-link of the theta subnet. |
+| <a name="output_theta_subnets"></a> [theta\_subnets](#output\_theta\_subnets) | Map of region:subnet self-link for theta subnets. |
 | <a name="output_zeta_net"></a> [zeta\_net](#output\_zeta\_net) | Self-link of the zeta network. |
-| <a name="output_zeta_subnet"></a> [zeta\_subnet](#output\_zeta\_subnet) | Self-link of the zeta subnet. |
+| <a name="output_zeta_subnets"></a> [zeta\_subnets](#output\_zeta\_subnets) | Map of region:subnet self-link for zeta subnets. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
