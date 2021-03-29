@@ -13,9 +13,9 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-h8min-[01]$/)
+        expect(instance.name).to match(/#{prefix}-#{bigip_version}-h8min-[01]$/)
         # rubocop:disable Layout/LineLength
-        expect(instance.hostname).to match(/#{prefix}-h8min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
+        expect(instance.hostname).to match(/#{prefix}-#{bigip_version}-h8min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
         # rubocop:enable Layout/LineLength
       end
     end

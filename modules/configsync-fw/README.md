@@ -67,41 +67,42 @@ module "configsync_fw" {
 
 | Name | Version |
 |------|---------|
-| terraform | > 0.12 |
-| google | >= 3.48 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 0.12 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 3.48 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | >= 3.48 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 3.48 |
 
 ## Modules
 
-No Modules.
+No modules.
 
 ## Resources
 
-| Name |
-|------|
-| [google_compute_firewall](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) |
+| Name | Type |
+|------|------|
+| [google_compute_firewall.data_sync](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
+| [google_compute_firewall.mgt_sync](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bigip\_service\_account | The service account that will be used for the BIG-IP VMs; the firewall rules will<br>be constructed to use this for source and target filtering. | `string` | n/a | yes |
-| dataplane\_network | The fully-qualified self-link of the subnet that will be used for data-plane<br>ConfigSync traffic. | `string` | n/a | yes |
-| management\_network | The fully-qualified self-link of the subnet that will be used for Management<br>(control-plane) ConfigSync traffic. | `string` | n/a | yes |
-| project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
-| dataplane\_firewall\_name | The name to use for data-plane network firewall rule. Default is<br>'allow-bigip-configsync-data-plane'. | `string` | `"allow-bigip-configsync-data-plane"` | no |
-| management\_firewall\_name | The name to use for Management (control-plane) network firewall rule. Default is<br>'allow-bigip-configsync-mgt'. | `string` | `"allow-bigip-configsync-mgt"` | no |
+| <a name="input_bigip_service_account"></a> [bigip\_service\_account](#input\_bigip\_service\_account) | The service account that will be used for the BIG-IP VMs; the firewall rules will<br>be constructed to use this for source and target filtering. | `string` | n/a | yes |
+| <a name="input_dataplane_network"></a> [dataplane\_network](#input\_dataplane\_network) | The fully-qualified self-link of the subnet that will be used for data-plane<br>ConfigSync traffic. | `string` | n/a | yes |
+| <a name="input_management_network"></a> [management\_network](#input\_management\_network) | The fully-qualified self-link of the subnet that will be used for Management<br>(control-plane) ConfigSync traffic. | `string` | n/a | yes |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
+| <a name="input_dataplane_firewall_name"></a> [dataplane\_firewall\_name](#input\_dataplane\_firewall\_name) | The name to use for data-plane network firewall rule. Default is<br>'allow-bigip-configsync-data-plane'. | `string` | `"allow-bigip-configsync-data-plane"` | no |
+| <a name="input_management_firewall_name"></a> [management\_firewall\_name](#input\_management\_firewall\_name) | The name to use for Management (control-plane) network firewall rule. Default is<br>'allow-bigip-configsync-mgt'. | `string` | `"allow-bigip-configsync-mgt"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| dataplane\_self\_link | The self-link for the ConfigSync firewall rule added to data-plane network. |
-| management\_self\_link | The self-link for the ConfigSync firewall rule added to management network. |
+| <a name="output_dataplane_self_link"></a> [dataplane\_self\_link](#output\_dataplane\_self\_link) | The self-link for the ConfigSync firewall rule added to data-plane network. |
+| <a name="output_management_self_link"></a> [management\_self\_link](#output\_management\_self\_link) | The self-link for the ConfigSync firewall rule added to management network. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
