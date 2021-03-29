@@ -17,6 +17,13 @@ fi
 info "Initialisation starting"
 mkdir -p /config/cloud/gce /var/log/cloud/google
 
+if [ -n "$(get_instance_attribute details_on_error)" ]; then
+    touch /var/run/gce_setup_utils_details_on_error
+else
+    [ -e /var/run/gce_setup_utils_details_on_error ] && \
+        rm -f /var/run/gce_setup_utils_details_on_error
+fi
+
 # Write the current network configuration to file
 info "Generating /config/cloud/gce/network.config"
 if [ ! -f /config/cloud/gce/network.config ]; then

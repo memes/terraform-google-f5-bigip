@@ -16,6 +16,13 @@ The prefix prepended to generated resource names for this test.
 EOD
 }
 
+output "bigip_version" {
+  value       = var.bigip_version
+  description = <<EOD
+The BIG-IP version under test; this will be prepended to the instance-name.
+EOD
+}
+
 output "region" {
   value       = var.region
   description = <<EOD
@@ -53,7 +60,7 @@ EOD
 }
 
 output "alpha_subnet" {
-  value       = var.alpha_subnet
+  value       = var.alpha_subnets[var.region]
   description = <<EOD
 The self-link of alpha subnet.
 EOD
@@ -67,7 +74,7 @@ EOD
 }
 
 output "beta_subnet" {
-  value       = var.beta_subnet
+  value       = var.beta_subnets[var.region]
   description = <<EOD
 The self-link of beta subnet.
 EOD
@@ -81,7 +88,7 @@ EOD
 }
 
 output "gamma_subnet" {
-  value       = var.gamma_subnet
+  value       = var.gamma_subnets[var.region]
   description = <<EOD
 The self-link of gamma subnet.
 EOD
@@ -95,7 +102,7 @@ EOD
 }
 
 output "delta_subnet" {
-  value       = var.delta_subnet
+  value       = var.delta_subnets[var.region]
   description = <<EOD
 The self-link of delta subnet.
 EOD
@@ -109,7 +116,7 @@ EOD
 }
 
 output "epsilon_subnet" {
-  value       = var.epsilon_subnet
+  value       = var.epsilon_subnets[var.region]
   description = <<EOD
 The self-link of epsilon subnet.
 EOD
@@ -123,7 +130,7 @@ EOD
 }
 
 output "zeta_subnet" {
-  value       = var.zeta_subnet
+  value       = var.zeta_subnets[var.region]
   description = <<EOD
 The self-link of zeta subnet.
 EOD
@@ -137,7 +144,7 @@ EOD
 }
 
 output "eta_subnet" {
-  value       = var.eta_subnet
+  value       = var.eta_subnets[var.region]
   description = <<EOD
 The self-link of eta subnet.
 EOD
@@ -151,7 +158,7 @@ EOD
 }
 
 output "theta_subnet" {
-  value       = var.theta_subnet
+  value       = var.theta_subnets[var.region]
   description = <<EOD
 The self-link of theta subnet.
 EOD
@@ -174,7 +181,7 @@ EOD
 }
 
 output "cfe_label_key" {
-  value       = format("%s-%s", var.prefix, var.cfe_label_key)
+  value       = format("%s-%s-%s", var.prefix, var.bigip_version, var.cfe_label_key)
   description = <<EOD
 The CFE label key to assign to resources that are going to be managed by CFE.
 EOD

@@ -1,6 +1,6 @@
 # Test harness runner
 
-SCENARIOS := $(subst /,,$(subst test/integration/,,$(dir $(wildcard test/integration/*/.))))
+SCENARIOS := $(shell kitchen list --bare | tr '\n' ' ')
 
 # Converge all suites, verify, and destroy; first failure will terminate the suite
 # NOTE: this will converge ALL scenarios before verification, which could cause
@@ -73,6 +73,6 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 .PHONY: teardown
 teardown:
 	kitchen destroy
+	rm -f harness.tfvars
 	cd test/setup && \
-		terraform destroy -auto-approve && \
-		rm -f harness.tfvars
+		terraform destroy -auto-approve

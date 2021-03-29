@@ -24,21 +24,21 @@ fileignoreconfig:
 - filename: examples/cfe-3nic/terraform.tfvars.example
   checksum: c52a5fa1c39ffef755d15389357fd96b2450cb65c859b179fb72644a27eff637
 - filename: examples/standalone-1nic/README.md
-  checksum: 8c7cb1ac05233f92e4d2beda69502abe2cfb9b8051ad81d1629165f2ac570bca
+  checksum: 3a833e79a94f8c3d5ea7a9d46aa7b13b2a94463620c36d94565e7d1c21154153
 - filename: examples/ha-3nic/terraform.tfvars.example
   checksum: 2261d06045d33cd1f395d2b3ab7d4c426d36a07077d9eb7863488dccb6dec8ea
 - filename: examples/standalone-3nic/README.md
-  checksum: 5745c1c878e0aa8dbccc72ba5210fdae96998483579c8eccc0c0741752ccdfe7
+  checksum: 47310be847b9d923f8a30a59c50c2444eadc79f24736e88a6807dfa053eaa60e
 - filename: examples/ha-2nic/README.md
-  checksum: a4d2775ecc535b454cce90a94f180348530b23c681408fb2bd208626f1b20e47
+  checksum: 2200e8923ba1b63fcf71f3545ed4796bb1e961fa7853909bbfaf3837f6295fa9
 - filename: examples/standalone-2nic/README.md
-  checksum: 01801aa6f5774817b178aef5539f9bd09f14a06cb697f5a422e1479692e62193
+  checksum: bedf2ac98e672063aec1fb527513d9a84f0f57b987751b99c011d83a70e5cf1e
 - filename: examples/cfe-3nic/README.md
-  checksum: 61c22aeac38f0a62fb37b784639d2677f4814809a03b0b37e2faa1e4a6ed34a6
+  checksum: d0df9e204fae89898cfbd8e7e9d24b0cb30aeae0b05e4df53eac4595bd00d247
 - filename: examples/cfe-2nic/README.md
-  checksum: 8056324aee214a2ce52f28d9e7d124e4a56c67f0da940db22b5255f51e7776ff
+  checksum: d9c204c27956c6021a7ee04aae0549cd9b165fb898606e74b32979f5f6f66e77
 - filename: examples/ha-3nic/README.md
-  checksum: 160f7c8fa12d0ec57fc629283541d7bf803534313f6aa4f54ae12fc0bafcef3b
+  checksum: 88aeed586aa8506b1a5500068207c035c5e028137c7afe01126080a1946e26f7
 - filename: examples/ha-2nic-fqdn/terraform.tfvars.example
   checksum: 8d2a1e0eb4710d8ecdf29b449ec8be046fd72363afda0052013556d91500adca
 - filename: examples/ha-3nic-fqdn-multi-az/terraform.tfvars.example
@@ -60,7 +60,7 @@ fileignoreconfig:
 - filename: examples/cfe-2nic-multi-az/main.tf
   checksum: 703e91132c102e225cd5e588305135f5238bbb629c09c9b18cff1943c905efa1
 - filename: examples/standalone-1nic-fqdn-multi-az/README.md
-  checksum: 0f59e57fcaa33eb7faff96590babc820dc8359b646599089aa63b1eb6e053e85
+  checksum: 9f0ccef018a96f4b50e570113fdb23b68887b0451b7d907ca7ed10c941e041bc
 - filename: examples/cfe-3nic-fqdn-multi-az/main.tf
   checksum: f0d58f8186e1868340e8b14fd599692ee4e77b30081fdfc8f4aaf33aeb344cbd
 - filename: examples/ha-2nic-fqdn/main.tf
@@ -68,19 +68,19 @@ fileignoreconfig:
 - filename: examples/cfe-2nic-fqdn/main.tf
   checksum: 88ee54c10de31c1bac6cec3231b61a7b00930b7a80fc8c7fb2d84800eaa7e1e9
 - filename: examples/cfe-2nic-multi-az/README.md
-  checksum: 23157f8b008446bfa4a92fc105f8488f1bff340ea51abe5f1a876594ce52e390
+  checksum: 53ebfa0206cc251a3370e3a2f001fcafca47fbda8343e0780c25df3d5cf40463
 - filename: examples/cfe-3nic-fqdn-multi-az/README.md
-  checksum: 2fc83e81e80221a53c50f03e404ddd6fe4a94ab0829057d157b7b351aa2089ac
+  checksum: 3f2a682ec6e3668b89e0d78cc867d4d8036548b7151b0bd0eb3471693c79fca5
 - filename: examples/ha-2nic-multi-az/main.tf
   checksum: e91c3503ffbca04d8931fcc40d51bf70edafe70f082389f26040b38e1a899169
 - filename: examples/ha-2nic-multi-az/README.md
-  checksum: 1455ee286e86ab8b84d58ba22a95e7e408812823604d23ef8690ea4070bfd15d
+  checksum: a0f79941aa4d650d163bf5e61cfcdb78386174e96f7435b1c59e61140aada310
 - filename: examples/ha-2nic-fqdn/README.md
-  checksum: 80264d939f52360aaf5f5d2021505c28054c50f03d1aecf56f7d8138e6e70a4f
+  checksum: 8b6ff6dc463ae301db8cacd70df2ab933cdace8b7b55f9de10d67eb12b9316a0
 - filename: examples/ha-3nic-fqdn-multi-az/README.md
-  checksum: 4934609490573b7c1ffa56f765f50e63f4b6ee8bc82fcdc02804d51394b01f61
+  checksum: 9fc5c0356c88f0141d0ee1854a705368a3836f35b5a629ae6ccb4ff282f908c9
 - filename: examples/cfe-2nic-fqdn/README.md
-  checksum: c010cd9fb47005bc76ec273a90e63b22e7e9bacde0f67364c4ddcf816b770a68
+  checksum: d2520aa32e0bc2f1a797e4ae2b8a80240b07a8090f2987e8bc95cd25ad00b4c4
 - filename: examples/standalone-3nic-fqdn-1-based/terraform.tfvars.example
   checksum: f1d9de1323799e490211133cf0d4861934f831d5544bdd1699ccc2b11b7de05b
 - filename: examples/ha-2nic-1-based-fqdn/terraform.tfvars.example
@@ -94,11 +94,11 @@ fileignoreconfig:
 - filename: examples/cfe-2nic-hex-offset-fqdn/main.tf
   checksum: 989e37dd297c3978d668557a3a7cec1cfbb03e6463926f25dff8ffeedfbe6a58
 - filename: examples/standalone-3nic-fqdn-1-based/README.md
-  checksum: ab9fda1c5666db6f267029fffb0b96c9227bf25b623c8921b673095e43faa9fa
+  checksum: c89d6216b6160fec16d2e7c2c4234118e1625aacaf5764b4431739320e3e0838
 - filename: examples/cfe-2nic-hex-offset-fqdn/README.md
-  checksum: 5cf6be10ad1ab375d45416c4166933d0e988683a0381bb01200f9bcb5875af39
+  checksum: fd809057c8540ffbe50fe61879d3839c6873471309222cb0154a45b74d8127ff
 - filename: examples/ha-2nic-1-based-fqdn/README.md
-  checksum: 216cd7efbc82981b763c0a791f3a5d88509fb6b395f9e139d457b1e0866cb596
+  checksum: b6b65da91ace7010b74516682c0cceeec95d593081876779f7f761494e64fa18
 - filename: modules/metadata/files/verifyHash
   checksum: 570d8d07b4daae3b5b6194e9b672e498ca7a4270e24eb0c33122ead967b236ac
 - filename: modules/ha/variables.tf
@@ -122,7 +122,7 @@ fileignoreconfig:
 - filename: examples/standalone-1nic-metadata-admin-password/main.tf
   checksum: bcecb633fce7852ace83aed26f2951952569618c06a1783fc854fdd9f79f5df0
 - filename: examples/standalone-1nic-metadata-admin-password/README.md
-  checksum: 9f20f0a0baf9c77e37ac9204819055caab0fd182874ca56a7cbe50219432843f
+  checksum: a1af8a62bc030cfd87312da921ce08cc1a0eb4d77f95cc948afc9393140165c0
 - filename: CHANGELOG.md
   checksum: 6e6481be4567d948411454619aa593e34d37fc41825045c16622da83fddde361
 - filename: modules/metadata/files/initialSetup.sh
@@ -142,19 +142,19 @@ fileignoreconfig:
 - filename: examples/standalone-3nic-vips/main.tf
   checksum: ef8fec051274f6299c282b3b2f1b2b138964ff9f9a4715fa0a108ad3816ce772
 - filename: examples/standalone-3nic-vips/README.md
-  checksum: 415ef31f6efc981b70ab9e084b721c2924375531e0884a319a7d0f5505bce53a
+  checksum: 49942e8ec0c5c3f38f14f2c24d97d215c7ab347bfab4ef7c16b8d3bed6bef8bd
 - filename: examples/standalone-4nic-vips/README.md
-  checksum: 6b8c718b128bda34f53b4d46ffe2f75b6331545eaeec91b026e0d6841723649b
+  checksum: a2d1641c761ce3d5931d9aa1e2b31dac74e77366e329cf7b73beccf4471c3701
 - filename: examples/standalone-3nic-public-ips/terraform.tfvars.example
   checksum: c65f4b9242c325ee18745f5a928c480c40a8f570eaaf49aef4e72dc61d2bcac1
 - filename: examples/standalone-3nic-public-ips/main.tf
   checksum: 94316e66d2bdd1a32338c1143500d6c64b8c72d1e36ef77a641ea70259032fba
 - filename: examples/standalone-3nic-public-ips/README.md
-  checksum: 272f8a39593efffd7b87c121d14f751d6b34e567c98fea3846ecb115ed8d57b2
+  checksum: 84c655d54ba27fea87e6900b07a0930f0f3937336131c83ff4a10c0ad819502c
 - filename: test/fixtures/root/main.tf
   checksum: 1cee950af323095620d2cdfe7ae6330470a4edf2e74ef6d6ee6a379137d58f1d
 - filename: test/fixtures/root/README.md
-  checksum: 377f1a619945f58e4ddde94e02183afdb87119834e0c7b31da3febb246129321
+  checksum: dad572a6e7ac5fa7646b6bf71573ac8cfde5a096454f707b0445a1a212a9186c
 - filename: kitchen.yml
   checksum: 50de0d12b6f0206e6fa0596f3712685a3795fe071d8662bcc1b6346137d6c825
 - filename: test/profiles/shared-gce/controls/gce.rb
@@ -162,11 +162,11 @@ fileignoreconfig:
 - filename: test/fixtures/ha/main.tf
   checksum: f29f6823b3d053bc61fc8226893198439f84fd0e69049b12af283dc4b950a2e4
 - filename: test/fixtures/ha/README.md
-  checksum: 1bfc590e2c7544f2ffd0b9f214049c68c10d9122a0d48458a4820e914a4a2587
+  checksum: af7afc2a4633ba861991b75e305a391a1ece188ba84a437e94970edaa861744c
 - filename: test/fixtures/cfe/main.tf
-  checksum: 0ce830368013f7e70a02092eebfeecd1aa3e4b81c44b218a49ae8d5f267987d9
+  checksum: 5f66be0eccae320c815a584b6c5fb67a6a4154ab90da4904ee0d8bbefd59e25f
 - filename: test/fixtures/cfe/README.md
-  checksum: 932033a57ed8b01b5d97ddd3e47990ce054899e1f9cc380f1f06f7ae4f91e656
+  checksum: c7ec0580259d3449c6c9bb48969be6cd54b0efc5097ce08841949ac74bcbe67d
 - filename: test/profiles/shared-gce/controls/gce.rb
   checksum: 47ec63ffee497ba0506f14fbd2525ee6197f6511e675dee14891fa024b9c512b
 - filename: test/integration/cfe-6nic-minimal/controls/suite.rb
@@ -186,6 +186,6 @@ fileignoreconfig:
 - filename: test/integration/cfe-7nic-minimal/controls/suite.rb
   checksum: 6b2d6cfc1de75190a4638cdac7668794ed13a1f84495be1555ef4ebb07376a06
 - filename: kitchen.yml
-  checksum: 45981135cfc213721499afcb4dbc0012a5d67f36d792e1cd2703edf86baf6915
-- filename: test/fixtures/examples-standalone-1nic/main.tf
-  checksum: ac6474785c936ea6486d3ffd3f8b07c89730e3661231787e5802179edea58a12`
+  checksum: 563b0a1100d6640a6d53196fab92465f1c26b276633ee509e297da180df2f893
+- filename: test/setup/README.md
+  checksum: cc1cba5692f71b41307dfc798ca21bdad5832e129ecff8d352391e1d0544d84c
