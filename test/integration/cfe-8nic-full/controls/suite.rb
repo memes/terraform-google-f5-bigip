@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 control 'suite' do
   title 'cfe-8nic-full'
 
-  prefix = input('prefix')
-  self_links = input('self_links')
+  prefix = input('output_prefix')
+  bigip_version = input('output_bigip_version')
+  self_links = input('output_self_links')
   domain_name = input('input_domain_name')
   cfe_label_key = input('input_cfe_label_key', value: 'f5_cloud_failover_label')
   cfe_label_value = input('input_cfe_label_value')
@@ -27,12 +29,13 @@ control 'suite' do
       it 'should meet naming expectations' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-c8full-[12]$/)
-        expect(instance.hostname).to match(/#{prefix}-c8full-[12]\.#{domain_name}/)
+        expect(instance.name).to match(/#{prefix}-#{bigip_version}-#{bigip_version}-c8full-[12]$/)
+        expect(instance.hostname).to match(/#{prefix}-#{bigip_version}-#{bigip_version}-c8full-[12]\.#{domain_name}/)
       end
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 # Include the shared BIG-IP controls
 include_controls 'shared-gce'

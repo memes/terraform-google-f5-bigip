@@ -27,7 +27,7 @@ control 'gce_attributes' do
   # TODO: @memes - disabling unused inputs until initialize_params is working
   # rubocop:todo Layout/LineLength
   # image = input('input_image',
-  #               value: 'projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-25mbps-201110225418')
+  #               value: 'projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-25mbps-210115160742')
   # rubocop:enable Layout/LineLength
   # disk_type = input('input_disk_type', value: 'pd-ssd')
   # disk_size_gb = input('input_disk_size_gb', value: '')

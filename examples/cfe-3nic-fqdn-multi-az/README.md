@@ -88,53 +88,56 @@ domain_name            = "example.com"
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.28, < 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 0.12.28, < 0.13 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | n/a |
-| random | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| cfe | ../../modules/cfe/ |  |
-| cfe_bucket | terraform-google-modules/cloud-storage/google | 1.7.2 |
-| cfe_fw | ../../modules/configsync-fw/ |  |
-| cfe_role | ../../modules/cfe-role/ |  |
+| <a name="module_cfe"></a> [cfe](#module\_cfe) | ../../modules/cfe/ |  |
+| <a name="module_cfe_bucket"></a> [cfe\_bucket](#module\_cfe\_bucket) | terraform-google-modules/cloud-storage/google | 1.7.2 |
+| <a name="module_cfe_fw"></a> [cfe\_fw](#module\_cfe\_fw) | ../../modules/configsync-fw/ |  |
+| <a name="module_cfe_role"></a> [cfe\_role](#module\_cfe\_role) | ../../modules/cfe-role/ |  |
 
 ## Resources
 
-| Name |
-|------|
-| [google_compute_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) |
-| [random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) |
+| Name | Type |
+|------|------|
+| [google_compute_address.ext](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
+| [google_compute_address.int](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
+| [google_compute_address.mgt](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
+| [google_compute_address.vip](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
+| [random_id.bucket](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| admin\_password\_key | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
-| domain\_name | The domain name to use when setting FQDN of instances. | `string` | n/a | yes |
-| external\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
-| instance\_name\_template | A format string that will be used when naming instance, that should include a<br>format token for including ordinal number. E.g. 'bigip-%d', such that %d will<br>be replaced with the ordinal of each instance. | `string` | n/a | yes |
-| internal\_network | The fully-qualified network self-link for the *internal* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
-| internal\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *internal*<br>interface. | `string` | n/a | yes |
-| management\_network | The fully-qualified network self-link for the *management* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
-| management\_subnet | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
-| project\_id | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
-| service\_account | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
-| zones | The list of compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
-| image | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-0-0-9-payg-good-5gbps-201110225418"` | no |
-| num\_instances | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
+| <a name="input_admin_password_key"></a> [admin\_password\_key](#input\_admin\_password\_key) | The Secret Manager key to lookup and retrive admin user password during<br>initialization. | `string` | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The domain name to use when setting FQDN of instances. | `string` | n/a | yes |
+| <a name="input_external_subnet"></a> [external\_subnet](#input\_external\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *external*<br>interface. | `string` | n/a | yes |
+| <a name="input_instance_name_template"></a> [instance\_name\_template](#input\_instance\_name\_template) | A format string that will be used when naming instance, that should include a<br>format token for including ordinal number. E.g. 'bigip-%d', such that %d will<br>be replaced with the ordinal of each instance. | `string` | n/a | yes |
+| <a name="input_internal_network"></a> [internal\_network](#input\_internal\_network) | The fully-qualified network self-link for the *internal* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
+| <a name="input_internal_subnet"></a> [internal\_subnet](#input\_internal\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *internal*<br>interface. | `string` | n/a | yes |
+| <a name="input_management_network"></a> [management\_network](#input\_management\_network) | The fully-qualified network self-link for the *management* network to which CFE<br>firewall rules will be deployed. | `string` | n/a | yes |
+| <a name="input_management_subnet"></a> [management\_subnet](#input\_management\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM *management*<br>interface. | `string` | n/a | yes |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project identifier where the cluster will be created. | `string` | n/a | yes |
+| <a name="input_service_account"></a> [service\_account](#input\_service\_account) | The service account to use for BIG-IP VMs. | `string` | n/a | yes |
+| <a name="input_zones"></a> [zones](#input\_zones) | The list of compute zones which will host the BIG-IP VMs. | `list(string)` | n/a | yes |
+| <a name="input_image"></a> [image](#input\_image) | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-5gbps-210115160742"` | no |
+| <a name="input_num_instances"></a> [num\_instances](#input\_num\_instances) | The number of BIG-IP instances to create. Default is 2. | `number` | `2` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| instances\_self\_link | Self-link of the BIG-IP instances. |
+| <a name="output_instances_self_link"></a> [instances\_self\_link](#output\_instances\_self\_link) | Self-link of the BIG-IP instances. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->
