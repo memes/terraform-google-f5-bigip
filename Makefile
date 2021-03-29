@@ -73,6 +73,6 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 .PHONY: teardown
 teardown:
 	kitchen destroy
+	rm -f harness.tfvars
 	cd test/setup && \
-		terraform destroy -auto-approve && \
-		rm -f harness.tfvars
+		terraform destroy -auto-approve
