@@ -38,11 +38,21 @@ serialised: $(addprefix test.,$(SCENARIOS))
 
 .PHONY: qtest.%
 qtest.%:  test/setup/harness.tfvars
-	KITCHEN_SKIP_ONBOARD_DELAY=1 kitchen test $*
+	kitchen destroy $*
+	kitchen converge $*
+	KITCHEN_SKIP_ONBOARD_DELAY=1 \
+		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
+	kitchen destroy $*
+	kitchen test $*
 
 .PHONY: test.%
 test.%: test/setup/harness.tfvars
-	kitchen test $*
+	kitchen destroy $*
+	kitchen converge $*
+	GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
+	kitchen destroy $*
 
 .PHONY: destroy.%
 destroy.%: test/setup/harness.tfvars
