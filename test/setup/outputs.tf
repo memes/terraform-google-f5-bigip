@@ -14,14 +14,14 @@ EOD
 }
 
 output "prefix" {
-  value       = random_pet.prefix.id
+  value       = random_id.prefix.hex
   description = <<EOD
 The prefix that will be applied to generated resources in this test run.
 EOD
 }
 
 output "service_account" {
-  value       = module.sa.emails["bigip"]
+  value       = module.bigip_sa.email
   description = <<EOD
 The fully-qualified service account email to use with BIG-IP instances.
 EOD

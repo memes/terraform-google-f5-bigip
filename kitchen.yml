@@ -145,7 +145,7 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "r8full-%d"
-        machine_type: n2-standard-8
+        machine_type: n1-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
         # kitchen-terraform always applies -var then -var-file, so admin
@@ -160,7 +160,7 @@ suites:
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
-        min_cpu_platform: Intel Cascade Lake
+        min_cpu_platform: Intel Skylake
         automatic_restart: "false"
         preemptible: "true"
         ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
@@ -270,7 +270,7 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "h8full-%d"
-        machine_type: n2-standard-8
+        machine_type: n1-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
         # kitchen-terraform always applies -var then -var-file, so admin
@@ -285,7 +285,7 @@ suites:
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
-        min_cpu_platform: Intel Cascade Lake
+        min_cpu_platform: Intel Skylake
         automatic_restart: "false"
         preemptible: "true"
         ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"
@@ -403,7 +403,7 @@ suites:
         reserve_addresses: "true"
         num_instances: "2"
         instance_name_template: "c8full-%d"
-        machine_type: n2-standard-8
+        machine_type: n1-standard-8
         cfe_label_key: "cfe-8nic-fixture"
         cfe_label_value: "cfe-8nic-full"
         instance_ordinal_offset: "1"
@@ -420,7 +420,7 @@ suites:
         # spellchecker: enable
         labels: '{alpha=\"one\", beta=\"two\"}'
         tags: '[\"apple\",\"banana\"]'
-        min_cpu_platform: Intel Cascade Lake
+        min_cpu_platform: Intel Skylake
         automatic_restart: "false"
         preemptible: "true"
         ssh_keys: "admin: ssh-rsa THIS IS NOT A VALID SSH KEY: admin"

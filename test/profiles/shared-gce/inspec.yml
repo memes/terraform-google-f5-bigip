@@ -21,6 +21,12 @@ inputs:
   - name: input_num_instances
     type: string
     required: false
+  - name: input_instance_name_template
+    type: string
+    required: false
+  - name: input_domain_name
+    type: string
+    required: false
   - name: input_description
     type: string
     required: false

@@ -16,4 +16,5 @@ terraform.tfvars.json
 # Kitchen testing
 .kitchen
 test/setup/harness.tfvars
+test/setup/inspec-verifier.json
 Gemfile.lock
