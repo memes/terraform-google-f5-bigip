@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 control 'suite' do
   title 'cfe-4nic-minimal'
 
-  prefix = input('output_prefix')
-  bigip_version = input('output_bigip_version')
-  self_links = input('output_self_links')
-  zones = input('output_zones')
   cfe_label_key = input('input_cfe_label_key', value: 'f5_cloud_failover_label')
   cfe_label_value = input('input_cfe_label_value')
 
@@ -22,23 +17,7 @@ control 'suite' do
       expect(cfe_label_value).not_to be_empty
     end
   end
-
-  self_links.each_with_index do |url, index|
-    params = url.match(%r{/projects/(?<project>[^/]+)/zones/(?<zone>[^/]+)/instances/(?<name>.+)$}).named_captures
-    describe params['name'] do
-      it 'should meet naming expectations' do
-        instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
-        expect(instance).to exist
-        expect(instance.name).to match(/#{prefix}-#{bigip_version}-c4min-[01]$/)
-        # rubocop:disable Layout/LineLength
-        expect(instance.hostname).to match(/#{prefix}-#{bigip_version}-c4min-[01]\.#{zones[index % zones.length]}\.c\.#{params["project"]}\.internal/)
-        # rubocop:enable Layout/LineLength
-      end
-    end
-  end
 end
-# rubocop:enable Metrics/BlockLength
-
 # Include the shared BIG-IP controls
 include_controls 'shared-gce'
 include_controls 'shared-local'

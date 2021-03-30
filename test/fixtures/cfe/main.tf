@@ -56,7 +56,7 @@ module "cfe_bucket" {
   source     = "terraform-google-modules/cloud-storage/google"
   version    = "1.7.2"
   project_id = var.project_id
-  prefix     = format("%s-%s-%s", var.prefix, var.bigip_version)
+  prefix     = format("%s-%s", var.prefix, var.bigip_version)
   names      = [format(var.instance_name_template, 0)]
   force_destroy = {
     "${format(var.instance_name_template, 0)}" = true
