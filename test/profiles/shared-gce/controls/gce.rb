@@ -18,6 +18,10 @@ control 'gce_attributes' do
   service_account = input('output_service_account')
   num_nics = input('input_num_nics').to_i
   num_instances = input('input_num_instances', value: '1').to_i
+  prefix = input('output_prefix')
+  bigip_version = input('output_bigip_version')
+  instance_name_regex = input('input_instance_name_template', value: 'bigip-%d').gsub(/%d/, '[0-9]')
+  domain_name = input('input_domain_name', value: '')
   tags = input('input_tags', value: '[]').gsub(/(?:[\[\]]|\\?")/, '').gsub(', ', ',').split(',')
   min_cpu_platform = input('input_min_cpu_platform', value: 'Intel Skylake')
   machine_type = input('input_machine_type', value: 'n1-standard-4')
@@ -52,6 +56,11 @@ control 'gce_attributes' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
         expect(instance.status).to cmp 'RUNNING'
+        expect(instance.name).to match(/#{prefix}-#{bigip_version}-#{instance_name_regex}$/)
+        # rubocop:todo Layout/LineLength
+        domain = domain_name.empty? ? "#{zones[index % zones.length]}\\.c\\.#{params['project']}\\.internal" : domain_name
+        # rubocop:enable Layout/LineLength
+        expect(instance.hostname).to match(/^#{prefix}-#{bigip_version}-#{instance_name_regex}\.#{domain}$/)
         expect(instance.zone).to match %r{/#{zones[index % zones.length]}$}
         expect(instance.machine_type).to match %r{/machineTypes/#{machine_type}$}
         expect(instance.min_cpu_platform).to cmp min_cpu_platform

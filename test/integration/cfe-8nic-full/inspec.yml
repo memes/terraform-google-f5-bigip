@@ -1,5 +1,6 @@
 # This suite will standup a pair of CFE BIG-IP instances with 8 network
 # interfaces, using the full set of Terraform inputs.
+# spell-checker: ignore inspec bigip
 ---
 name: cfe-8nic-full
 depends:
@@ -11,18 +12,6 @@ depends:
   - name: shared-local
     path: ../../profiles/shared-local
 inputs:
-  - name: output_prefix
-    type: string
-    required: true
-  - name: output_bigip_version
-    type: string
-    required: true
-  - name: output_self_links
-    type: array
-    required: true
-  - name: input_domain_name
-    type: string
-    required: true
   - name: input_cfe_label_key
     type: string
     required: true

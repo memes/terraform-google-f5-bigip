@@ -10,16 +10,3 @@ depends:
     path: ../../profiles/shared-gce
   - name: shared-local
     path: ../../profiles/shared-local
-inputs:
-  - name: output_prefix
-    type: string
-    required: true
-  - name: output_bigip_version
-    type: string
-    required: true
-  - name: output_self_links
-    type: array
-    required: true
-  - name: input_domain_name
-    type: string
-    required: true
