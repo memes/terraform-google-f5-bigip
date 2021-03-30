@@ -7,19 +7,37 @@ terraform {
 # handled in providers.tf
 
 # Generate a random prefix
-resource "random_pet" "prefix" {
-  length = 1
+resource "random_id" "prefix" {
+  byte_length = 2
+  prefix      = "a"
   keepers = {
     project_id = var.project_id
   }
 }
 
 # Create the service account(s) to be used in the project
-module "sa" {
+module "inspec_sa" {
   source     = "terraform-google-modules/service-accounts/google"
   version    = "3.0.1"
   project_id = var.project_id
-  prefix     = random_pet.prefix.id
+  prefix     = random_id.prefix.hex
+  names      = ["inspec"]
+  project_roles = [
+    "${var.project_id}=>roles/compute.viewer",
+  ]
+  generate_keys = true
+}
+
+resource "local_file" "inspec_json" {
+  content  = module.inspec_sa.key
+  filename = "${path.module}/inspec-verifier.json"
+}
+
+module "bigip_sa" {
+  source     = "terraform-google-modules/service-accounts/google"
+  version    = "3.0.1"
+  project_id = var.project_id
+  prefix     = random_id.prefix.hex
   names      = ["bigip"]
   project_roles = [
     "${var.project_id}=>roles/logging.logWriter",
@@ -33,10 +51,10 @@ module "password" {
   source     = "memes/secret-manager/google//modules/random"
   version    = "1.0.2"
   project_id = var.project_id
-  id         = format("%s-bigip-admin-key", random_pet.prefix.id)
+  id         = format("%s-bigip-admin-key", random_id.prefix.hex)
   accessors = [
     # Generated service account email address is predictable - use it directly
-    format("serviceAccount:%s-bigip@%s.iam.gserviceaccount.com", random_pet.prefix.id, var.project_id),
+    format("serviceAccount:%s-bigip@%s.iam.gserviceaccount.com", random_id.prefix.hex, var.project_id),
   ]
   length           = 16
   special_char_set = "@#%&*()-_=+[]<>:?"
@@ -49,7 +67,7 @@ module "alpha" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-alpha", random_pet.prefix.id)
+  network_name                           = format("%s-alpha", random_id.prefix.hex)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1500
   subnets = [for region in var.regions :
@@ -68,7 +86,7 @@ module "beta" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-beta", random_pet.prefix.id)
+  network_name                           = format("%s-beta", random_id.prefix.hex)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1460
   subnets = [for region in var.regions :
@@ -86,7 +104,7 @@ module "gamma" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-gamma", random_pet.prefix.id)
+  network_name                           = format("%s-gamma", random_id.prefix.hex)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1500
   subnets = [for region in var.regions :
@@ -104,7 +122,7 @@ module "delta" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-delta", random_pet.prefix.id)
+  network_name                           = format("%s-delta", random_id.prefix.hex)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1490
   subnets = [for region in var.regions :
@@ -122,7 +140,7 @@ module "epsilon" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-epsilon", random_pet.prefix.id)
+  network_name                           = format("%s-epsilon", random_id.prefix.hex)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1480
   subnets = [for region in var.regions :
@@ -140,7 +158,7 @@ module "zeta" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-zeta", random_pet.prefix.id)
+  network_name                           = format("%s-zeta", random_id.prefix.hex)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1470
   subnets = [for region in var.regions :
@@ -158,7 +176,7 @@ module "eta" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-eta", random_pet.prefix.id)
+  network_name                           = format("%s-eta", random_id.prefix.hex)
   delete_default_internet_gateway_routes = true
   mtu                                    = 1460
   subnets = [for region in var.regions :
@@ -176,7 +194,7 @@ module "theta" {
   source                                 = "terraform-google-modules/network/google"
   version                                = "3.0.0"
   project_id                             = var.project_id
-  network_name                           = format("%s-theta", random_pet.prefix.id)
+  network_name                           = format("%s-theta", random_id.prefix.hex)
   delete_default_internet_gateway_routes = false
   mtu                                    = 1465
   subnets = [for region in var.regions :
@@ -198,8 +216,8 @@ module "beta-nat" {
   version                            = "~> 1.3.0"
   project_id                         = var.project_id
   region                             = each.value
-  name                               = format("%s-%s", random_pet.prefix.id, replace(each.value, "/^[^-]+/", "beta"))
-  router                             = format("%s-%s", random_pet.prefix.id, replace(each.value, "/^[^-]+/", "beta"))
+  name                               = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "beta"))
+  router                             = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "beta"))
   create_router                      = true
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
   network                            = module.beta.network_self_link
@@ -207,12 +225,12 @@ module "beta-nat" {
 
 resource "google_compute_firewall" "admin_alpha" {
   project                 = var.project_id
-  name                    = format("%s-alpha-allow-admin-access", random_pet.prefix.id)
+  name                    = format("%s-alpha-allow-admin-access", random_id.prefix.hex)
   network                 = module.alpha.network_self_link
-  description             = format("Allow external admin access on alpha (%s)", random_pet.prefix.id)
+  description             = format("Allow external admin access on alpha (%s)", random_id.prefix.hex)
   direction               = "INGRESS"
   source_ranges           = var.admin_source_cidrs
-  target_service_accounts = [module.sa.emails["bigip"]]
+  target_service_accounts = module.bigip_sa.emails_list
   allow {
     protocol = "tcp"
     ports = [
@@ -227,12 +245,12 @@ resource "google_compute_firewall" "admin_alpha" {
 
 resource "google_compute_firewall" "admin_beta" {
   project                 = var.project_id
-  name                    = format("%s-beta-allow-admin-access", random_pet.prefix.id)
+  name                    = format("%s-beta-allow-admin-access", random_id.prefix.hex)
   network                 = module.beta.network_self_link
-  description             = format("Allow external admin access on beta (%s)", random_pet.prefix.id)
+  description             = format("Allow external admin access on beta (%s)", random_id.prefix.hex)
   direction               = "INGRESS"
   source_ranges           = var.admin_source_cidrs
-  target_service_accounts = [module.sa.emails["bigip"]]
+  target_service_accounts = module.bigip_sa.emails_list
   allow {
     protocol = "tcp"
     ports = [
