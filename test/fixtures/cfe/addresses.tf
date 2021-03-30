@@ -70,7 +70,7 @@ resource "google_compute_address" "delta_private" {
 resource "google_compute_address" "delta_public" {
   count        = var.reserve_addresses && var.provision_internal_public_ip && var.num_nics > 3 ? var.num_instances : 0
   project      = var.project_id
-  name         = format(format("%s-%s-%s=delta-pub", var.prefix, var.bigip_version, var.instance_name_template), count.index + var.instance_ordinal_offset)
+  name         = format(format("%s-%s-%s-delta-pub", var.prefix, var.bigip_version, var.instance_name_template), count.index + var.instance_ordinal_offset)
   address_type = "EXTERNAL"
   region       = var.region
   network_tier = var.internal_subnetwork_tier

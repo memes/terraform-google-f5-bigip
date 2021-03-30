@@ -38,23 +38,36 @@ serialised: $(addprefix test.,$(SCENARIOS))
 
 .PHONY: qtest.%
 qtest.%:  test/setup/harness.tfvars
-	KITCHEN_SKIP_ONBOARD_DELAY=1 kitchen test $*
+	kitchen destroy $*
+	kitchen converge $*
+	KITCHEN_SKIP_ONBOARD_DELAY=1 \
+		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
+	kitchen destroy $*
+	kitchen test $*
 
 .PHONY: test.%
 test.%: test/setup/harness.tfvars
-	kitchen test $*
+	kitchen destroy $*
+	kitchen converge $*
+	GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
+	kitchen destroy $*
 
 .PHONY: destroy.%
 destroy.%: test/setup/harness.tfvars
 	kitchen destroy $*
 
 .PHONY: qverify.%
-qverify.%: test/setup/harness.tfvars
-	KITCHEN_SKIP_ONBOARD_DELAY=1 kitchen verify $*
+qverify.%: converge.%
+	KITCHEN_SKIP_ONBOARD_DELAY=1 \
+		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
 
 .PHONY: verify.%
-verify.%: test/setup/harness.tfvars
-	kitchen verify $*
+verify.%: converge.%
+	GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
+		kitchen verify $*
 
 .PHONY: converge.%
 converge.%: test/setup/harness.tfvars
@@ -65,7 +78,7 @@ converge.%: test/setup/harness.tfvars
 test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 	cd test/setup && \
 		terraform init -input=false && \
-		terraform apply -input=false -auto-approve -target random_pet.prefix && \
+		terraform apply -input=false -auto-approve -target random_id.prefix && \
 		terraform apply -input=false -auto-approve && \
 		terraform output > $(@F)
 
@@ -73,6 +86,6 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf)
 .PHONY: teardown
 teardown:
 	kitchen destroy
-	rm -f harness.tfvars
+	rm -f test/setup/harness.tfvars
 	cd test/setup && \
 		terraform destroy -auto-approve

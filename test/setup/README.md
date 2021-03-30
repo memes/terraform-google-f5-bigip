@@ -19,6 +19,7 @@ published modules.
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | ~> 3.48 ~> 3.48 |
 | <a name="provider_google.executor"></a> [google.executor](#provider\_google.executor) | ~> 3.48 ~> 3.48 |
+| <a name="provider_local"></a> [local](#provider\_local) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
@@ -28,12 +29,13 @@ published modules.
 | <a name="module_alpha"></a> [alpha](#module\_alpha) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_beta"></a> [beta](#module\_beta) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_beta-nat"></a> [beta-nat](#module\_beta-nat) | terraform-google-modules/cloud-nat/google | ~> 1.3.0 |
+| <a name="module_bigip_sa"></a> [bigip\_sa](#module\_bigip\_sa) | terraform-google-modules/service-accounts/google | 3.0.1 |
 | <a name="module_delta"></a> [delta](#module\_delta) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_epsilon"></a> [epsilon](#module\_epsilon) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_eta"></a> [eta](#module\_eta) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_gamma"></a> [gamma](#module\_gamma) | terraform-google-modules/network/google | 3.0.0 |
+| <a name="module_inspec_sa"></a> [inspec\_sa](#module\_inspec\_sa) | terraform-google-modules/service-accounts/google | 3.0.1 |
 | <a name="module_password"></a> [password](#module\_password) | memes/secret-manager/google//modules/random | 1.0.2 |
-| <a name="module_sa"></a> [sa](#module\_sa) | terraform-google-modules/service-accounts/google | 3.0.1 |
 | <a name="module_theta"></a> [theta](#module\_theta) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_zeta"></a> [zeta](#module\_zeta) | terraform-google-modules/network/google | 3.0.0 |
 
@@ -43,7 +45,8 @@ published modules.
 |------|------|
 | [google_compute_firewall.admin_alpha](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_firewall.admin_beta](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
-| [random_pet.prefix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
+| [local_file.inspec_json](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [random_id.prefix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_client_config.executor](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config) | data source |
 | [google_service_account_access_token.sa_token](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account_access_token) | data source |
 
