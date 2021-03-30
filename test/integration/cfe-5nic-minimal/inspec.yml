@@ -1,6 +1,6 @@
 # This suite will standup a pair of CFE BIG-IP instances with 5 network
 # interfaces, using a minimal set of Terraform inputs.
-# spell-checker: ignore bigip
+# spell-checker: ignore inspec bigip
 ---
 name: cfe-5nic-minimal
 depends:

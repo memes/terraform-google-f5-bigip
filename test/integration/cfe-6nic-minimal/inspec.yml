@@ -1,6 +1,6 @@
 # This suite will standup a pair of CFE BIG-IP instances with 6 network
 # interfaces, using a minimal set of Terraform inputs.
-# spell-checker: ignore bigip
+# spell-checker: ignore inspec bigip
 ---
 name: cfe-6nic-minimal
 depends:
@@ -12,18 +12,6 @@ depends:
   - name: shared-local
     path: ../../profiles/shared-local
 inputs:
-  - name: output_prefix
-    type: string
-    required: true
-  - name: output_bigip_version
-    type: string
-    required: true
-  - name: output_zones
-    type: array
-    required: true
-  - name: output_self_links
-    type: array
-    required: true
   - name: input_cfe_label_key
     type: string
     required: false
