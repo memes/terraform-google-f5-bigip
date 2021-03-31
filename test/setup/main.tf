@@ -24,6 +24,7 @@ module "inspec_sa" {
   names      = ["inspec"]
   project_roles = [
     "${var.project_id}=>roles/compute.viewer",
+    "${var.project_id}=>roles/iam.roleViewer",
   ]
   generate_keys = true
 }
