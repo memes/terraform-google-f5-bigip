@@ -56,7 +56,7 @@ retry_install()
             -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
             --data "{\"operation\":\"INSTALL\",\"packageFilePath\":\"${out}\"}" \
             -w '\n{"http_status": "%{http_code}"}' \
-            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq --raw-output --slurpfile add)"
+            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq --raw-output --slurp add)"
         retVal=$?
         status="$(echo "${response}" | jq --raw-output .http_status)"
         case "${status}" in
