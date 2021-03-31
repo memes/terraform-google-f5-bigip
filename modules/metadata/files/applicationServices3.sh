@@ -32,7 +32,7 @@ while [ ${retry} -lt 10 ]; do
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/info" && break
     info "Check for AS3 installation failed, sleeping before retest: curl exit code $?"
-    sleep 5
+    sleep 15
     retry=$((retry+1))
 done
 [ ${retry} -ge 10 ] && \
@@ -84,7 +84,7 @@ while true; do
                 ;;
     esac
     info "Sleeping before rechecking AS3 tasks"
-    sleep 5
+    sleep 15
 done
 rm -f "${payload}" || info "Unable to delete ${payload}"
 exit 0

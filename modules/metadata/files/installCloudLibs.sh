@@ -37,7 +37,7 @@ retry_download() {
         retval=$?
         [ "${retval}" -eq 0 ] && break
         info "retry_download: ${attempt}: Failed to download from ${url}: exit code: $?; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -69,7 +69,7 @@ retry_install()
                 info "retry_install: ${attempt}: installing ${out} returned status ${status}: ${response}; sleeping before retry"
                 ;;
         esac
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -188,7 +188,7 @@ while [ -n "${task_ids}" ]; do
     [ -z "${pending_ids}" ] && break
     task_ids="${pending_ids}"
     info "Sleeping before reexamining installation tasks"
-    sleep 5
+    sleep 15
 done
 [ -n "${errors}" ] && error "Failed to install some tasks, exiting script"
 

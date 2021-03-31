@@ -59,7 +59,7 @@ get_instance_attribute()
             break
         fi
         info "get_instance_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -84,7 +84,7 @@ get_project_attribute()
             break
         fi
         info "get_project_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -104,7 +104,7 @@ get_auth_token()
             break
         fi
         info "get_auth_token: ${attempt}: Curl failed with exit code $?; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -160,7 +160,7 @@ get_secret_google_secret_manager()
             break
         fi
         info "get_secret_google_secret_manager: ${attempt}: Curl failed to get secret from Secret Manager: exit code: ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
