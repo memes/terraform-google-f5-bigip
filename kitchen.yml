@@ -33,13 +33,14 @@ platforms:
         image: projects/f5-7626-networks-public/global/images/f5-bigip-14-1-4-0-0-11-payg-good-25mbps-210211220757
         bigip_version: "14"
         region: us-east1
-  - name: local-13
-    driver:
-      variables:
-        # yamllint disable-line rule:line-length
-        image: projects/f5-7626-networks-public/global/images/f5-bigip-13-1-3-6-0-0-4-payg-good-25mbps-210129042237
-        bigip_version: "13"
-        region: us-west2
+  # TODO: @memes - do not include BIG-IP v13 in tests - jq failure (see #115)
+  # - name: local-13
+  #   driver:
+  #     variables:
+  #       # yamllint disable-line rule:line-length
+  #       image: projects/f5-7626-networks-public/global/images/f5-bigip-13-1-3-6-0-0-4-payg-good-25mbps-210129042237
+  #       bigip_version: "13"
+  #       region: us-west2
 
 
 verifier:
