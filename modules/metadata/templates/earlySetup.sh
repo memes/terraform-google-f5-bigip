@@ -46,4 +46,8 @@ info "Allow restjavad to use extra RAM"
 info "Saving config"
 tmsh save /sys config
 
+info "Restarting REST daemons"
+bigstart restart restjavad restnoded || \
+    info "Error restarting REST daemons: $?"
+
 exit 0
