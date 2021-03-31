@@ -45,7 +45,7 @@ extract_payload "${1}" > "${raw}" || \
 # Execute the raw JSON as a jq file; allows environment substitutions to embed
 # Admin password, for example, at run-time. NOTE: for future use.
 payload="$(mktemp -p /var/tmp)"
-jq -nrf "${raw}" > "${payload}" || \
+jq --null-input --raw-output --from-file "${raw}" > "${payload}" || \
     error "Unable to process raw file as JSON: $?"
 rm -f "${raw}" || info "Unable to delete ${raw}"
 
@@ -56,9 +56,9 @@ response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
         -d @"${payload}" \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/declare?async=true")" || \
     error "Error applying AS3 payload from ${payload}"
-id="$(echo "${response}" | jq -r '.id // ""')"
+id="$(echo "${response}" | jq --raw-output '.id // ""')"
 [ -n "${id}" ] || \
-    error "Unable to submit AS3 declaration: $(echo "${response}" | jq -r '.code + " " + .message')"
+    error "Unable to submit AS3 declaration: $(echo "${response}" | jq --raw-output '.code + " " + .message')"
 
 while true; do
     response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
@@ -66,7 +66,7 @@ while true; do
                 -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                 "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/appsvcs/task/${id}")" || \
         error "Failed to get status for task ${id}: curl exit code: $?"
-    code="$(echo "${response}" | jq -r '.results[0].code // "unspecified"')"
+    code="$(echo "${response}" | jq --raw-output '.results[0].code // "unspecified"')"
     case "${code}" in
         0)
                 info "AS3 payload is being processed"
@@ -76,7 +76,7 @@ while true; do
                 break
                 ;;
         4*|5*)
-                error "AS3 payload failed to install with error(s): $(echo "${response}" | jq -r '.results[0].message + " " + (.results[0].errors // [] | tostring)')"
+                error "AS3 payload failed to install with error(s): $(echo "${response}" | jq --raw-output '.results[0].message + " " + (.results[0].errors // [] | tostring)')"
                 break
                 ;;
         *)

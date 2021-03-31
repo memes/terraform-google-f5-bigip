@@ -70,9 +70,9 @@ while [ "${attempt:-0}" -lt 10 ]; do
         -d @"${payload}" \
         -o "${response}" \
         -w '{"http_status": "%{http_code}"}' \
-        "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq -r '.http_status')"
+        "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding" | jq --raw-output '.http_status')"
     retVal=$?
-    id="$(jq -r '.id' < "${response}")"
+    id="$(jq --raw-output '.id' < "${response}")"
     case "${status}" in
         2*)
             info "${attempt}: Declarative Onboarding applied from ${payload} with ID ${id}"
@@ -98,7 +98,7 @@ while true; do
             -o "${response}" \
             "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/task/${id}" || \
         error "Failed to get status for task ${id}: curl exit code: $?"
-    code="$(jq -r 'if .result then .result.code else .code end' < "${response}")"
+    code="$(jq --raw-output 'if .result then .result.code else .code end' < "${response}")"
     # Response is often truncated on error and JQ on BIG-IP silently fails if the
     # input is an invalid JSON; grep for a code and use that as fallback
     [ -z "${code}" ] && \

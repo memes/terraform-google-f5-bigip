@@ -126,7 +126,7 @@ fileignoreconfig:
 - filename: CHANGELOG.md
   checksum: 6e6481be4567d948411454619aa593e34d37fc41825045c16622da83fddde361
 - filename: modules/metadata/files/initialSetup.sh
-  checksum: 031c17b1e31c8759fcac8cd999586a91b45098a184e7dfc38056717b89a6d652
+  checksum: fd7614a203a2c52ff573bc1b8880440b20d0a0649c2bcdd633b7af16b09c49a2
 - filename: modules/do-builder/files/do_replace_filter.jq
   checksum: a1875e9527549f2b4f3e8b59ec4d7c58560fd7e49441293233a43837f429f977
 - filename: modules/do-builder/README.md

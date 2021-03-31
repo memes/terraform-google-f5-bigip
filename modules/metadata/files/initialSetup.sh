@@ -33,13 +33,13 @@ fi
 info "Generating /config/cloud/gce/network.config"
 if [ ! -f /config/cloud/gce/network.config ]; then
     curl -sf --retry 20 'http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/?recursive=true' -H 'Metadata-Flavor: Google' | \
-        jq -r '(. | length) as $count |
-                to_entries |
-                map(.key=(if .key == 0 then "EXT" elif .key == 1 then "MGMT" else "INT\(.key-2)" end)) |
-                map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)", "\(.key)_MTU=\(.value.mtu)"]) |
-                .+ [["NIC_COUNT=\($count)"]] |
-                .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
-                .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
+        jq --raw-output '(. | length) as $count |
+            to_entries |
+            map(.key=(if .key == 0 then "EXT" elif .key == 1 then "MGMT" else "INT\(.key-2)" end)) |
+            map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)", "\(.key)_MTU=\(.value.mtu)"]) |
+            .+ [["NIC_COUNT=\($count)"]] |
+            .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
+            .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
     chmod 0644 /config/cloud/gce/network.config
 fi
 # The rest of the script will have issues if networking cannot be setup
