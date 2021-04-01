@@ -75,9 +75,12 @@ while true; do
                 info "AS3 payload is installed"
                 break
                 ;;
-        4*|5*)
+        4*)
                 error "AS3 payload failed to install with error(s): $(echo "${response}" | jq --raw-output '.results[0].message + " " + (.results[0].errors // [] | tostring)')"
                 break
+                ;;
+        5*)
+                info "AS3 payload failed to install with error(s): $(echo "${response}" | jq --raw-output '.results[0].message + " " + (.results[0].errors // [] | tostring)')"
                 ;;
         *)
                 info "AS3 has code ${code}: ${response}"
