@@ -18,3 +18,4 @@ terraform.tfvars.json
 test/setup/harness.tfvars
 test/setup/inspec-verifier.json
 Gemfile.lock
+verify.log

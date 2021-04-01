@@ -45,7 +45,7 @@ platforms:
 
 verifier:
   name: terraform
-  color: true
+  color: false
   systems:
     - name: inspec-gcp
       backend: gcp
