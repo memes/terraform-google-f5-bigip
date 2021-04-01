@@ -8,7 +8,7 @@ terraform {
 
 # Generate a random prefix
 resource "random_id" "prefix" {
-  byte_length = 2
+  byte_length = 1
   prefix      = "a"
   keepers = {
     project_id = var.project_id

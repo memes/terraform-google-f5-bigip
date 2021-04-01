@@ -48,7 +48,7 @@ module "cfe_role" {
   source      = "../../../modules/cfe-role/"
   target_type = "project"
   target_id   = var.project_id
-  id          = format("%.64s", replace(format(format("%s-%s-%s", var.prefix, var.bigip_version, var.instance_name_template), 0), "/[^a-z0-9_.]/", "_"))
+  id          = format("%.64s", replace(format(format("%s%s%s", var.prefix, var.bigip_version, var.instance_name_template), 0), "/[^a-z0-9_.]/", "_"))
   members     = [format("serviceAccount:%s", var.service_account)]
 }
 
@@ -56,7 +56,7 @@ module "cfe_bucket" {
   source     = "terraform-google-modules/cloud-storage/google"
   version    = "1.7.2"
   project_id = var.project_id
-  prefix     = format("%s-%s", var.prefix, var.bigip_version)
+  prefix     = format("%s%s", var.prefix, var.bigip_version)
   names      = [format(var.instance_name_template, 0)]
   force_destroy = {
     "${format(var.instance_name_template, 0)}" = true
@@ -76,7 +76,7 @@ module "cfe" {
   project_id                        = var.project_id
   zones                             = random_shuffle.zones.result
   num_instances                     = var.num_instances
-  instance_name_template            = format("%s-%s-%s", var.prefix, var.bigip_version, var.instance_name_template)
+  instance_name_template            = format("%s%s%s", var.prefix, var.bigip_version, var.instance_name_template)
   instance_ordinal_offset           = var.instance_ordinal_offset
   domain_name                       = var.domain_name
   metadata                          = var.metadata
