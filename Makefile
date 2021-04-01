@@ -1,6 +1,6 @@
 # Test harness runner
 
-TEST_REPORT := verify.log
+TEST_REPORT := $(shell date '+verify.%Y%m%dT%H%M%S.log')
 
 # Converge all suites, verify, and destroy; first failure will terminate the suite
 # NOTE: this will converge ALL scenarios before verification, which could cause
