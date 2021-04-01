@@ -28,7 +28,7 @@ while [ "$${retry}" -lt 10 ]; do
         -d '{"maxMessageBodySize": ${jsonencode(max_msg_body_size)}}' \
         "http://localhost:8100/mgmt/shared/server/messaging/settings/8100" && break
     info "Setting shared message size failed, sleeping before retest: curl exit code $?"
-    sleep 5
+    sleep 15
     retry=$((retry+1))
 done
 # shellcheck disable=SC2170

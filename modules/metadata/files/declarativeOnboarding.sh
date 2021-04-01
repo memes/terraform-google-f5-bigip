@@ -32,7 +32,7 @@ while [ ${retry} -lt 10 ]; do
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/declarative-onboarding/info" && break
     info "Check for DO installation failed, sleeping before retest: curl exit code $?"
-    sleep 10
+    sleep 15
     retry=$((retry+1))
 done
 [ ${retry} -ge 10 ] && \
@@ -85,7 +85,7 @@ while [ "${attempt:-0}" -lt 10 ]; do
             info "${attempt}: POSTing of Declarative Onboarding failed: ${status}: response captured in ${response}; sleeping before retry"
             ;;
     esac
-    sleep 10
+    sleep 15
     attempt=$((attempt+1))
 done
 [ "${attempt}" -ge 10 ] && \
@@ -119,7 +119,7 @@ while true; do
                 ;;
     esac
     info "Sleeping before rechecking Declarative Onboarding tasks"
-    sleep 10
+    sleep 15
 done
 rm -f "${payload}" || info "Unable to delete ${payload}"
 rm -f "${response}" || info "Unable to delete ${response}"
