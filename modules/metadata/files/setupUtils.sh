@@ -48,7 +48,7 @@ get_instance_attribute()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -so /dev/null -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/instance/attributes/${1}")
+        http_status=$(curl -so /dev/null --retry 20 -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/instance/attributes/${1}")
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
@@ -73,7 +73,7 @@ get_project_attribute()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -so /dev/null -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}")
+        http_status=$(curl -so /dev/null --retry 20 -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}")
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
@@ -97,7 +97,7 @@ get_auth_token()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        auth_token="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' | jq --raw-output '.access_token')"
+        auth_token="$(curl -sf --retry 20 -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' | jq --raw-output '.access_token')"
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             echo "${auth_token}"
@@ -148,11 +148,11 @@ get_secret_google_secret_manager()
         error "get_secret_google_secret_manager: Unable to get project id from metadata: Curl exit code $?"
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -sko /dev/null -w '%{http_code}' -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null)
+        http_status=$(curl -sko /dev/null --retry 20 -w '%{http_code}' -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null)
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
-                curl -sk -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
+                curl -sk --retry 20 -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
                     jq --raw-output '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
             else
                 echo ""

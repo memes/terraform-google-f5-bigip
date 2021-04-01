@@ -104,7 +104,7 @@ fileignoreconfig:
 - filename: modules/ha/variables.tf
   checksum: 432d545472d167c893afd070b8f3705d408c3171d4061565832648c74d84256d
 - filename: modules/metadata/files/setupUtils.sh
-  checksum: bae32098b62cca652a956f7fafc193618844b1acbdea0f685c6cb0214e85d652
+  checksum: a5c23ace1f2b0d6f2d8897a3f5b06db2331d15a3476f8b7533c6267ef5e24d43
 - filename: variables.tf
   checksum: 2325557d0e00da3f683cbebd86f9a91b4cb5b4840bf27d0943fdc5024d999d49
 - filename: modules/cfe/variables.tf
