@@ -41,14 +41,6 @@ fi
     error "Run-time network configuration script is missing"
 . /config/cloud/gce/network.config
 
-# Should run-time details be logged on error?
-if [ -n "$(get_instance_attribute details_on_error)" ]; then
-    touch /var/run/gce_setup_utils_details_on_error
-else
-    [ -e /var/run/gce_setup_utils_details_on_error ] && \
-        rm -f /var/run/gce_setup_utils_details_on_error
-fi
-
 # Early initialisation
 if [ ! -f /config/cloud/gce/earlySetupComplete ]; then
     [ -x /config/cloud/gce/earlySetup.sh ] || \
@@ -75,6 +67,14 @@ if [ ! -f /config/cloud/gce/initialNetworkingComplete ]; then
     /config/cloud/gce/initialNetworking.sh || \
         error "initialNetworking script failed with exit code: $?"
     touch /config/cloud/gce/initialNetworkingComplete
+fi
+
+# Should run-time details be logged on error?
+if [ -n "$(get_instance_attribute details_on_error)" ]; then
+    touch /var/run/gce_setup_utils_details_on_error
+else
+    [ -e /var/run/gce_setup_utils_details_on_error ] && \
+        rm -f /var/run/gce_setup_utils_details_on_error
 fi
 
 # Change the admin password, if available in Secrets Manager. Only do this once
