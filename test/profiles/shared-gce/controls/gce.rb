@@ -55,7 +55,7 @@ control 'gce_attributes' do
       it 'compute engine attributes' do
         instance = google_compute_instance(project: params['project'], zone: params['zone'], name: params['name'])
         expect(instance).to exist
-        expect(instance.status).to cmp 'RUNNING'
+        expect(preemptible ? %w[RUNNING STOPPING TERMINATED] : %w[RUNNING]).to include(instance.status)
         expect(instance.name).to match(/#{prefix}#{bigip_version}#{instance_name_regex}$/)
         # rubocop:todo Layout/LineLength
         domain = domain_name.empty? ? "#{zones[index % zones.length]}\\.c\\.#{params['project']}\\.internal" : domain_name
