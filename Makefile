@@ -27,7 +27,7 @@ quick: test/setup/harness.tfvars
 .PHONY: serialised
 serialised: test/setup/harness.tfvars
 	kitchen list --bare | \
-		xargs -n 1 -I % sh -c 'kitchen destroy % && kitchen converge % && GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify | tee -a $(TEST_REPORT) % && kitchen destroy %'
+		xargs -n 1 -I % sh -c 'kitchen destroy % && kitchen converge % && GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % | tee -a $(TEST_REPORT) % && kitchen destroy %'
 
 # Targets below here provide a way to run a kitchen test/destroy/verify run for
 # an individual scenario knowing that the foundational harness will be created
