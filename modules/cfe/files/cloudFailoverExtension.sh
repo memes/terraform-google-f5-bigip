@@ -52,7 +52,7 @@ extract_payload "${cfe_payload}" > "${raw}" || \
 # Execute the raw JSON as a jq file; allows environment substitutions to embed
 # Admin password, for example, at run-time.
 payload="$(mktemp -p /var/tmp)"
-jq -nrf "${raw}" > "${payload}" || \
+jq --null-input --raw-output --from-file "${raw}" > "${payload}" || \
     error "Unable to process raw file as JSON: $?"
 rm -f "${raw}" || info "Unable to delete ${raw}"
 
@@ -62,15 +62,15 @@ response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
     -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
     -d @"${payload}" \
     -w '\n{"status": "%{http_code}"}' \
-    "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/cloud-failover/declare" | jq -rs add)" || \
+    "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/cloud-failover/declare" | jq --raw-output --slurp-file add)" || \
 error "Error applying CFE payload from ${payload}: curl exit code $?"
-status="$(echo "${response}" | jq -r .status)"
+status="$(echo "${response}" | jq --raw-output .status)"
 case "${status}" in
     200)
             info "CFE declaration is applied"
             ;;
     4*|5*)
-            error "CFE payload failed to install with error(s): message is $(echo "${response}" | jq -r '.message')"
+            error "CFE payload failed to install with error(s): message is $(echo "${response}" | jq --raw-output '.message')"
             ;;
     *)
             info "CFE has status ${status}: ${response}"
