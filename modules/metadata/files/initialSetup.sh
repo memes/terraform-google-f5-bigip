@@ -17,6 +17,11 @@ fi
 info "Initialisation starting"
 mkdir -p /config/cloud/gce /var/log/cloud/google
 
+# Block until mcpd is up
+info "Waiting for mcpd to be ready"
+. /usr/lib/bigstart/bigip-ready-functions
+wait_bigip_ready
+
 if [ -n "$(get_instance_attribute details_on_error)" ]; then
     touch /var/run/gce_setup_utils_details_on_error
 else
@@ -42,11 +47,6 @@ fi
 [ -f /config/cloud/gce/network.config ] || \
     error "Run-time network configuration script is missing"
 . /config/cloud/gce/network.config
-
-# Block until mcpd is up
-info "Waiting for mcpd to be ready"
-. /usr/lib/bigstart/bigip-ready-functions
-wait_bigip_ready
 
 # Early initialisation
 if [ ! -f /config/cloud/gce/earlySetupComplete ]; then
