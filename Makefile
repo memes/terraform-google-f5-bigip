@@ -14,6 +14,7 @@ all: test
 # development and refactoring.
 .PHONY: quick
 quick: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen converge
 	kitchen list --bare | \
 		xargs -n 1 env KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify | tee -a $(TEST_REPORT)
@@ -26,6 +27,7 @@ quick: test/setup/harness.tfvars
 # onboarding_delay will be observed for each scenario individually.
 .PHONY: serialised
 serialised: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen list --bare | \
 		xargs -n 1 -I % sh -c 'kitchen destroy % && kitchen converge % && GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % | tee -a $(TEST_REPORT) % && kitchen destroy %'
 
@@ -38,6 +40,7 @@ serialised: test/setup/harness.tfvars
 
 .PHONY: qtest.%
 qtest.%:  test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen destroy $*
 	kitchen converge $*
 	kitchen list --bare '$*' | \
@@ -46,6 +49,7 @@ qtest.%:  test/setup/harness.tfvars
 
 .PHONY: test.%
 test.%: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen destroy $*
 	kitchen converge $*
 	kitchen list --bare '$*' | \
@@ -54,6 +58,7 @@ test.%: test/setup/harness.tfvars
 
 .PHONY: test
 test: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen destroy
 	kitchen converge
 	kitchen list --bare | \
@@ -70,18 +75,21 @@ destroy: test/setup/harness.tfvars
 
 .PHONY: qverify.%
 qverify.%: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen converge $*
 	kitchen list --bare '$*' | \
 		xargs -n 1 env KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify | tee -a $(TEST_REPORT)
 
 .PHONY: verify.%
 verify.%: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen converge $*
 	kitchen list --bare '$*' | \
 		xargs -n 1 env GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify | tee -a $(TEST_REPORT)
 
 .PHONY: verify
 verify: test/setup/harness.tfvars
+	touch $(TEST_REPORT)
 	kitchen converge
 	kitchen list --bare | \
 		xargs -n 1 env GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify | tee -a $(TEST_REPORT)
