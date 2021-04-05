@@ -39,7 +39,7 @@ while [ ${retry} -lt 10 ]; do
         -o /dev/null \
         "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/cloud-failover/info" && break
     info "Check for CFE installation failed, sleeping before retest: curl exit code $?"
-    sleep 5
+    sleep 15
     retry=$((retry+1))
 done
 [ ${retry} -ge 10 ] && \
@@ -52,28 +52,42 @@ extract_payload "${cfe_payload}" > "${raw}" || \
 # Execute the raw JSON as a jq file; allows environment substitutions to embed
 # Admin password, for example, at run-time.
 payload="$(mktemp -p /var/tmp)"
-jq -nrf "${raw}" > "${payload}" || \
+jq --null-input --raw-output --from-file "${raw}" > "${payload}" || \
     error "Unable to process raw file as JSON: $?"
 rm -f "${raw}" || info "Unable to delete ${raw}"
 
-info "Applying CFE payload"
-response="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
-    -H "Content-Type: application/json" \
-    -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
-    -d @"${payload}" \
-    -w '\n{"status": "%{http_code}"}' \
-    "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/cloud-failover/declare" | jq -rs add)" || \
-error "Error applying CFE payload from ${payload}: curl exit code $?"
-status="$(echo "${response}" | jq -r .status)"
-case "${status}" in
-    200)
-            info "CFE declaration is applied"
-            ;;
-    4*|5*)
-            error "CFE payload failed to install with error(s): message is $(echo "${response}" | jq -r '.message')"
-            ;;
-    *)
-            info "CFE has status ${status}: ${response}"
-            ;;
-esac
+attempt=0
+response="$(mktemp -p /var/tmp)"
+while [ "${attempt:-0}" -lt 10 ]; do
+    info "${attempt}: Applying CFE payload from ${payload}"
+    status="$(curl -sk -u "admin:${ADMIN_PASSWORD}" --max-time 60 \
+        -H "Content-Type: application/json" \
+        -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
+        -d @"${payload}" \
+        -o "${response}" \
+        -w '{"http_status": "%{http_code}"}' \
+        "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/cloud-failover/declare" | jq --raw-output '.http_status')"
+    retVal=$?
+    case "${status}" in
+        200)
+                info "${attempt}: CFE declaration is applied from ${payload}"
+                break
+                ;;
+        4*)
+                error "${attempt}: CFE payload failed: ${status}: response captured in ${response}: message is $(jq --raw-output '.message' < "${response}")"
+                break
+                ;;
+        5*)
+                info "${attempt}: CFE payload failed: ${status}: response captured in ${response}: message is $(jq --raw-output '.message' < "${response}"); sleeping before retry"
+                ;;
+        *)
+                info "${attempt}: CFE responded with status ${status}: response captured in ${response}: message is $(jq --raw-output '.message' < "${response}"); sleeping before retry"
+                ;;
+    esac
+    sleep 15
+    attempt=$((attempt+1))
+done
+[ "${attempt}" -ge 10 ] && \
+    error "${attempt}: Error applying CFE payload from ${payload}, with response in ${response}: curl exit code ${retVal}"
 rm -f "${payload}" || info "Unable to delete ${payload}"
+exit 0

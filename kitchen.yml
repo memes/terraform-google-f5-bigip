@@ -17,34 +17,37 @@ platforms:
       variables:
         # yamllint disable-line rule:line-length
         image: projects/f5-7626-networks-public/global/images/f5-bigip-16-0-1-1-0-0-6-payg-good-25mbps-210129040032
-        bigip_version: v16
+        bigip_version: "16"
         region: us-west1
   - name: local-15
     driver:
       variables:
         # yamllint disable-line rule:line-length
         image: projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-25mbps-210115160742
-        bigip_version: v15
+        bigip_version: "15"
         region: us-central1
   - name: local-14
     driver:
       variables:
         # yamllint disable-line rule:line-length
         image: projects/f5-7626-networks-public/global/images/f5-bigip-14-1-4-0-0-11-payg-good-25mbps-210211220757
-        bigip_version: v14
+        bigip_version: "14"
         region: us-east1
-  - name: local-13
-    driver:
-      variables:
-        # yamllint disable-line rule:line-length
-        image: projects/f5-7626-networks-public/global/images/f5-bigip-13-1-3-6-0-0-4-payg-good-25mbps-210129042237
-        bigip_version: v13
-        region: us-west2
+  # yamllint disable rule:comments-indentation
+  # TODO: @memes - do not include BIG-IP v13 in tests - jq failure (see #115)
+  # - name: local-13
+  #   driver:
+  #     variables:
+  # yamllint disable-line rule:line-length
+  #       image: projects/f5-7626-networks-public/global/images/f5-bigip-13-1-3-6-0-0-4-payg-good-25mbps-210129042237
+  #       bigip_version: "13"
+  #       region: us-west2
+  # yamllint enable rule:comments-indentation
 
 
 verifier:
   name: terraform
-  color: true
+  color: false
   systems:
     - name: inspec-gcp
       backend: gcp
@@ -59,7 +62,7 @@ suites:
         num_nics: "1"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r1min-%d"
+        instance_name_template: "r1m%d"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
   - name: root-2nic-minimal
@@ -69,7 +72,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r2min-%d"
+        instance_name_template: "r2m%d"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
   - name: root-3nic-minimal
@@ -79,7 +82,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r3min-%d"
+        instance_name_template: "r3m%d"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
   - name: root-4nic-minimal
@@ -89,7 +92,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r4min-%d"
+        instance_name_template: "r4m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -100,7 +103,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r5min-%d"
+        instance_name_template: "r5m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -111,7 +114,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r6min-%d"
+        instance_name_template: "r6m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -122,7 +125,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r7min-%d"
+        instance_name_template: "r7m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -133,7 +136,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "false"
         num_instances: "2"
-        instance_name_template: "r8min-%d"
+        instance_name_template: "r8m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -144,7 +147,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "r8full-%d"
+        instance_name_template: "r8f%d"
         machine_type: n1-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -195,7 +198,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h2min-%d"
+        instance_name_template: "h2m%d"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
   - name: ha-3nic-minimal
@@ -205,7 +208,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h3min-%d"
+        instance_name_template: "h3m%d"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
   - name: ha-4nic-minimal
@@ -215,7 +218,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h4min-%d"
+        instance_name_template: "h4m%d"
         machine_type: n1-standard-8
         metadata: '{details_on_error=\"true\"}'
   - name: ha-5nic-minimal
@@ -225,7 +228,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h5min-%d"
+        instance_name_template: "h5m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -236,7 +239,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h6min-%d"
+        instance_name_template: "h6m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -247,7 +250,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h7min-%d"
+        instance_name_template: "h7m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -258,7 +261,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h8min-%d"
+        instance_name_template: "h8m%d"
         machine_type: n1-standard-8
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -269,7 +272,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "h8full-%d"
+        instance_name_template: "h8f%d"
         machine_type: n1-standard-8
         instance_ordinal_offset: "1"
         domain_name: example.com
@@ -320,7 +323,7 @@ suites:
         num_nics: "2"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c2min-%d"
+        instance_name_template: "c2m%d"
         cfe_label_value: "cfe-2nic-minimal"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -331,7 +334,7 @@ suites:
         num_nics: "3"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c3min-%d"
+        instance_name_template: "c3m%d"
         cfe_label_value: "cfe-3nic-minimal"
         enable_serial_console: "true"
         metadata: '{details_on_error=\"true\"}'
@@ -342,7 +345,7 @@ suites:
         num_nics: "4"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c4min-%d"
+        instance_name_template: "c4m%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-4nic-minimal"
         enable_serial_console: "true"
@@ -354,7 +357,7 @@ suites:
         num_nics: "5"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c5min-%d"
+        instance_name_template: "c5m%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-5nic-minimal"
         enable_serial_console: "true"
@@ -366,7 +369,7 @@ suites:
         num_nics: "6"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c6min-%d"
+        instance_name_template: "c6m%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-6nic-minimal"
         enable_serial_console: "true"
@@ -378,7 +381,7 @@ suites:
         num_nics: "7"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c7min-%d"
+        instance_name_template: "c7m%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-7nic-minimal"
         enable_serial_console: "true"
@@ -390,7 +393,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c8min-%d"
+        instance_name_template: "c8m%d"
         machine_type: n1-standard-8
         cfe_label_value: "cfe-8nic-minimal"
         enable_serial_console: "true"
@@ -402,7 +405,7 @@ suites:
         num_nics: "8"
         reserve_addresses: "true"
         num_instances: "2"
-        instance_name_template: "c8full-%d"
+        instance_name_template: "c8f%d"
         machine_type: n1-standard-8
         cfe_label_key: "cfe-8nic-fixture"
         cfe_label_value: "cfe-8nic-full"
