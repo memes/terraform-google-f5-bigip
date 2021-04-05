@@ -12,6 +12,9 @@ error()
     # When some components fail to install, connectivity is limited. If
     # requested (metadata triggered) output some info to serial console.
     if [ -f /var/run/gce_setup_utils_details_on_error ] && [ -e /dev/ttyS0 ]; then
+        echo "  installed utility versions: " >/dev/ttyS0
+        jq --version >/dev/ttyS0
+        curl --version >/dev/ttyS0
         echo "  kernel interfaces: " >/dev/ttyS0
         ip a s >/dev/ttyS0
         echo "  kernel routes:" > /dev/ttyS0
@@ -45,7 +48,7 @@ get_instance_attribute()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -so /dev/null -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/instance/attributes/${1}")
+        http_status=$(curl -so /dev/null --retry 20 -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/instance/attributes/${1}")
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
@@ -56,7 +59,7 @@ get_instance_attribute()
             break
         fi
         info "get_instance_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -70,7 +73,7 @@ get_project_attribute()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -so /dev/null -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}")
+        http_status=$(curl -so /dev/null --retry 20 -w '%{http_code}' -H 'Metadata-Flavor: Google' "http://169.254.169.254/computeMetadata/v1/project/${1}")
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
@@ -81,7 +84,7 @@ get_project_attribute()
             break
         fi
         info "get_project_attribute: ${attempt}: Curl failed for ${1} with exit code ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -94,14 +97,14 @@ get_auth_token()
 {
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        auth_token="$(curl -sf -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' | jq -r '.access_token')"
+        auth_token="$(curl -sf --retry 20 -H 'Metadata-Flavor: Google' 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token' | jq --raw-output '.access_token')"
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             echo "${auth_token}"
             break
         fi
         info "get_auth_token: ${attempt}: Curl failed with exit code $?; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -145,19 +148,19 @@ get_secret_google_secret_manager()
         error "get_secret_google_secret_manager: Unable to get project id from metadata: Curl exit code $?"
     attempt=0
     while [ "${attempt:-0}" -lt 10 ]; do
-        http_status=$(curl -so /dev/null -w '%{http_code}' -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null)
+        http_status=$(curl -sko /dev/null --retry 20 -w '%{http_code}' -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null)
         retval=$?
         if [ "${retval}" -eq 0 ]; then
             if [ "${http_status}" -eq 200 ]; then
-                curl -s -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
-                    jq -r '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
+                curl -sk --retry 20 -H "Authorization: Bearer ${auth_token}" "https://secretmanager.googleapis.com/v1/projects/${project_id}/secrets/${1}/versions/latest:access" 2>/dev/null | \
+                    jq --raw-output '.payload.data' 2>/dev/null | base64 -d 2>/dev/null
             else
                 echo ""
             fi
             break
         fi
         info "get_secret_google_secret_manager: ${attempt}: Curl failed to get secret from Secret Manager: exit code: ${retval}; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \

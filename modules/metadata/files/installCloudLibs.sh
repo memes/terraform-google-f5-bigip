@@ -37,7 +37,7 @@ retry_download() {
         retval=$?
         [ "${retval}" -eq 0 ] && break
         info "retry_download: ${attempt}: Failed to download from ${url}: exit code: $?; sleeping before retry"
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -56,20 +56,20 @@ retry_install()
             -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
             --data "{\"operation\":\"INSTALL\",\"packageFilePath\":\"${out}\"}" \
             -w '\n{"http_status": "%{http_code}"}' \
-            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq -rs add)"
+            "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks" | jq --raw-output --slurp add)"
         retVal=$?
-        status="$(echo "${response}" | jq -r .http_status)"
+        status="$(echo "${response}" | jq --raw-output .http_status)"
         case "${status}" in
             2*)
                 info "retry_install: ${attempt}: ${out} is installed ${status}"
-                echo "${response}" | jq -r '.id'
+                echo "${response}" | jq --raw-output '.id'
                 return 0
                 ;;
             *)
                 info "retry_install: ${attempt}: installing ${out} returned status ${status}: ${response}; sleeping before retry"
                 ;;
         esac
-        sleep 10
+        sleep 15
         attempt=$((attempt+1))
     done
     [ "${attempt}" -ge 10 ] && \
@@ -161,14 +161,14 @@ while [ -n "${task_ids}" ]; do
                     -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                     "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks/${id}")" || \
             error "Failed to get status for task ${id} with exit code: $?"
-        status="$(echo "${response}" | jq -r '.status')"
-        package="$(echo "${response}" | jq -r '.packageName')"
+        status="$(echo "${response}" | jq --raw-output '.status')"
+        package="$(echo "${response}" | jq --raw-output '.packageName')"
         case "${status}" in
             FINISHED)
                     info "Package ${package} is installed"
                     ;;
             FAILED)
-                    msg="$(echo "${response}" | jq -r '.errorMessage')"
+                    msg="$(echo "${response}" | jq --raw-output '.errorMessage')"
                     case "${msg}" in
                         *already*)
                             info "Package ${package} is already installed"
@@ -188,7 +188,7 @@ while [ -n "${task_ids}" ]; do
     [ -z "${pending_ids}" ] && break
     task_ids="${pending_ids}"
     info "Sleeping before reexamining installation tasks"
-    sleep 5
+    sleep 15
 done
 [ -n "${errors}" ] && error "Failed to install some tasks, exiting script"
 
