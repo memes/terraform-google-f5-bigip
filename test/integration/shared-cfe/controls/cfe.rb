@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-control 'suite' do
-  title 'cfe-4nic-minimal'
-
+control 'cfe' do
+  title 'Verify CFE labels'
   cfe_label_key = input('input_cfe_label_key', value: 'f5_cloud_failover_label')
   cfe_label_value = input('input_cfe_label_value')
 
@@ -18,6 +17,3 @@ control 'suite' do
     end
   end
 end
-# Include the shared BIG-IP controls
-include_controls 'shared-gce'
-include_controls 'shared-local'
