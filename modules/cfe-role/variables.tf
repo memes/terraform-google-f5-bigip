@@ -59,3 +59,17 @@ An optional list of accounts that will be assigned the custom role. Default is
 an empty list.
 EOD
 }
+
+variable "random_id_prefix" {
+  type    = string
+  default = "bigip_cfe"
+  validation {
+    condition     = can(regex("^[a-z0-9_.]{3,59}$", var.random_id_prefix))
+    error_message = "The random_id_prefix variable must be between 3 and 59 characters in length and only contain alphanumeric, underscore and periods."
+  }
+  description = <<EOD
+The prefix to use when generating random role identifier for the new role; default
+is 'bigip_cfe' which will generate a unique role identifier of the form
+'bigip_cfe_XXXX', where XXXX is a random hex string.
+EOD
+}
