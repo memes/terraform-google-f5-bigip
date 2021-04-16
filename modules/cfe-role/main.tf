@@ -22,7 +22,7 @@ module "cfe_role" {
   version      = "6.4.0"
   target_level = var.target_type
   target_id    = var.target_id
-  role_id      = coalesce(var.id, format("bigip_cfe_%s", random_id.role_id.hex))
+  role_id      = coalesce(var.id, format("%s_%s", var.random_id_prefix, random_id.role_id.hex))
   title        = var.title
   description  = <<EOD
 Allow BIG-IP Cloud Failover Extension to fully manage instance, network, route,

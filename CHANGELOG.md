@@ -15,6 +15,7 @@ are initialised. See [CONFIGURATION](CONFIGURATION.md) for more details.
 
 ### Added
 
+- Support custom prefix when generating random CFE Role ID (issue [#118](https://github.com/memes/terraform-google-f5-bigip/issues/118))
 - Support VIP (Alias IP) CIDRs from secondary ranges (issue [#105](https://github.com/memes/terraform-google-f5-bigip/issues/105))
 - Terraform 0.14 is supported (issue [#55](https://github.com/memes/terraform-google-f5-bigip/issues/55))
 - Output that lists BIG-IP self-links by compute zone (issue [#52](https://github.com/memes/terraform-google-f5-bigip/issues/52))
