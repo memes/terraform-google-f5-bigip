@@ -104,7 +104,7 @@ fileignoreconfig:
 - filename: modules/ha/variables.tf
   checksum: 432d545472d167c893afd070b8f3705d408c3171d4061565832648c74d84256d
 - filename: modules/metadata/files/setupUtils.sh
-  checksum: e3a01f8793d4dae434f7b5133a703660f23975f4dfc1450405f8cd2bff2d168c
+  checksum: a5c23ace1f2b0d6f2d8897a3f5b06db2331d15a3476f8b7533c6267ef5e24d43
 - filename: variables.tf
   checksum: 2325557d0e00da3f683cbebd86f9a91b4cb5b4840bf27d0943fdc5024d999d49
 - filename: modules/cfe/variables.tf
@@ -126,7 +126,7 @@ fileignoreconfig:
 - filename: CHANGELOG.md
   checksum: 6e6481be4567d948411454619aa593e34d37fc41825045c16622da83fddde361
 - filename: modules/metadata/files/initialSetup.sh
-  checksum: 031c17b1e31c8759fcac8cd999586a91b45098a184e7dfc38056717b89a6d652
+  checksum: fd7614a203a2c52ff573bc1b8880440b20d0a0649c2bcdd633b7af16b09c49a2
 - filename: modules/do-builder/files/do_replace_filter.jq
   checksum: a1875e9527549f2b4f3e8b59ec4d7c58560fd7e49441293233a43837f429f977
 - filename: modules/do-builder/README.md

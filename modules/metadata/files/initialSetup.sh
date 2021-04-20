@@ -17,24 +17,22 @@ fi
 info "Initialisation starting"
 mkdir -p /config/cloud/gce /var/log/cloud/google
 
-if [ -n "$(get_instance_attribute details_on_error)" ]; then
-    touch /var/run/gce_setup_utils_details_on_error
-else
-    [ -e /var/run/gce_setup_utils_details_on_error ] && \
-        rm -f /var/run/gce_setup_utils_details_on_error
-fi
+# Block until mcpd is up
+info "Waiting for mcpd to be ready"
+. /usr/lib/bigstart/bigip-ready-functions
+wait_bigip_ready
 
 # Write the current network configuration to file
 info "Generating /config/cloud/gce/network.config"
 if [ ! -f /config/cloud/gce/network.config ]; then
     curl -sf --retry 20 'http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/?recursive=true' -H 'Metadata-Flavor: Google' | \
-        jq -r '(. | length) as $count |
-                to_entries |
-                map(.key=(if .key == 0 then "EXT" elif .key == 1 then "MGMT" else "INT\(.key-2)" end)) |
-                map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)", "\(.key)_MTU=\(.value.mtu)"]) |
-                .+ [["NIC_COUNT=\($count)"]] |
-                .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
-                .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
+        jq --raw-output '(. | length) as $count |
+            to_entries |
+            map(.key=(if .key == 0 then "EXT" elif .key == 1 then "MGMT" else "INT\(.key-2)" end)) |
+            map(["\(.key)_ADDRESS=\(.value.ip)", "\(.key)_MASK=\(.value.subnetmask)", "\(.key)_GATEWAY=\(.value.gateway)", "\(.key)_NETWORK=$(ipcalc -n \(.value.ip) \(.value.subnetmask) | cut -d= -f2)", "\(.key)_MTU=\(.value.mtu)"]) |
+            .+ [["NIC_COUNT=\($count)"]] |
+            .+ [(if $count == 1 then ["MGMT_GUI_PORT=8443"] else [] end)] |
+            .[] | select (length > 0) | join("\n")' > /config/cloud/gce/network.config
     chmod 0644 /config/cloud/gce/network.config
 fi
 # The rest of the script will have issues if networking cannot be setup
@@ -42,11 +40,6 @@ fi
 [ -f /config/cloud/gce/network.config ] || \
     error "Run-time network configuration script is missing"
 . /config/cloud/gce/network.config
-
-# Block until mcpd is up
-info "Waiting for mcpd to be ready"
-. /usr/lib/bigstart/bigip-ready-functions
-wait_bigip_ready
 
 # Early initialisation
 if [ ! -f /config/cloud/gce/earlySetupComplete ]; then
@@ -74,6 +67,14 @@ if [ ! -f /config/cloud/gce/initialNetworkingComplete ]; then
     /config/cloud/gce/initialNetworking.sh || \
         error "initialNetworking script failed with exit code: $?"
     touch /config/cloud/gce/initialNetworkingComplete
+fi
+
+# Should run-time details be logged on error?
+if [ -n "$(get_instance_attribute details_on_error)" ]; then
+    touch /var/run/gce_setup_utils_details_on_error
+else
+    [ -e /var/run/gce_setup_utils_details_on_error ] && \
+        rm -f /var/run/gce_setup_utils_details_on_error
 fi
 
 # Change the admin password, if available in Secrets Manager. Only do this once
