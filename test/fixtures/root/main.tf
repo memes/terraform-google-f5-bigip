@@ -38,7 +38,7 @@ module "root" {
   project_id                        = var.project_id
   zones                             = random_shuffle.zones.result
   num_instances                     = var.num_instances
-  instance_name_template            = format("%s-%s-%s", var.prefix, var.bigip_version, var.instance_name_template)
+  instance_name_template            = format("%s%s%s", var.prefix, var.bigip_version, var.instance_name_template)
   instance_ordinal_offset           = var.instance_ordinal_offset
   domain_name                       = var.domain_name
   metadata                          = var.metadata
