@@ -83,11 +83,12 @@ No resources.
 | <a name="input_subnet"></a> [subnet](#input\_subnet) | The fully-qualified subnetwork self-link to attach to the BIG-IP VM. | `string` | n/a | yes |
 | <a name="input_zone"></a> [zone](#input\_zone) | The compute zone which will host the BIG-IP VMs. | `string` | n/a | yes |
 | <a name="input_image"></a> [image](#input\_image) | The BIG-IP image to use. Defaults to the latest v15 PAYG/good/5gbps<br>release as of the publishing of this module. | `string` | `"projects/f5-7626-networks-public/global/images/f5-bigip-15-1-2-1-0-0-10-payg-good-5gbps-210115160742"` | no |
+| <a name="input_num_instances"></a> [num\_instances](#input\_num\_instances) | The number of BIG-IP instances to provision; default is 1. | `number` | `1` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_instance_self_link"></a> [instance\_self\_link](#output\_instance\_self\_link) | Self-link of the BIG-IP instance. |
+| <a name="output_self_links"></a> [self\_links](#output\_self\_links) | Self-link of the BIG-IP instances. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- markdownlint-enable MD033 MD034 -->

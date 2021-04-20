@@ -1,0 +1,16 @@
+# This suite wraps the standalone-1nic example
+# spell-checker: ignore bigip
+---
+name: example-standalone-1nic
+depends:
+  - name: shared-gce
+    path: ../../profiles/shared-gce
+  - name: shared-local
+    path: ../../profiles/shared-local
+inputs:
+  - name: output_zones
+    type: array
+    required: true
+  - name: output_self_links
+    type: array
+    required: true
