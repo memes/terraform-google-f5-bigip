@@ -189,3 +189,5 @@ fileignoreconfig:
   checksum: 563b0a1100d6640a6d53196fab92465f1c26b276633ee509e297da180df2f893
 - filename: test/setup/README.md
   checksum: cc1cba5692f71b41307dfc798ca21bdad5832e129ecff8d352391e1d0544d84c
+- filename: test/setup/main.tf
+  checksum: 619e2e6545332b04a3b2fd77bc2ce301ec2aae2f98f8b0d04bb047e245a4db92
