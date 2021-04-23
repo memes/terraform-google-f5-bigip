@@ -8,8 +8,7 @@
 # Instantiate a google provider aliased as 'executor'. This provider will use
 # the calling user's credentials to authenticate to GCP APIs.
 provider "google" {
-  version = "~> 3.48"
-  alias   = "executor"
+  alias = "executor"
 }
 
 # Force the use of google.executor for initial API client configurqtion.
@@ -36,7 +35,6 @@ data "google_service_account_access_token" "sa_token" {
 # the target service account. This is the provider that will be used for
 # resource creation.
 provider "google" {
-  version      = "~> 3.48"
   access_token = length(data.google_service_account_access_token.sa_token) == 1 ? element(data.google_service_account_access_token.sa_token, 0).access_token : null
 }
 
@@ -44,6 +42,5 @@ provider "google" {
 # with the target service account. This is the provider that will be used for
 # resource creation.
 provider "google-beta" {
-  version      = "~> 3.48"
   access_token = length(data.google_service_account_access_token.sa_token) == 1 ? element(data.google_service_account_access_token.sa_token, 0).access_token : null
 }

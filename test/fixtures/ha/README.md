@@ -11,16 +11,14 @@ set in kitchen.yml.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 0.12 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.48 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.48 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 3.48 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.58 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.48 ~> 3.48 |
-| <a name="provider_google.executor"></a> [google.executor](#provider\_google.executor) | ~> 3.48 ~> 3.48 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.58 |
+| <a name="provider_google.executor"></a> [google.executor](#provider\_google.executor) | ~> 3.58 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules

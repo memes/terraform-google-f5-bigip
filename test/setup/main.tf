@@ -1,6 +1,12 @@
-# This module has been tested with Terraform 0.12, 0.13 and 0.14.
+# This module has been tested with Terraform 0.13+.
 terraform {
-  required_version = "> 0.11"
+  required_version = "> 0.12"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.58"
+    }
+  }
 }
 
 # Service account impersonation (if enabled) and Google provider setup is
