@@ -1,5 +1,14 @@
 # Test harness runner
+#
+# This Makefile is a helper to standup testing foundations and execute fixtures.
+# Most targets will
+#  1. Ensure the Terraform in test/setup is executed, generating harness.tfvars
+#     and inspec-verifier.json files.
+#  2. Emulate common kitchen actions, but with serialised verify steps to avoid
+#     reusing the same parameters for multiple test scenarios and with the
+#     inspec-verifier service account credentials.
 
+# Tell kitchen to put verify reports here
 REPORT_DIR := test/reports/$(shell date '+%Y%m%d')
 
 # Converge all suites, verify, and destroy; first failure will terminate the suite
@@ -16,10 +25,8 @@ all: test
 quick: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge
-	REPORT_DIR="$(REPORT_DIR)" \
-		KITCHEN_SKIP_ONBOARD_DELAY=1 \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify
+	kitchen list --bare | \
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 	kitchen destroy
 
 # Execute `kitchen test` equivalent against each scenario individually.
@@ -30,7 +37,7 @@ quick: test/setup/harness.tfvars
 serialised: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen list --bare | \
-		xargs -n 1 -I % sh -c 'kitchen destroy % && kitchen converge % && REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % && kitchen destroy %'
+		xargs -n 1 -I % sh -c 'kitchen destroy % && kitchen converge % && (REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255) && kitchen destroy %'
 
 # Targets below here provide a way to run a kitchen test/destroy/verify run for
 # an individual scenario knowing that the foundational harness will be created
@@ -44,10 +51,8 @@ qtest.%:  test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen destroy $*
 	kitchen converge $*
-	env REPORT_DIR="$(REPORT_DIR)" \
-		KITCHEN_SKIP_ONBOARD_DELAY=1 \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify $*
+	kitchen list --bare $* | \
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 	kitchen destroy $*
 
 .PHONY: test.%
@@ -55,9 +60,8 @@ test.%: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen destroy $*
 	kitchen converge $*
-	env REPORT_DIR="$(REPORT_DIR)" \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify $*
+	kitchen list --bare $* | \
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 	kitchen destroy $*
 
 .PHONY: test
@@ -65,9 +69,8 @@ test: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen destroy
 	kitchen converge
-	env REPORT_DIR="$(REPORT_DIR)" \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify
+	kitchen list --bare | \
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 	kitchen destroy
 
 .PHONY: destroy.%
@@ -82,25 +85,22 @@ destroy: test/setup/harness.tfvars
 qverify.%: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge $*
-	env REPORT_DIR="$(REPORT_DIR)" \
-		KITCHEN_SKIP_ONBOARD_DELAY=1 \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify $*
+	kitchen list --bare $* | \
+		xargs -n 1 e-I % sh -c 'REPORT_DIR="$(REPORT_DIR)" KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 
 .PHONY: verify.%
 verify.%: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge $*
-	env REPORT_DIR="$(REPORT_DIR)" \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify $*
+	kitchen list --bare $* | \
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 
 .PHONY: verify
 verify: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge
-	env REPORT_DIR="$(REPORT_DIR)" \
-		GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json \
-		kitchen verify $*
+	kitchen list --bare | \
+		xargs -n 1 e-I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 
 .PHONY: converge.% converge
 converge.%: test/setup/harness.tfvars
