@@ -38,7 +38,9 @@ test_params = [
 driver:
   name: terraform
   command_timeout: 300
-  verify_version: false
+  # Kitchen-terraform does not support Terraform 0.15 yet - throw an error if used
+  # See https://github.com/newcontext-oss/kitchen-terraform/issues/445
+  verify_version: true
   variables:
     # These are the defaults used by all platforms unless overridden
     reserve_addresses: "false"
@@ -69,18 +71,20 @@ test_params.each do |params|
         region: "<%= params[:region] %>"
         num_nics: "<%= nics %>"
         instance_name_template: "r<%= nics %>m%d"
-        machine_type: "<% nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
+        machine_type: "<%= nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
     verifier:
       systems:
         - name: inspec-gcp
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-root-<%= nics %>nic-minimal-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-root-<%= nics %>nic-minimal-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-root-<%= nics %>nic-minimal-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-root-<%= nics %>nic-minimal-local-<%= report_ts %>.html
   <% end %>
   - name: <%= params[:version] %>-root-8nic-full
@@ -141,11 +145,13 @@ test_params.each do |params|
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-root-8nic-full-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-root-8nic-full-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-root-8nic-full-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-root-8nic-full-local-<%= report_ts %>.html
   <% (2..8).each do |nics| %>
   - name: <%= params[:version] %>-ha-<%= nics %>nic-minimal
@@ -158,18 +164,20 @@ test_params.each do |params|
         num_nics: "<%= nics %>"
         reserve_addresses: "true"
         instance_name_template: "h<%= nics %>m%d"
-        machine_type: "<% nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
+        machine_type: "<%= nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
     verifier:
       systems:
         - name: inspec-gcp
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-ha-<%= nics %>nic-minimal-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-ha-<%= nics %>nic-minimal-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-ha-<%= nics %>nic-minimal-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-ha-<%= nics %>nic-minimal-local-<%= report_ts %>.html
   <% end %>
   - name: <%= params[:version] %>-ha-8nic-full
@@ -231,11 +239,13 @@ test_params.each do |params|
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-ha-8nic-full-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-ha-8nic-full-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-ha-8nic-full-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-ha-8nic-full-local-<%= report_ts %>.html
   <% (2..8).each do |nics| %>
   - name: <%= params[:version] %>-cfe-<%= nics %>nic-minimal
@@ -248,7 +258,7 @@ test_params.each do |params|
         num_nics: "<%= nics %>"
         reserve_addresses: "true"
         instance_name_template: "c<%= nics %>m%d"
-        machine_type: "<% nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
+        machine_type: "<%= nics > 4 ? 'n1-standard-8' : 'n1-standard-4' %>"
         cfe_label_value: "cfe-<%= nics %>nic-minimal"
     verifier:
       systems:
@@ -256,11 +266,13 @@ test_params.each do |params|
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-cfe-<%= nics %>nic-minimal-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-cfe-<%= nics %>nic-minimal-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-cfe-<%= nics %>nic-minimal-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-cfe-<%= nics %>nic-minimal-local-<%= report_ts %>.html
   <% end %>
   - name: <%= params[:version] %>-cfe-8nic-full
@@ -322,23 +334,15 @@ test_params.each do |params|
           backend: gcp
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-cfe-8nic-full-gcp-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-cfe-8nic-full-gcp-<%= report_ts %>.html
         - name: local
           backend: local
           reporter:
             - cli
+            - documentation:<%= report_dir %>/<%= params[:version] %>-cfe-8nic-full-local-<%= report_ts %>.txt
             - html2:<%= report_dir %>/<%= params[:version] %>-cfe-8nic-full-local-<%= report_ts %>.html
 <% end %>
 
 suites:
-  - name: shared-gce
-  - name: shared-gcloud
-  - name: shared-cfe
-    include:
-<%
-test_params.each do |params|
-  (2..8).each do |nics| %>
-      - <%= params[:version] %>-cfe-<%= nics %>nic-minimal
-  <% end %>
-      - <%= params[:version] %>-cfe-8nic-full
-<% end %>
+  - name: bigip
