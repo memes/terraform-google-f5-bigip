@@ -86,7 +86,7 @@ qverify.%: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge $*
 	kitchen list --bare $* | \
-		xargs -n 1 e-I % sh -c 'REPORT_DIR="$(REPORT_DIR)" KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" KITCHEN_SKIP_ONBOARD_DELAY=1 GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 
 .PHONY: verify.%
 verify.%: test/setup/harness.tfvars
@@ -100,7 +100,7 @@ verify: test/setup/harness.tfvars
 	mkdir -p "$(REPORT_DIR)"
 	kitchen converge
 	kitchen list --bare | \
-		xargs -n 1 e-I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
+		xargs -n 1 -I % sh -c 'REPORT_DIR="$(REPORT_DIR)" GOOGLE_APPLICATION_CREDENTIALS=test/setup/inspec-verifier.json kitchen verify % || exit 255'
 
 .PHONY: converge.% converge
 converge.%: test/setup/harness.tfvars

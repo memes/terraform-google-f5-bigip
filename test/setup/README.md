@@ -25,6 +25,7 @@ published modules.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_alpha"></a> [alpha](#module\_alpha) | terraform-google-modules/network/google | 3.0.0 |
+| <a name="module_alpha-nat"></a> [alpha-nat](#module\_alpha-nat) | terraform-google-modules/cloud-nat/google | ~> 1.3.0 |
 | <a name="module_beta"></a> [beta](#module\_beta) | terraform-google-modules/network/google | 3.0.0 |
 | <a name="module_beta-nat"></a> [beta-nat](#module\_beta-nat) | terraform-google-modules/cloud-nat/google | ~> 1.3.0 |
 | <a name="module_bigip_sa"></a> [bigip\_sa](#module\_bigip\_sa) | terraform-google-modules/service-accounts/google | 3.0.1 |
