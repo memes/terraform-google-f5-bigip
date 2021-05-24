@@ -1,5 +1,5 @@
-# Declares a shared inspec profile that can reused by specific test suites
-# spell-checker: ignore inspec nics preemptible extramb dataplane
+# Declares an inspec suite that verifies VM properties through inspec-gcp
+# spell-checker: ignore inspec nics preemptible extramb bigip dataplane
 ---
 name: shared-gce
 title: Shared BIG-IP verifier through inspec-gce based controls
