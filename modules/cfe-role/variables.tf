@@ -2,7 +2,7 @@ variable "target_type" {
   type    = string
   default = "project"
   validation {
-    condition     = contains(list("project", "org"), var.target_type)
+    condition     = contains(["project", "org"], var.target_type)
     error_message = "The target_type variable must be one of 'project', or 'org'."
   }
   description = <<EOD

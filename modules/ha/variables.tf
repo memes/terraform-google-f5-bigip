@@ -193,7 +193,7 @@ variable "disk_type" {
   type    = string
   default = "pd-ssd"
   validation {
-    condition     = contains(list("pd-ssd", "pd-standard"), var.disk_type)
+    condition     = contains(["pd-ssd", "pd-standard"], var.disk_type)
     error_message = "The disk_type variable must be 'pd-ssd' or 'pd-standard'."
   }
   description = <<EOD
@@ -239,7 +239,7 @@ variable "external_subnetwork_tier" {
   type    = string
   default = "PREMIUM"
   validation {
-    condition     = contains(list("PREMIUM", "STANDARD"), var.external_subnetwork_tier)
+    condition     = contains(["PREMIUM", "STANDARD"], var.external_subnetwork_tier)
     error_message = "The external_subnetwork_tier variable must be 'PREMIUM' or 'STANDARD'."
   }
   description = <<EOD
@@ -336,7 +336,7 @@ variable "management_subnetwork_tier" {
   type    = string
   default = "PREMIUM"
   validation {
-    condition     = contains(list("PREMIUM", "STANDARD"), var.management_subnetwork_tier)
+    condition     = contains(["PREMIUM", "STANDARD"], var.management_subnetwork_tier)
     error_message = "The management_subnetwork_tier variable must be 'PREMIUM' or 'STANDARD'."
   }
   description = <<EOD
@@ -437,7 +437,7 @@ variable "internal_subnetwork_tier" {
   type    = string
   default = "PREMIUM"
   validation {
-    condition     = contains(list("PREMIUM", "STANDARD"), var.internal_subnetwork_tier)
+    condition     = contains(["PREMIUM", "STANDARD"], var.internal_subnetwork_tier)
     error_message = "The internal_subnetwork_tier variable must be 'PREMIUM' or 'STANDARD'."
   }
   description = <<EOD

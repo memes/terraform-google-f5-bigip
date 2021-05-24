@@ -1,6 +1,12 @@
-# This module has been tested with Terraform 0.12, 0.13 and 0.14.
+# This module has been tested with Terraform 0.13+.
 terraform {
-  required_version = "> 0.11"
+  required_version = "> 0.12"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.58"
+    }
+  }
 }
 
 # Service account impersonation (if enabled) and Google provider setup is
@@ -208,6 +214,23 @@ module "theta" {
   ]
 }
 
+# Create a NAT gateway for each region on the alpha network - this allows BIG-IPs
+# without public IP addresses on NIC0 to contact public internet once DO is applied
+# and NIC0 becomes default route. For example, CFE requires access to GCP APIs
+# through default gateway.
+module "alpha-nat" {
+  for_each                           = toset(var.regions)
+  source                             = "terraform-google-modules/cloud-nat/google"
+  version                            = "~> 1.3.0"
+  project_id                         = var.project_id
+  region                             = each.value
+  name                               = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "alpha"))
+  router                             = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "alpha"))
+  create_router                      = true
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  network                            = module.alpha.network_self_link
+}
+
 # Create a NAT gateway for each region on the beta network - this allows the
 # BIG-IP instances to download F5 libraries, use Secret Manager, etc, on
 # management interface which is the only interface configured until DO is applied.
@@ -262,4 +285,32 @@ resource "google_compute_firewall" "admin_beta" {
   allow {
     protocol = "icmp"
   }
+}
+
+# Write the harness.tfvars to pass into test fixtures
+resource "local_file" "harness_tfvars" {
+  filename = "${path.module}/harness.tfvars"
+  content  = <<EOC
+tf_sa_email = "${var.tf_sa_email}"
+project_id = "${var.project_id}"
+prefix = "${random_id.prefix.hex}"
+service_account = "${module.bigip_sa.email}"
+admin_password_secret_manager_key = "${module.password.secret_id}"
+alpha_net = "${module.alpha.network_self_link}"
+alpha_subnets = ${jsonencode({ for k, v in module.alpha.subnets : v.region => v.self_link })}
+beta_net = "${module.beta.network_self_link}"
+beta_subnets = ${jsonencode({ for k, v in module.beta.subnets : v.region => v.self_link })}
+gamma_net = "${module.gamma.network_self_link}"
+gamma_subnets = ${jsonencode({ for k, v in module.gamma.subnets : v.region => v.self_link })}
+delta_net = "${module.delta.network_self_link}"
+delta_subnets = ${jsonencode({ for k, v in module.delta.subnets : v.region => v.self_link })}
+epsilon_net = "${module.epsilon.network_self_link}"
+epsilon_subnets = ${jsonencode({ for k, v in module.epsilon.subnets : v.region => v.self_link })}
+zeta_net = "${module.zeta.network_self_link}"
+zeta_subnets = ${jsonencode({ for k, v in module.zeta.subnets : v.region => v.self_link })}
+eta_net = "${module.eta.network_self_link}"
+eta_subnets = ${jsonencode({ for k, v in module.eta.subnets : v.region => v.self_link })}
+theta_net = "${module.theta.network_self_link}"
+theta_subnets = ${jsonencode({ for k, v in module.theta.subnets : v.region => v.self_link })}
+EOC
 }
