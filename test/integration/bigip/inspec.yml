@@ -1,0 +1,11 @@
+# spell-checker: ignore bigip inspec gcloud
+---
+name: bigip
+depends:
+  - name: inspec-gcp
+    git: https://github.com/inspec/inspec-gcp.git
+    tag: v1.8.8
+  - name: shared-gce
+    path: ../../profiles/shared-gce
+  - name: shared-gcloud
+    path: ../../profiles/shared-gcloud

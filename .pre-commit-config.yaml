@@ -8,7 +8,8 @@ repos:
         files: \.(yml|yaml|talismanrc)$
         # cloud-init file *must* begin with #cloud-config so do not include in
         # strict check
-        exclude: cloud_config\.yml$
+        # kitchen yaml includes ERB code and that trips yamllint.
+        exclude: (cloud_config|kitchen)\.yml$
         types: [file, yaml]
         entry: yamllint --strict
       - id: yamllint
@@ -36,7 +37,6 @@ repos:
     hooks:
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
-      - id: check-yaml
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: sort-simple-yaml

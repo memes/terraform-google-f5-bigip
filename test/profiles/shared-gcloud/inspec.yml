@@ -1,8 +1,8 @@
-# Declares a shared inspec profile that can reused by specific test suites
-# spell-checker: ignore inspec nics
+# Declares a test suite that invokes gcloud locally
+# spell-checker: ignore gcloud nics
 ---
-name: shared-local
-title: Shared BIG-IP verifier through local controls
+name: shared-gcloud
+title: Shared BIG-IP verifier through local gcloud controls
 maintainer: Matthew Emes <m.emes@f5.com>
 license: Apache-2.0
 supports:
