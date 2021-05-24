@@ -153,14 +153,15 @@ done
 
 # Wait until all application packages have been installed, or failed
 errors=""
-while [ -n "${task_ids}" ]; do
+attempt=0
+while [ -n "${task_ids}" ] && [ "${attempt}" -lt 10 ]; do
     pending_ids=""
     for id in ${task_ids}; do
         response="$(curl -skf --retry 20 -u "admin:${ADMIN_PASSWORD}" \
                     -H "Content-Type: application/json;charset=UTF-8" \
                     -H "Origin: https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}" \
                     "https://${MGMT_ADDRESS:-localhost}${MGMT_GUI_PORT:+":${MGMT_GUI_PORT}"}/mgmt/shared/iapp/package-management-tasks/${id}")" || \
-            error "Failed to get status for task ${id} with exit code: $?"
+            info "Failed to get status for task ${id} with exit code: $?"
         status="$(echo "${response}" | jq --raw-output '.status')"
         package="$(echo "${response}" | jq --raw-output '.packageName')"
         case "${status}" in
@@ -189,8 +190,11 @@ while [ -n "${task_ids}" ]; do
     task_ids="${pending_ids}"
     info "Sleeping before reexamining installation tasks"
     sleep 15
+    attempt=$((attempt+1))
 done
 [ -n "${errors}" ] && error "Failed to install some tasks, exiting script"
+[ "${attempt}" -ge 10 ] && \\
+    info "Failed to get updated task status for one or more tasks; continuing"
 
 # Delete any obsolete files
 for file in ${to_delete}; do
