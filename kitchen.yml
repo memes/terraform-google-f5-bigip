@@ -129,10 +129,10 @@ test_params.each do |params|
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
+        ntp_servers: '[\"169.254.169.254\", \"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"9.9.9.9\"]'
+        dns_servers: '[\"169.254.169.254\", \"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
@@ -223,10 +223,10 @@ test_params.each do |params|
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
         custom_script: "exit 0"
-        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
+        ntp_servers: '[\"169.254.169.254\", \"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"9.9.9.9\"]'
+        dns_servers: '[\"169.254.169.254\", \"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\"]'
@@ -318,10 +318,10 @@ test_params.each do |params|
         allow_phone_home: "false"
         default_gateway: "172.16.0.1"
         use_cloud_init: "true"
-        ntp_servers: '[\"132.163.96.1\", \"132.163.96.2\"]'
+        ntp_servers: '[\"169.254.169.254\", \"132.163.96.1\", \"132.163.96.2\"]'
         timezone: America/Los_Angeles
         modules: '{ltm=\"nominal\", asm=\"none\"}'
-        dns_servers: '[\"9.9.9.9\"]'
+        dns_servers: '[\"169.254.169.254\", \"9.9.9.9\"]'
         search_domains: '[\"example.com\"]'
         # yamllint disable-line rule:line-length
         install_cloud_libs: '[\"https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.25.0/f5-appsvcs-3.25.0-3.noarch.rpm\",\"https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.18.0/f5-declarative-onboarding-1.18.0-4.noarch.rpm\",\"https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v1.7.1/f5-cloud-failover-1.7.1-1.noarch.rpm\"]'

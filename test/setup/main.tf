@@ -208,6 +208,23 @@ module "theta" {
   ]
 }
 
+# Create a NAT gateway for each region on the alpha network - this allows BIG-IPs
+# without public IP addresses on NIC0 to contact public internet once DO is applied
+# and NIC0 becomes default route. For example, CFE requires access to GCP APIs
+# through default gateway.
+module "alpha-nat" {
+  for_each                           = toset(var.regions)
+  source                             = "terraform-google-modules/cloud-nat/google"
+  version                            = "~> 1.3.0"
+  project_id                         = var.project_id
+  region                             = each.value
+  name                               = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "alpha"))
+  router                             = format("%s-%s", random_id.prefix.hex, replace(each.value, "/^[^-]+/", "alpha"))
+  create_router                      = true
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  network                            = module.alpha.network_self_link
+}
+
 # Create a NAT gateway for each region on the beta network - this allows the
 # BIG-IP instances to download F5 libraries, use Secret Manager, etc, on
 # management interface which is the only interface configured until DO is applied.
