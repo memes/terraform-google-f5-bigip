@@ -116,8 +116,7 @@ test/setup/harness.tfvars: $(wildcard test/setup/*.tf) $(wildcard test/setup/*.a
 	cd test/setup && \
 		terraform init -input=false && \
 		terraform apply -input=false -auto-approve -target random_id.prefix && \
-		terraform apply -input=false -auto-approve && \
-		terraform output > $(@F)
+		terraform apply -input=false -auto-approve
 
 .PHONY: teardown
 teardown:

@@ -263,3 +263,31 @@ resource "google_compute_firewall" "admin_beta" {
     protocol = "icmp"
   }
 }
+
+# Write the harness.tfvars to pass into test fixtures
+resource "local_file" "harness_tfvars" {
+  filename = "${path.module}/harness.tfvars"
+  content  = <<EOC
+tf_sa_email = "${var.tf_sa_email}"
+project_id = "${var.project_id}"
+prefix = "${random_id.prefix.hex}"
+service_account = "${module.bigip_sa.email}"
+admin_password_secret_manager_key = "${module.password.secret_id}"
+alpha_net = "${module.alpha.network_self_link}"
+alpha_subnets = ${jsonencode({ for k, v in module.alpha.subnets : v.region => v.self_link })}
+beta_net = "${module.beta.network_self_link}"
+beta_subnets = ${jsonencode({ for k, v in module.beta.subnets : v.region => v.self_link })}
+gamma_net = "${module.gamma.network_self_link}"
+gamma_subnets = ${jsonencode({ for k, v in module.gamma.subnets : v.region => v.self_link })}
+delta_net = "${module.delta.network_self_link}"
+delta_subnets = ${jsonencode({ for k, v in module.delta.subnets : v.region => v.self_link })}
+epsilon_net = "${module.epsilon.network_self_link}"
+epsilon_subnets = ${jsonencode({ for k, v in module.epsilon.subnets : v.region => v.self_link })}
+zeta_net = "${module.zeta.network_self_link}"
+zeta_subnets = ${jsonencode({ for k, v in module.zeta.subnets : v.region => v.self_link })}
+eta_net = "${module.eta.network_self_link}"
+eta_subnets = ${jsonencode({ for k, v in module.eta.subnets : v.region => v.self_link })}
+theta_net = "${module.theta.network_self_link}"
+theta_subnets = ${jsonencode({ for k, v in module.theta.subnets : v.region => v.self_link })}
+EOC
+}
