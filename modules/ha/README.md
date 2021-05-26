@@ -63,7 +63,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_do_payloads"></a> [do\_payloads](#module\_do\_payloads) | ../do-builder/ |  |
+| <a name="module_do_payloads"></a> [do\_payloads](#module\_do\_payloads) | f5devcentral/do-builder/bigip | 1.0.0-rc1 |
 | <a name="module_instance"></a> [instance](#module\_instance) | ./../../ |  |
 
 ## Resources

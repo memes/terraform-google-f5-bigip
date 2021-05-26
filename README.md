@@ -132,7 +132,7 @@ For guidelines and steps to diagnose deployment and run-time issues see
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_do_payloads"></a> [do\_payloads](#module\_do\_payloads) | ./modules/do-builder/ |  |
+| <a name="module_do_payloads"></a> [do\_payloads](#module\_do\_payloads) | f5devcentral/do-builder/bigip | 1.0.0-rc1 |
 | <a name="module_metadata"></a> [metadata](#module\_metadata) | ./modules/metadata/ |  |
 
 ## Resources
